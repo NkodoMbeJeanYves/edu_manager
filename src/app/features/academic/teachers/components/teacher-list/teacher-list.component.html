@@ -1,0 +1,35 @@
+<div class="teacher-list card">
+  <table>
+    <thead>
+      <tr>
+        <th i18n="@@teacherList.staffNum">Staff #</th>
+        <th i18n="@@teacherList.name">Name</th>
+        <th i18n="@@teacherList.email">Email</th>
+        <th i18n="@@teacherList.discipline">Discipline</th>
+        <th i18n="@@teacherList.contract">Contract</th>
+        <th i18n="@@teacherList.status">Status</th>
+        <th class="actions" i18n="@@teacherList.actions">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (t of teachers; track t.id) {
+        <tr>
+          <td class="mono">{{ t.staffNumber }}</td>
+          <td>{{ t.firstName }} {{ t.lastName }}</td>
+          <td>{{ t.email }}</td>
+          <td>{{ t.discipline }}</td>
+          <td><span class="chip chip--level">{{ t.contractType }}</span></td>
+          <td><span class="chip" [attr.data-status]="t.status">{{ t.status }}</span></td>
+          <td class="actions">
+            <button class="btn btn--ghost" (click)="edit.emit(t)" i18n="@@common.edit">Edit</button>
+            <button class="btn btn--danger" (click)="remove.emit(t)" i18n="@@common.delete">Delete</button>
+          </td>
+        </tr>
+      } @empty {
+        <tr>
+          <td colspan="7" class="empty" i18n="@@teacherList.empty">No teachers found.</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

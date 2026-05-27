@@ -1,0 +1,52 @@
+<section class="sessions">
+  <header class="sessions__header">
+    <div>
+      <h1 i18n="@@sessions.title">Academic sessions</h1>
+      <p class="sessions__hint" i18n="@@sessions.count">
+        {{ store.visibleCount() }} of {{ store.total() }} sessions
+      </p>
+    </div>
+
+    <div class="sessions__actions">
+      <input
+        type="search"
+        i18n-placeholder="@@sessions.searchPlaceholder"
+        placeholder="Search by label…"
+        [value]="store.filter().search ?? ''"
+        (input)="search($any($event.target).value)"
+        class="sessions__search" />
+      <button class="btn btn--primary" (click)="openCreate()" i18n="@@sessions.new">New session</button>
+    </div>
+  </header>
+
+  @if (store.loading()) {
+    <div class="sessions__state" i18n="@@common.loading">Loading…</div>
+  } @else if (store.error()) {
+    <div class="sessions__state sessions__state--error">{{ store.error() }}</div>
+  } @else {
+    <app-session-list
+      [sessions]="store.filtered()"
+      (edit)="openEdit($event)"
+      (remove)="remove($event)" />
+  }
+
+  @if (drawerOpen()) {
+    <div class="drawer">
+      <div class="drawer__overlay" (click)="closeDrawer()"></div>
+      <div class="drawer__panel">
+        <div class="drawer__head">
+          @if (editing()) {
+            <h2 i18n="@@sessions.editTitle">Edit session</h2>
+          } @else {
+            <h2 i18n="@@sessions.newTitle">New session</h2>
+          }
+          <button class="btn btn--ghost" (click)="closeDrawer()" i18n="@@common.close">Close</button>
+        </div>
+        <app-session-form
+          [session]="editing()"
+          (save)="save($event)"
+          (cancel)="closeDrawer()" />
+      </div>
+    </div>
+  }
+</section>

@@ -1,0 +1,131 @@
+.timetable-grid {
+  padding: 0;
+  overflow: hidden;
+
+  --tg-hour-col: 56px;
+  --tg-line: var(--color-border);
+}
+
+.timetable-grid__header {
+  display: grid;
+  grid-template-columns: var(--tg-hour-col) repeat(6, 1fr);
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-bg);
+}
+
+.timetable-grid__hour-spacer {
+  border-right: 1px solid var(--tg-line);
+}
+
+.timetable-grid__day-label {
+  padding: 10px 12px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted);
+  border-right: 1px solid var(--tg-line);
+
+  &:last-child {
+    border-right: none;
+  }
+}
+
+.timetable-grid__body {
+  display: grid;
+  grid-template-columns: var(--tg-hour-col) repeat(6, 1fr);
+  position: relative;
+}
+
+.timetable-grid__hours {
+  border-right: 1px solid var(--tg-line);
+  display: flex;
+  flex-direction: column;
+}
+
+.timetable-grid__hour-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 4px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  border-bottom: 1px dashed var(--tg-line);
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.timetable-grid__day-col {
+  position: relative;
+  border-right: 1px solid var(--tg-line);
+
+  &:last-child {
+    border-right: none;
+  }
+}
+
+.timetable-grid__line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--tg-line);
+  pointer-events: none;
+
+  &:first-child {
+    display: none;
+  }
+}
+
+.timetable-grid__slot {
+  position: absolute;
+  left: 4px;
+  right: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 2px;
+  padding: 6px 8px;
+  border: 1px solid transparent;
+  border-left-width: 3px;
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  text-align: left;
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform 0.1s ease-out, box-shadow 0.1s ease-out;
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 1px;
+  }
+}
+
+.timetable-grid__slot-title {
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.timetable-grid__slot-meta {
+  font-size: 11px;
+  font-weight: 500;
+  opacity: 0.8;
+}
+
+.timetable-grid__slot-time {
+  margin-top: auto;
+  font-size: 10px;
+  font-family: 'SFMono-Regular', Consolas, monospace;
+  opacity: 0.75;
+}

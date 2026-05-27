@@ -1,0 +1,42 @@
+<form class="exam-session-form" [formGroup]="form" (ngSubmit)="submit()">
+  <div class="form-field">
+    <label for="label" i18n="@@examForm.label">Label</label>
+    <input id="label" formControlName="label" />
+  </div>
+
+  <div class="grid-2">
+    <div class="form-field">
+      <label for="type" i18n="@@examForm.type">Type</label>
+      <select id="type" formControlName="type">
+        <option value="NORMAL" i18n="@@examForm.type.normal">Normal</option>
+        <option value="MAKEUP" i18n="@@examForm.type.makeup">Makeup</option>
+        <option value="SPECIAL" i18n="@@examForm.type.special">Special</option>
+      </select>
+    </div>
+    <div class="form-field">
+      <label for="status" i18n="@@examForm.status">Status</label>
+      <select id="status" formControlName="status">
+        <option value="PLANNED" i18n="@@examForm.status.planned">Planned</option>
+        <option value="IN_PROGRESS" i18n="@@examForm.status.in_progress">In progress</option>
+        <option value="CLOSED" i18n="@@examForm.status.closed">Closed</option>
+        <option value="CANCELLED" i18n="@@examForm.status.cancelled">Cancelled</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="form-field">
+      <label for="startDate" i18n="@@examForm.start">Start date</label>
+      <input id="startDate" type="date" formControlName="startDate" />
+    </div>
+    <div class="form-field">
+      <label for="endDate" i18n="@@examForm.end">End date</label>
+      <input id="endDate" type="date" formControlName="endDate" />
+    </div>
+  </div>
+
+  <div class="exam-session-form__actions">
+    <button type="button" class="btn btn--ghost" (click)="cancel.emit()" i18n="@@common.cancel">Cancel</button>
+    <button type="submit" class="btn btn--primary" [disabled]="form.invalid" i18n="@@common.save">Save</button>
+  </div>
+</form>

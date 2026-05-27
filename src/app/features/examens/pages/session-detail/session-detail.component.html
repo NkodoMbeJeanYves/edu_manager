@@ -1,0 +1,54 @@
+<section class="session-detail">
+  <header class="session-detail__header">
+    <a class="back" routerLink="/examens" i18n="@@sessionDetail.back">← Back to sessions</a>
+    <h1>{{ session.label }}</h1>
+    <div class="meta">
+      <span class="chip chip--level">{{ session.type }}</span>
+      <span class="chip" [attr.data-status]="session.status">{{ session.status }}</span>
+      <span class="mono">{{ session.startDate | date:'mediumDate' }} → {{ session.endDate | date:'mediumDate' }}</span>
+    </div>
+  </header>
+
+  <div class="cards">
+    <div class="card stat">
+      <div class="stat__value">{{ exams.length }}</div>
+      <div class="stat__label" i18n="@@sessionDetail.exams">Exams</div>
+    </div>
+    <div class="card stat">
+      <div class="stat__value">{{ convocations }}</div>
+      <div class="stat__label" i18n="@@sessionDetail.convocations">Convocations</div>
+    </div>
+    <div class="card stat">
+      <div class="stat__value">{{ rooms }}</div>
+      <div class="stat__label" i18n="@@sessionDetail.rooms">Rooms</div>
+    </div>
+  </div>
+
+  <h2 i18n="@@sessionDetail.examsTitle">Exams schedule</h2>
+  <div class="card">
+    <table class="exams-table">
+      <thead>
+        <tr>
+          <th i18n="@@sessionDetail.subject">Subject</th>
+          <th i18n="@@sessionDetail.classGroup">Class</th>
+          <th i18n="@@sessionDetail.date">Date</th>
+          <th i18n="@@sessionDetail.time">Time</th>
+          <th i18n="@@sessionDetail.room">Room</th>
+          <th i18n="@@sessionDetail.invigilator">Invigilator</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (e of exams; track e.id) {
+          <tr>
+            <td>{{ e.subject }}</td>
+            <td>{{ e.classGroup }}</td>
+            <td class="mono">{{ e.date | date:'mediumDate' }}</td>
+            <td class="mono">{{ e.startTime }} – {{ e.endTime }}</td>
+            <td class="mono">{{ e.room }}</td>
+            <td>{{ e.invigilator }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</section>

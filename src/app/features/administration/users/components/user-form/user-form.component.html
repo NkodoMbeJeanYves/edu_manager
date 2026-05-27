@@ -1,0 +1,49 @@
+<form class="user-form" [formGroup]="form" (ngSubmit)="submit()">
+  <div class="form-field">
+    <label for="username" i18n="@@userForm.username">Username</label>
+    <input id="username" formControlName="username" />
+  </div>
+
+  <div class="grid-2">
+    <div class="form-field">
+      <label for="firstName" i18n="@@userForm.firstName">First name</label>
+      <input id="firstName" formControlName="firstName" />
+    </div>
+    <div class="form-field">
+      <label for="lastName" i18n="@@userForm.lastName">Last name</label>
+      <input id="lastName" formControlName="lastName" />
+    </div>
+  </div>
+
+  <div class="form-field">
+    <label for="email" i18n="@@userForm.email">Email</label>
+    <input id="email" type="email" formControlName="email" />
+  </div>
+
+  <div class="grid-2">
+    <div class="form-field">
+      <label for="role" i18n="@@userForm.role">Role</label>
+      <select id="role" formControlName="role">
+        <option value="ADMIN" i18n="@@userForm.role.admin">Admin</option>
+        <option value="TEACHER" i18n="@@userForm.role.teacher">Teacher</option>
+        <option value="STAFF" i18n="@@userForm.role.staff">Staff</option>
+        <option value="STUDENT" i18n="@@userForm.role.student">Student</option>
+        <option value="PARENT" i18n="@@userForm.role.parent">Parent</option>
+      </select>
+    </div>
+    <div class="form-field">
+      <label for="status" i18n="@@userForm.status">Status</label>
+      <select id="status" formControlName="status">
+        <option value="ACTIVE" i18n="@@userForm.status.active">Active</option>
+        <option value="INACTIVE" i18n="@@userForm.status.inactive">Inactive</option>
+        <option value="LOCKED" i18n="@@userForm.status.locked">Locked</option>
+        <option value="PENDING" i18n="@@userForm.status.pending">Pending</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="user-form__actions">
+    <button type="button" class="btn btn--ghost" (click)="cancel.emit()" i18n="@@common.cancel">Cancel</button>
+    <button type="submit" class="btn btn--primary" [disabled]="form.invalid" i18n="@@common.save">Save</button>
+  </div>
+</form>

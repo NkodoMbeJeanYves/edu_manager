@@ -1,0 +1,52 @@
+<section class="roles">
+  <header class="roles__header">
+    <div>
+      <h1 i18n="@@roles.title">Roles &amp; Permissions</h1>
+      <p class="roles__hint" i18n="@@roles.count">
+        {{ store.visibleCount() }} of {{ store.total() }} roles
+      </p>
+    </div>
+
+    <div class="roles__actions">
+      <input
+        type="search"
+        i18n-placeholder="@@roles.searchPlaceholder"
+        placeholder="Search by name, code, description…"
+        [value]="store.filter().search ?? ''"
+        (input)="search($any($event.target).value)"
+        class="roles__search" />
+      <button class="btn btn--primary" (click)="openCreate()" i18n="@@roles.new">New role</button>
+    </div>
+  </header>
+
+  @if (store.loading()) {
+    <div class="roles__state" i18n="@@common.loading">Loading…</div>
+  } @else if (store.error()) {
+    <div class="roles__state roles__state--error">{{ store.error() }}</div>
+  } @else {
+    <app-role-list
+      [roles]="store.filtered()"
+      (edit)="openEdit($event)"
+      (remove)="remove($event)" />
+  }
+
+  @if (drawerOpen()) {
+    <div class="drawer">
+      <div class="drawer__overlay" (click)="closeDrawer()"></div>
+      <div class="drawer__panel">
+        <div class="drawer__head">
+          @if (editing()) {
+            <h2 i18n="@@roles.editTitle">Edit role</h2>
+          } @else {
+            <h2 i18n="@@roles.newTitle">New role</h2>
+          }
+          <button class="btn btn--ghost" (click)="closeDrawer()" i18n="@@common.close">Close</button>
+        </div>
+        <app-role-form
+          [role]="editing()"
+          (save)="save($event)"
+          (cancel)="closeDrawer()" />
+      </div>
+    </div>
+  }
+</section>

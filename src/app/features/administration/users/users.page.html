@@ -1,0 +1,52 @@
+<section class="users">
+  <header class="users__header">
+    <div>
+      <h1 i18n="@@users.title">Users</h1>
+      <p class="users__hint" i18n="@@users.count">
+        {{ store.visibleCount() }} of {{ store.total() }} users
+      </p>
+    </div>
+
+    <div class="users__actions">
+      <input
+        type="search"
+        i18n-placeholder="@@users.searchPlaceholder"
+        placeholder="Search by name, email, username…"
+        [value]="store.filter().search ?? ''"
+        (input)="search($any($event.target).value)"
+        class="users__search" />
+      <button class="btn btn--primary" (click)="openCreate()" i18n="@@users.new">New user</button>
+    </div>
+  </header>
+
+  @if (store.loading()) {
+    <div class="users__state" i18n="@@common.loading">Loading…</div>
+  } @else if (store.error()) {
+    <div class="users__state users__state--error">{{ store.error() }}</div>
+  } @else {
+    <app-user-list
+      [users]="store.filtered()"
+      (edit)="openEdit($event)"
+      (remove)="remove($event)" />
+  }
+
+  @if (drawerOpen()) {
+    <div class="drawer">
+      <div class="drawer__overlay" (click)="closeDrawer()"></div>
+      <div class="drawer__panel">
+        <div class="drawer__head">
+          @if (editing()) {
+            <h2 i18n="@@users.editTitle">Edit user</h2>
+          } @else {
+            <h2 i18n="@@users.newTitle">New user</h2>
+          }
+          <button class="btn btn--ghost" (click)="closeDrawer()" i18n="@@common.close">Close</button>
+        </div>
+        <app-user-form
+          [user]="editing()"
+          (save)="save($event)"
+          (cancel)="closeDrawer()" />
+      </div>
+    </div>
+  }
+</section>

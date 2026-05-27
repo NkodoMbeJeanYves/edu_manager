@@ -1,0 +1,71 @@
+@if (rapport()) {
+  <section class="rapport">
+    <header class="rapport__header">
+      <h1 i18n="@@rapport.abs.title">Absenteeism report</h1>
+      <p class="rapport__sub">{{ rapport()!.periodLabel }}</p>
+    </header>
+
+    <div class="totals">
+      <div class="total card">
+        <div class="total__label" i18n="@@rapport.abs.overall">Overall rate</div>
+        <div class="total__value">{{ rapport()!.overallRate }}%</div>
+      </div>
+      <div class="total card">
+        <div class="total__label" i18n="@@rapport.abs.totalHours">Total hours</div>
+        <div class="total__value">{{ rapport()!.totalHours }}h</div>
+      </div>
+      <div class="total card">
+        <div class="total__label" i18n="@@rapport.abs.justified">Justified</div>
+        <div class="total__value">{{ rapport()!.justifiedRate }}%</div>
+      </div>
+    </div>
+
+    <h2 i18n="@@rapport.abs.weekly">Weekly trend</h2>
+    <div class="card chart">
+      @for (w of rapport()!.weekly; track w.week) {
+        <div class="chart__col">
+          <div class="chart__bar" [style.height.%]="(w.rate / maxWeeklyRate()) * 100"></div>
+          <div class="chart__label">{{ w.week }}</div>
+          <div class="chart__value mono">{{ w.rate }}%</div>
+        </div>
+      }
+    </div>
+
+    <h2 i18n="@@rapport.abs.byDay">By weekday</h2>
+    <div class="card chart">
+      @for (d of rapport()!.byDay; track d.day) {
+        <div class="chart__col">
+          <div class="chart__bar chart__bar--alt" [style.height.%]="(d.rate / maxDayRate()) * 100"></div>
+          <div class="chart__label">{{ d.day }}</div>
+          <div class="chart__value mono">{{ d.rate }}%</div>
+        </div>
+      }
+    </div>
+
+    <h2 i18n="@@rapport.abs.top">Top absent students</h2>
+    <div class="card">
+      <table>
+        <thead>
+          <tr>
+            <th i18n="@@rapport.abs.col.name">Student</th>
+            <th i18n="@@rapport.abs.col.class">Class</th>
+            <th i18n="@@rapport.abs.col.hours">Hours</th>
+            <th i18n="@@rapport.abs.col.rate">Rate</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (t of rapport()!.topAbsents; track t.name) {
+            <tr>
+              <td>{{ t.name }}</td>
+              <td>{{ t.classGroup }}</td>
+              <td class="mono">{{ t.hours }}h</td>
+              <td><span class="chip" data-level="HIGH">{{ t.rate }}%</span></td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+} @else if (loading()) {
+  <div class="state" i18n="@@common.loading">Loading…</div>
+}

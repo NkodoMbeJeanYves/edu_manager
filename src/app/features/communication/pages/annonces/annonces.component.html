@@ -1,0 +1,77 @@
+<section class="annonces">
+  <header class="annonces__header">
+    <div>
+      <h1 i18n="@@annonces.title">Announcements</h1>
+      <p class="annonces__hint" i18n="@@annonces.count">
+        {{ store.visibleCount() }} of {{ store.total() }} announcements
+      </p>
+    </div>
+
+    <div class="annonces__actions">
+      <input
+        type="search"
+        i18n-placeholder="@@annonces.searchPlaceholder"
+        placeholder="Search…"
+        [value]="store.filter().search ?? ''"
+        (input)="store.setFilter({ search: $any($event.target).value })"
+        class="annonces__search" />
+      <button
+        class="btn btn--ghost"
+        [class.btn--active]="!!store.filter().pinnedOnly"
+        (click)="togglePinnedOnly()"
+        i18n="@@annonces.pinnedOnly">
+        Pinned only
+      </button>
+      <button class="btn btn--primary" (click)="openCreate()" i18n="@@annonces.new">New announcement</button>
+    </div>
+  </header>
+
+  @if (store.loading()) {
+    <div class="annonces__state" i18n="@@common.loading">Loading…</div>
+  } @else if (store.error()) {
+    <div class="annonces__state annonces__state--error">{{ store.error() }}</div>
+  } @else {
+    <div class="grid">
+      @for (a of store.filtered(); track a.id) {
+        <article class="annonce card" [class.annonce--pinned]="a.pinned">
+          @if (a.pinned) {
+            <span class="pin-badge" i18n="@@annonces.pinned">📌 Pinned</span>
+          }
+          <h3>{{ a.title }}</h3>
+          <p>{{ a.body }}</p>
+          <div class="annonce__meta">
+            <span class="chip chip--level">{{ a.audience }}</span>
+            <span class="annonce__time mono">{{ a.publishedAt | date:'short' }}</span>
+            <span class="annonce__by">— {{ a.publishedBy }}</span>
+          </div>
+          <div class="annonce__actions">
+            <button class="btn btn--ghost" (click)="openEdit(a)" i18n="@@common.edit">Edit</button>
+            <button class="btn btn--danger" (click)="remove(a)" i18n="@@common.delete">Delete</button>
+          </div>
+        </article>
+      } @empty {
+        <div class="empty" i18n="@@annonces.empty">No announcements.</div>
+      }
+    </div>
+  }
+
+  @if (drawerOpen()) {
+    <div class="drawer">
+      <div class="drawer__overlay" (click)="closeDrawer()"></div>
+      <div class="drawer__panel">
+        <div class="drawer__head">
+          @if (editing()) {
+            <h2 i18n="@@annonces.editTitle">Edit announcement</h2>
+          } @else {
+            <h2 i18n="@@annonces.newTitle">New announcement</h2>
+          }
+          <button class="btn btn--ghost" (click)="closeDrawer()" i18n="@@common.close">Close</button>
+        </div>
+        <app-annonce-form
+          [annonce]="editing()"
+          (save)="save($event)"
+          (cancel)="closeDrawer()" />
+      </div>
+    </div>
+  }
+</section>

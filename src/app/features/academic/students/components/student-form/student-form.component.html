@@ -1,0 +1,55 @@
+<form class="student-form" [formGroup]="form" (ngSubmit)="submit()">
+  <div class="form-field">
+    <label for="registrationNumber" i18n="@@studentForm.regNum">Registration #</label>
+    <input id="registrationNumber" formControlName="registrationNumber" />
+  </div>
+
+  <div class="grid-2">
+    <div class="form-field">
+      <label for="firstName" i18n="@@studentForm.firstName">First name</label>
+      <input id="firstName" formControlName="firstName" />
+    </div>
+
+    <div class="form-field">
+      <label for="lastName" i18n="@@studentForm.lastName">Last name</label>
+      <input id="lastName" formControlName="lastName" />
+    </div>
+  </div>
+
+  <div class="form-field">
+    <label for="email" i18n="@@studentForm.email">Email</label>
+    <input id="email" type="email" formControlName="email" />
+  </div>
+
+  <div class="form-field">
+    <label for="birthDate" i18n="@@studentForm.birthDate">Birth date</label>
+    <input id="birthDate" type="date" formControlName="birthDate" />
+  </div>
+
+  <div class="grid-2">
+    <div class="form-field">
+      <label for="level" i18n="@@studentForm.level">Level</label>
+      <select id="level" formControlName="level">
+        <option value="PRIMARY" i18n="@@studentForm.level.primary">Primary</option>
+        <option value="SECONDARY" i18n="@@studentForm.level.secondary">Secondary</option>
+        <option value="UNDERGRAD" i18n="@@studentForm.level.undergrad">Undergraduate</option>
+        <option value="GRADUATE" i18n="@@studentForm.level.graduate">Graduate</option>
+      </select>
+    </div>
+
+    <div class="form-field">
+      <label for="status" i18n="@@studentForm.status">Status</label>
+      <select id="status" formControlName="status">
+        <option value="ACTIVE" i18n="@@studentForm.status.active">Active</option>
+        <option value="GRADUATED" i18n="@@studentForm.status.graduated">Graduated</option>
+        <option value="SUSPENDED" i18n="@@studentForm.status.suspended">Suspended</option>
+        <option value="WITHDRAWN" i18n="@@studentForm.status.withdrawn">Withdrawn</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="student-form__actions">
+    <button type="button" class="btn btn--ghost" (click)="cancel.emit()" i18n="@@common.cancel">Cancel</button>
+    <button type="submit" class="btn btn--primary" [disabled]="form.invalid" i18n="@@common.save">Save</button>
+  </div>
+</form>

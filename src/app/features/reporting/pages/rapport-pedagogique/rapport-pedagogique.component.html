@@ -1,0 +1,89 @@
+@if (rapport()) {
+  <section class="rapport">
+    <header class="rapport__header">
+      <div>
+        <h1 i18n="@@rapport.peda.title">Pedagogical report</h1>
+        <p class="rapport__sub">{{ rapport()!.classLabel }} · {{ rapport()!.periodLabel }}</p>
+      </div>
+    </header>
+
+    <div class="totals">
+      <div class="total card">
+        <div class="total__label" i18n="@@rapport.peda.average">Overall average</div>
+        <div class="total__value">{{ rapport()!.overallAverage }} / 20</div>
+      </div>
+      <div class="total card">
+        <div class="total__label" i18n="@@rapport.peda.passRate">Pass rate</div>
+        <div class="total__value">{{ rapport()!.passRate }}%</div>
+      </div>
+      <div class="total card">
+        <div class="total__label" i18n="@@rapport.peda.students">Students</div>
+        <div class="total__value">{{ rapport()!.totalStudents }}</div>
+      </div>
+    </div>
+
+    <h2 i18n="@@rapport.peda.bySubject">By subject</h2>
+    <div class="card">
+      <table>
+        <thead>
+          <tr>
+            <th i18n="@@rapport.peda.subject">Subject</th>
+            <th i18n="@@rapport.peda.subj.average">Average</th>
+            <th i18n="@@rapport.peda.subj.pass">Pass rate</th>
+            <th i18n="@@rapport.peda.subj.enrolled">Enrolled</th>
+            <th i18n="@@rapport.peda.subj.dist">Distribution</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (s of rapport()!.bySubject; track s.subject) {
+            <tr>
+              <td>{{ s.subject }}</td>
+              <td class="mono">{{ s.average }} / 20</td>
+              <td class="mono">{{ s.passRate }}%</td>
+              <td class="mono">{{ s.enrolled }}</td>
+              <td>
+                <div class="bar">
+                  <div class="bar__fill" [style.width.%]="s.passRate"
+                       [class.bar__fill--low]="s.passRate < 60"
+                       [class.bar__fill--mid]="s.passRate >= 60 && s.passRate < 80"
+                       [class.bar__fill--high]="s.passRate >= 80"></div>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <div class="rankings">
+      <div>
+        <h2 i18n="@@rapport.peda.top">Top performers</h2>
+        <div class="card">
+          <ol class="ranking">
+            @for (p of rapport()!.topPerformers; track p.name) {
+              <li>
+                <span class="ranking__name">{{ p.name }}</span>
+                <span class="ranking__score">{{ p.average }} / 20</span>
+              </li>
+            }
+          </ol>
+        </div>
+      </div>
+      <div>
+        <h2 i18n="@@rapport.peda.struggling">In difficulty</h2>
+        <div class="card">
+          <ol class="ranking">
+            @for (p of rapport()!.inDifficulty; track p.name) {
+              <li>
+                <span class="ranking__name">{{ p.name }}</span>
+                <span class="ranking__score ranking__score--low">{{ p.average }} / 20</span>
+              </li>
+            }
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+} @else if (loading()) {
+  <div class="state" i18n="@@common.loading">Loading…</div>
+}

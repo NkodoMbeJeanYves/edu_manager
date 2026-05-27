@@ -1,0 +1,44 @@
+<form class="role-form" [formGroup]="form" (ngSubmit)="submit()">
+  <div class="grid-2">
+    <div class="form-field">
+      <label for="code" i18n="@@roleForm.code">Code</label>
+      <input id="code" formControlName="code" />
+    </div>
+    <div class="form-field">
+      <label for="name" i18n="@@roleForm.name">Name</label>
+      <input id="name" formControlName="name" />
+    </div>
+  </div>
+
+  <div class="form-field">
+    <label for="description" i18n="@@roleForm.description">Description</label>
+    <textarea id="description" formControlName="description" rows="3"></textarea>
+  </div>
+
+  <div class="grid-2">
+    <div class="form-field">
+      <label for="scope" i18n="@@roleForm.scope">Scope</label>
+      <select id="scope" formControlName="scope">
+        <option value="GLOBAL" i18n="@@roleForm.scope.global">Global</option>
+        <option value="TENANT" i18n="@@roleForm.scope.tenant">Tenant</option>
+        <option value="DEPARTMENT" i18n="@@roleForm.scope.dept">Department</option>
+      </select>
+    </div>
+    <div class="form-field">
+      <label for="permissionsCount" i18n="@@roleForm.permissions">Permissions count</label>
+      <input id="permissionsCount" type="number" formControlName="permissionsCount" min="0" />
+    </div>
+  </div>
+
+  <div class="form-field form-field--inline">
+    <label>
+      <input type="checkbox" formControlName="isSystem" />
+      <span i18n="@@roleForm.system">System role (cannot be deleted)</span>
+    </label>
+  </div>
+
+  <div class="role-form__actions">
+    <button type="button" class="btn btn--ghost" (click)="cancel.emit()" i18n="@@common.cancel">Cancel</button>
+    <button type="submit" class="btn btn--primary" [disabled]="form.invalid" i18n="@@common.save">Save</button>
+  </div>
+</form>

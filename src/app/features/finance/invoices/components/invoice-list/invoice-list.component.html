@@ -1,0 +1,40 @@
+<div class="invoice-list card">
+  <table>
+    <thead>
+      <tr>
+        <th i18n="@@invoiceList.number">Invoice #</th>
+        <th i18n="@@invoiceList.student">Student</th>
+        <th i18n="@@invoiceList.description">Description</th>
+        <th i18n="@@invoiceList.amount">Amount</th>
+        <th i18n="@@invoiceList.outstanding">Outstanding</th>
+        <th i18n="@@invoiceList.due">Due</th>
+        <th i18n="@@invoiceList.status">Status</th>
+        <th class="actions" i18n="@@invoiceList.actions">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (i of invoices; track i.id) {
+        <tr>
+          <td class="mono">{{ i.invoiceNumber }}</td>
+          <td>
+            <div>{{ i.studentName }}</div>
+            <div class="muted mono">{{ i.registrationNumber }}</div>
+          </td>
+          <td class="muted">{{ i.description }}</td>
+          <td class="mono">{{ i.amount | currency:i.currency }}</td>
+          <td class="mono outstanding">{{ outstanding(i) | currency:i.currency }}</td>
+          <td class="mono">{{ i.dueAt | date:'mediumDate' }}</td>
+          <td><span class="chip" [attr.data-status]="i.status">{{ i.status }}</span></td>
+          <td class="actions">
+            <button class="btn btn--ghost" (click)="edit.emit(i)" i18n="@@common.edit">Edit</button>
+            <button class="btn btn--danger" (click)="remove.emit(i)" i18n="@@common.delete">Delete</button>
+          </td>
+        </tr>
+      } @empty {
+        <tr>
+          <td colspan="8" class="empty" i18n="@@invoiceList.empty">No invoices found.</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,85 @@
+<section class="messages">
+  <header class="messages__header">
+    <div>
+      <h1 i18n="@@messages.title">Messages</h1>
+      <p class="messages__hint" i18n="@@messages.count">
+        {{ store.visibleCount() }} of {{ store.total() }} messages
+      </p>
+    </div>
+
+    <div class="messages__actions">
+      <div class="folders">
+        <button
+          class="btn btn--ghost"
+          [class.btn--active]="store.filter().folder === 'INBOX'"
+          (click)="store.setFolder('INBOX')"
+          i18n="@@messages.inbox">
+          Inbox ({{ store.unreadInboxCount() }})
+        </button>
+        <button
+          class="btn btn--ghost"
+          [class.btn--active]="store.filter().folder === 'SENT'"
+          (click)="store.setFolder('SENT')"
+          i18n="@@messages.sent">
+          Sent
+        </button>
+      </div>
+      <input
+        type="search"
+        i18n-placeholder="@@messages.searchPlaceholder"
+        placeholder="Search…"
+        [value]="store.filter().search ?? ''"
+        (input)="store.setSearch($any($event.target).value)"
+        class="messages__search" />
+      <button class="btn btn--primary" (click)="openCompose()" i18n="@@messages.new">Compose</button>
+    </div>
+  </header>
+
+  @if (store.loading()) {
+    <div class="messages__state" i18n="@@common.loading">Loading…</div>
+  } @else if (store.error()) {
+    <div class="messages__state messages__state--error">{{ store.error() }}</div>
+  } @else {
+    <div class="message-list card">
+      <table>
+        <thead>
+          <tr>
+            <th i18n="@@messageList.peer">{{ store.filter().folder === 'INBOX' ? 'From' : 'To' }}</th>
+            <th i18n="@@messageList.subject">Subject</th>
+            <th i18n="@@messageList.priority">Priority</th>
+            <th i18n="@@messageList.sentAt">Sent</th>
+            <th class="actions" i18n="@@messageList.actions">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (m of store.filtered(); track m.id) {
+            <tr [class.row--unread]="!m.read && m.folder === 'INBOX'">
+              <td>{{ m.folder === 'INBOX' ? m.fromName : m.toName }}</td>
+              <td>{{ m.subject }}</td>
+              <td><span class="chip" [attr.data-priority]="m.priority">{{ m.priority }}</span></td>
+              <td class="mono">{{ m.sentAt | date:'short' }}</td>
+              <td class="actions">
+                <button class="btn btn--danger" (click)="store.remove(m.id)" i18n="@@common.delete">Delete</button>
+              </td>
+            </tr>
+          } @empty {
+            <tr><td colspan="5" class="empty" i18n="@@messageList.empty">No messages.</td></tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+
+  @if (drawerOpen()) {
+    <div class="drawer">
+      <div class="drawer__overlay" (click)="closeDrawer()"></div>
+      <div class="drawer__panel">
+        <div class="drawer__head">
+          <h2 i18n="@@messages.composeTitle">New message</h2>
+          <button class="btn btn--ghost" (click)="closeDrawer()" i18n="@@common.close">Close</button>
+        </div>
+        <app-message-form (send)="send($event)" (cancel)="closeDrawer()" />
+      </div>
+    </div>
+  }
+</section>

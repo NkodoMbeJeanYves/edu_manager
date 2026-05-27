@@ -1,0 +1,52 @@
+<section class="payments">
+  <header class="payments__header">
+    <div>
+      <h1 i18n="@@payments.title">Payments</h1>
+      <p class="payments__hint" i18n="@@payments.count">
+        {{ store.visibleCount() }} of {{ store.total() }} payments
+      </p>
+    </div>
+
+    <div class="payments__actions">
+      <input
+        type="search"
+        i18n-placeholder="@@payments.searchPlaceholder"
+        placeholder="Search by receipt, invoice, student, reference…"
+        [value]="store.filter().search ?? ''"
+        (input)="search($any($event.target).value)"
+        class="payments__search" />
+      <button class="btn btn--primary" (click)="openCreate()" i18n="@@payments.new">New payment</button>
+    </div>
+  </header>
+
+  @if (store.loading()) {
+    <div class="payments__state" i18n="@@common.loading">Loading…</div>
+  } @else if (store.error()) {
+    <div class="payments__state payments__state--error">{{ store.error() }}</div>
+  } @else {
+    <app-payment-list
+      [payments]="store.filtered()"
+      (edit)="openEdit($event)"
+      (remove)="remove($event)" />
+  }
+
+  @if (drawerOpen()) {
+    <div class="drawer">
+      <div class="drawer__overlay" (click)="closeDrawer()"></div>
+      <div class="drawer__panel">
+        <div class="drawer__head">
+          @if (editing()) {
+            <h2 i18n="@@payments.editTitle">Edit payment</h2>
+          } @else {
+            <h2 i18n="@@payments.newTitle">New payment</h2>
+          }
+          <button class="btn btn--ghost" (click)="closeDrawer()" i18n="@@common.close">Close</button>
+        </div>
+        <app-payment-form
+          [payment]="editing()"
+          (save)="save($event)"
+          (cancel)="closeDrawer()" />
+      </div>
+    </div>
+  }
+</section>

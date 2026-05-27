@@ -1,0 +1,22 @@
+.student-form {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow-y: auto;
+
+  &__actions {
+    margin-top: auto;
+    padding-top: 16px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    border-top: 1px solid var(--color-border);
+  }
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}

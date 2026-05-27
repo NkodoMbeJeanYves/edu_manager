@@ -1,0 +1,41 @@
+<form class="department-form" [formGroup]="form" (ngSubmit)="submit()">
+  <div class="grid-2">
+    <div class="form-field">
+      <label for="code" i18n="@@deptForm.code">Code</label>
+      <input id="code" formControlName="code" />
+    </div>
+    <div class="form-field">
+      <label for="name" i18n="@@deptForm.name">Name</label>
+      <input id="name" formControlName="name" />
+    </div>
+  </div>
+
+  <div class="form-field">
+    <label for="description" i18n="@@deptForm.description">Description</label>
+    <textarea id="description" formControlName="description" rows="3"></textarea>
+  </div>
+
+  <div class="form-field">
+    <label for="managerName" i18n="@@deptForm.manager">Manager</label>
+    <input id="managerName" formControlName="managerName" />
+  </div>
+
+  <div class="grid-2">
+    <div class="form-field">
+      <label for="staffCount" i18n="@@deptForm.staff">Staff count</label>
+      <input id="staffCount" type="number" formControlName="staffCount" min="0" />
+    </div>
+    <div class="form-field">
+      <label for="status" i18n="@@deptForm.status">Status</label>
+      <select id="status" formControlName="status">
+        <option value="ACTIVE" i18n="@@deptForm.status.active">Active</option>
+        <option value="INACTIVE" i18n="@@deptForm.status.inactive">Inactive</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="department-form__actions">
+    <button type="button" class="btn btn--ghost" (click)="cancel.emit()" i18n="@@common.cancel">Cancel</button>
+    <button type="submit" class="btn btn--primary" [disabled]="form.invalid" i18n="@@common.save">Save</button>
+  </div>
+</form>

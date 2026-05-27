@@ -1,0 +1,37 @@
+<div class="payment-list card">
+  <table>
+    <thead>
+      <tr>
+        <th i18n="@@paymentList.receipt">Receipt #</th>
+        <th i18n="@@paymentList.invoice">Invoice #</th>
+        <th i18n="@@paymentList.student">Student</th>
+        <th i18n="@@paymentList.amount">Amount</th>
+        <th i18n="@@paymentList.method">Method</th>
+        <th i18n="@@paymentList.receivedAt">Received</th>
+        <th i18n="@@paymentList.status">Status</th>
+        <th class="actions" i18n="@@paymentList.actions">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (p of payments; track p.id) {
+        <tr>
+          <td class="mono">{{ p.receiptNumber }}</td>
+          <td class="mono">{{ p.invoiceNumber }}</td>
+          <td>{{ p.studentName }}</td>
+          <td class="mono amount">{{ p.amount | currency:p.currency }}</td>
+          <td><span class="chip chip--level">{{ p.method }}</span></td>
+          <td class="mono">{{ p.receivedAt | date:'short' }}</td>
+          <td><span class="chip" [attr.data-status]="p.status">{{ p.status }}</span></td>
+          <td class="actions">
+            <button class="btn btn--ghost" (click)="edit.emit(p)" i18n="@@common.edit">Edit</button>
+            <button class="btn btn--danger" (click)="remove.emit(p)" i18n="@@common.delete">Delete</button>
+          </td>
+        </tr>
+      } @empty {
+        <tr>
+          <td colspan="8" class="empty" i18n="@@paymentList.empty">No payments found.</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

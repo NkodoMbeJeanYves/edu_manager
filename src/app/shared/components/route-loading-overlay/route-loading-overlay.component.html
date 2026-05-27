@@ -1,0 +1,14 @@
+@if (loading()) {
+  <div
+    class="route-loading-overlay"
+    role="alertdialog"
+    aria-modal="true"
+    aria-busy="true"
+    aria-label="Chargement en cours"
+  >
+    <div class="route-loading-overlay__card">
+      <div class="route-loading-overlay__spinner" aria-hidden="true"></div>
+      <p class="route-loading-overlay__label" i18n="@@routeLoading.label">Chargement…</p>
+    </div>
+  </div>
+}

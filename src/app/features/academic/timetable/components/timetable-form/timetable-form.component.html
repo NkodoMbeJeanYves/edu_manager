@@ -1,0 +1,52 @@
+<form class="timetable-form" [formGroup]="form" (ngSubmit)="submit()">
+  <div class="form-field">
+    <label for="day" i18n="@@timetableForm.day">Day</label>
+    <select id="day" formControlName="day">
+      <option value="MONDAY" i18n="@@timetableForm.day.mon">Monday</option>
+      <option value="TUESDAY" i18n="@@timetableForm.day.tue">Tuesday</option>
+      <option value="WEDNESDAY" i18n="@@timetableForm.day.wed">Wednesday</option>
+      <option value="THURSDAY" i18n="@@timetableForm.day.thu">Thursday</option>
+      <option value="FRIDAY" i18n="@@timetableForm.day.fri">Friday</option>
+      <option value="SATURDAY" i18n="@@timetableForm.day.sat">Saturday</option>
+    </select>
+  </div>
+
+  <div class="grid-2">
+    <div class="form-field">
+      <label for="startTime" i18n="@@timetableForm.startTime">Start time</label>
+      <input id="startTime" type="time" formControlName="startTime" />
+    </div>
+
+    <div class="form-field">
+      <label for="endTime" i18n="@@timetableForm.endTime">End time</label>
+      <input id="endTime" type="time" formControlName="endTime" />
+    </div>
+  </div>
+
+  <div class="form-field">
+    <label for="subject" i18n="@@timetableForm.subject">Subject</label>
+    <input id="subject" formControlName="subject" />
+  </div>
+
+  <div class="form-field">
+    <label for="teacherName" i18n="@@timetableForm.teacher">Teacher</label>
+    <input id="teacherName" formControlName="teacherName" />
+  </div>
+
+  <div class="grid-2">
+    <div class="form-field">
+      <label for="classGroup" i18n="@@timetableForm.classGroup">Class</label>
+      <input id="classGroup" formControlName="classGroup" />
+    </div>
+
+    <div class="form-field">
+      <label for="room" i18n="@@timetableForm.room">Room</label>
+      <input id="room" formControlName="room" />
+    </div>
+  </div>
+
+  <div class="timetable-form__actions">
+    <button type="button" class="btn btn--ghost" (click)="cancel.emit()" i18n="@@common.cancel">Cancel</button>
+    <button type="submit" class="btn btn--primary" [disabled]="form.invalid" i18n="@@common.save">Save</button>
+  </div>
+</form>

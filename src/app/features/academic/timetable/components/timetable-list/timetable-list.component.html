@@ -1,0 +1,35 @@
+<div class="timetable-list card">
+  <table>
+    <thead>
+      <tr>
+        <th i18n="@@timetableList.day">Day</th>
+        <th i18n="@@timetableList.time">Time</th>
+        <th i18n="@@timetableList.subject">Subject</th>
+        <th i18n="@@timetableList.teacher">Teacher</th>
+        <th i18n="@@timetableList.classGroup">Class</th>
+        <th i18n="@@timetableList.room">Room</th>
+        <th class="actions" i18n="@@timetableList.actions">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (s of slots; track s.id) {
+        <tr>
+          <td><span class="chip chip--level">{{ s.day }}</span></td>
+          <td class="mono">{{ s.startTime }} – {{ s.endTime }}</td>
+          <td>{{ s.subject }}</td>
+          <td>{{ s.teacherName }}</td>
+          <td>{{ s.classGroup }}</td>
+          <td class="mono">{{ s.room }}</td>
+          <td class="actions">
+            <button class="btn btn--ghost" (click)="edit.emit(s)" i18n="@@common.edit">Edit</button>
+            <button class="btn btn--danger" (click)="remove.emit(s)" i18n="@@common.delete">Delete</button>
+          </td>
+        </tr>
+      } @empty {
+        <tr>
+          <td colspan="7" class="empty" i18n="@@timetableList.empty">No timetable slots found.</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

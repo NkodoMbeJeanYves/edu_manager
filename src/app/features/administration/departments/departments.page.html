@@ -1,0 +1,52 @@
+<section class="departments">
+  <header class="departments__header">
+    <div>
+      <h1 i18n="@@departments.title">Departments</h1>
+      <p class="departments__hint" i18n="@@departments.count">
+        {{ store.visibleCount() }} of {{ store.total() }} departments
+      </p>
+    </div>
+
+    <div class="departments__actions">
+      <input
+        type="search"
+        i18n-placeholder="@@departments.searchPlaceholder"
+        placeholder="Search by name, code, manager…"
+        [value]="store.filter().search ?? ''"
+        (input)="search($any($event.target).value)"
+        class="departments__search" />
+      <button class="btn btn--primary" (click)="openCreate()" i18n="@@departments.new">New department</button>
+    </div>
+  </header>
+
+  @if (store.loading()) {
+    <div class="departments__state" i18n="@@common.loading">Loading…</div>
+  } @else if (store.error()) {
+    <div class="departments__state departments__state--error">{{ store.error() }}</div>
+  } @else {
+    <app-department-list
+      [departments]="store.filtered()"
+      (edit)="openEdit($event)"
+      (remove)="remove($event)" />
+  }
+
+  @if (drawerOpen()) {
+    <div class="drawer">
+      <div class="drawer__overlay" (click)="closeDrawer()"></div>
+      <div class="drawer__panel">
+        <div class="drawer__head">
+          @if (editing()) {
+            <h2 i18n="@@departments.editTitle">Edit department</h2>
+          } @else {
+            <h2 i18n="@@departments.newTitle">New department</h2>
+          }
+          <button class="btn btn--ghost" (click)="closeDrawer()" i18n="@@common.close">Close</button>
+        </div>
+        <app-department-form
+          [department]="editing()"
+          (save)="save($event)"
+          (cancel)="closeDrawer()" />
+      </div>
+    </div>
+  }
+</section>

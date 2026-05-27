@@ -1,0 +1,114 @@
+<section class="timetable">
+  <header class="timetable__header">
+    <div>
+      <h1 i18n="@@timetable.title">Timetable</h1>
+      <p class="timetable__hint" i18n="@@timetable.count">
+        {{ store.visibleCount() }} of {{ store.total() }} slots
+      </p>
+    </div>
+
+    <div class="timetable__actions">
+      @if (viewMode() === 'grid') {
+        <label class="timetable__field">
+          <span class="timetable__field-label" i18n="@@timetable.classGroup">Classe</span>
+          <select
+            class="timetable__select"
+            [value]="activeClassGroup() ?? ''"
+            (change)="setClassGroup($any($event.target).value)">
+            @for (cg of classGroups(); track cg) {
+              <option [value]="cg">{{ cg }}</option>
+            }
+          </select>
+        </label>
+      }
+
+      <input
+        type="search"
+        i18n-placeholder="@@timetable.searchPlaceholder"
+        placeholder="Search by subject, teacher, class, room…"
+        [value]="store.filter().search ?? ''"
+        (input)="search($any($event.target).value)"
+        class="timetable__search" />
+
+      <div class="timetable__view-toggle" role="group" aria-label="View mode">
+        <button
+          type="button"
+          [class.active]="viewMode() === 'grid'"
+          (click)="setView('grid')"
+          i18n="@@timetable.view.grid">
+          Grille
+        </button>
+        <button
+          type="button"
+          [class.active]="viewMode() === 'list'"
+          (click)="setView('list')"
+          i18n="@@timetable.view.list">
+          Liste
+        </button>
+      </div>
+
+      <button class="btn btn--primary" (click)="openCreate()" i18n="@@timetable.new">New slot</button>
+    </div>
+  </header>
+
+  @if (store.loading()) {
+    <div class="timetable__state" i18n="@@common.loading">Loading…</div>
+  } @else if (store.error()) {
+    <div class="timetable__state timetable__state--error">{{ store.error() }}</div>
+  } @else if (viewMode() === 'grid') {
+    @if (!activeClassGroup()) {
+      <div class="timetable__state" i18n="@@timetable.selectClass">
+        Sélectionnez une classe pour afficher l'emploi du temps.
+      </div>
+    } @else if (store.filtered().length === 0) {
+      <div class="timetable__state" i18n="@@timetable.emptyClass">
+        Aucun cours pour cette classe.
+      </div>
+    } @else {
+      <app-timetable-grid
+        [slots]="store.filtered()"
+        (select)="openDetail($event)" />
+    }
+  } @else {
+    <app-timetable-list
+      [slots]="store.filtered()"
+      (edit)="openEdit($event)"
+      (remove)="remove($event)" />
+  }
+
+  @if (viewing(); as slot) {
+    <div class="drawer">
+      <div class="drawer__overlay" (click)="closeDetail()"></div>
+      <div class="drawer__panel">
+        <div class="drawer__head">
+          <h2 i18n="@@timetable.detailTitle">Détail du cours</h2>
+          <button class="btn btn--ghost" (click)="closeDetail()" i18n="@@common.close">Close</button>
+        </div>
+        <app-timetable-detail
+          [slot]="slot"
+          (edit)="openEdit($event)"
+          (remove)="remove($event)" />
+      </div>
+    </div>
+  }
+
+  @if (drawerOpen()) {
+    <div class="drawer">
+      <div class="drawer__overlay" (click)="closeDrawer()"></div>
+      <div class="drawer__panel">
+        <div class="drawer__head">
+          @if (editing()) {
+            <h2 i18n="@@timetable.editTitle">Edit slot</h2>
+          } @else {
+            <h2 i18n="@@timetable.newTitle">New slot</h2>
+          }
+          <button class="btn btn--ghost" (click)="closeDrawer()" i18n="@@common.close">Close</button>
+        </div>
+        <app-timetable-form
+          [slot]="editing()"
+          (save)="save($event)"
+          (cancel)="closeDrawer()" />
+      </div>
+    </div>
+  }
+</section>

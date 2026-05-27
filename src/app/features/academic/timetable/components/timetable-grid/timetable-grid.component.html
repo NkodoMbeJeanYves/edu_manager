@@ -1,0 +1,43 @@
+<div class="timetable-grid card">
+  <div class="timetable-grid__header">
+    <div class="timetable-grid__hour-spacer"></div>
+    @for (d of days; track d.key) {
+      <div class="timetable-grid__day-label">{{ d.label }}</div>
+    }
+  </div>
+
+  <div class="timetable-grid__body" [style.height.px]="gridHeight">
+    <div class="timetable-grid__hours">
+      @for (h of hours; track h) {
+        <div class="timetable-grid__hour-row" [style.height.px]="hourHeight">
+          <span>{{ h }}h</span>
+        </div>
+      }
+    </div>
+
+    @for (d of days; track d.key) {
+      <div class="timetable-grid__day-col">
+        @for (h of hours; track h) {
+          <div
+            class="timetable-grid__line"
+            [style.top.px]="(h - startHour) * hourHeight">
+          </div>
+        }
+
+        @for (slot of slotsFor(d.key); track slot.id) {
+          <button
+            type="button"
+            class="timetable-grid__slot"
+            [style.top.px]="slotTop(slot)"
+            [style.height.px]="slotHeight(slot)"
+            [style]="slotStyles(slot.subject)"
+            (click)="select.emit(slot)">
+            <span class="timetable-grid__slot-title">{{ slot.subject }}</span>
+            <span class="timetable-grid__slot-meta">{{ slot.room }}</span>
+            <span class="timetable-grid__slot-time">{{ slot.startTime }} – {{ slot.endTime }}</span>
+          </button>
+        }
+      </div>
+    }
+  </div>
+</div>

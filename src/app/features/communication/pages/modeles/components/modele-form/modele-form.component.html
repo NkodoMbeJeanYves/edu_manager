@@ -1,0 +1,51 @@
+<form class="modele-form" [formGroup]="form" (ngSubmit)="submit()">
+  <p class="hint">{{ placeholderHint }}</p>
+
+  <div class="form-field">
+    <label for="name" i18n="@@modeleForm.name">Name</label>
+    <input id="name" formControlName="name" />
+  </div>
+
+  <div class="grid-2">
+    <div class="form-field">
+      <label for="type" i18n="@@modeleForm.type">Channel</label>
+      <select id="type" formControlName="type">
+        <option value="EMAIL" i18n="@@modeleForm.type.email">Email</option>
+        <option value="SMS" i18n="@@modeleForm.type.sms">SMS</option>
+        <option value="PUSH" i18n="@@modeleForm.type.push">Push</option>
+      </select>
+    </div>
+    <div class="form-field">
+      <label for="event" i18n="@@modeleForm.event">Trigger event</label>
+      <select id="event" formControlName="event">
+        <option value="ABSENCE" i18n="@@modeleForm.event.absence">Absence</option>
+        <option value="GRADE_PUBLISHED" i18n="@@modeleForm.event.grade">Grade published</option>
+        <option value="PAYMENT_RECEIVED" i18n="@@modeleForm.event.payment">Payment received</option>
+        <option value="EXAM_CONVOCATION" i18n="@@modeleForm.event.exam">Exam convocation</option>
+        <option value="GENERAL" i18n="@@modeleForm.event.general">General</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="form-field">
+    <label for="subject" i18n="@@modeleForm.subject">Subject (Email/Push only)</label>
+    <input id="subject" formControlName="subject" />
+  </div>
+
+  <div class="form-field">
+    <label for="body" i18n="@@modeleForm.body">Body</label>
+    <textarea id="body" formControlName="body" rows="8" class="mono"></textarea>
+  </div>
+
+  <div class="form-field form-field--inline">
+    <label>
+      <input type="checkbox" formControlName="active" />
+      <span i18n="@@modeleForm.active">Active</span>
+    </label>
+  </div>
+
+  <div class="modele-form__actions">
+    <button type="button" class="btn btn--ghost" (click)="cancel.emit()" i18n="@@common.cancel">Cancel</button>
+    <button type="submit" class="btn btn--primary" [disabled]="form.invalid" i18n="@@common.save">Save</button>
+  </div>
+</form>

@@ -1,0 +1,76 @@
+<form class="payment-form" [formGroup]="form" (ngSubmit)="submit()">
+  <div class="grid-2">
+    <div class="form-field">
+      <label for="receiptNumber" i18n="@@paymentForm.receipt">Receipt #</label>
+      <input id="receiptNumber" formControlName="receiptNumber" />
+    </div>
+    <div class="form-field">
+      <label for="invoiceNumber" i18n="@@paymentForm.invoice">Invoice #</label>
+      <input id="invoiceNumber" formControlName="invoiceNumber" />
+    </div>
+  </div>
+
+  <div class="form-field">
+    <label for="studentName" i18n="@@paymentForm.student">Student</label>
+    <input id="studentName" formControlName="studentName" />
+  </div>
+
+  <div class="grid-2">
+    <div class="form-field">
+      <label for="amount" i18n="@@paymentForm.amount">Amount</label>
+      <input id="amount" type="number" formControlName="amount" min="0" step="0.01" />
+    </div>
+    <div class="form-field">
+      <label for="currency" i18n="@@paymentForm.currency">Currency</label>
+      <select id="currency" formControlName="currency">
+        <option value="EUR">EUR</option>
+        <option value="USD">USD</option>
+        <option value="XAF">XAF</option>
+        <option value="CAD">CAD</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="form-field">
+      <label for="method" i18n="@@paymentForm.method">Method</label>
+      <select id="method" formControlName="method">
+        <option value="CASH" i18n="@@paymentForm.method.cash">Cash</option>
+        <option value="CARD" i18n="@@paymentForm.method.card">Card</option>
+        <option value="BANK_TRANSFER" i18n="@@paymentForm.method.bank">Bank transfer</option>
+        <option value="MOBILE_MONEY" i18n="@@paymentForm.method.mm">Mobile money</option>
+        <option value="CHECK" i18n="@@paymentForm.method.check">Check</option>
+      </select>
+    </div>
+    <div class="form-field">
+      <label for="status" i18n="@@paymentForm.status">Status</label>
+      <select id="status" formControlName="status">
+        <option value="PENDING" i18n="@@paymentForm.status.pending">Pending</option>
+        <option value="CONFIRMED" i18n="@@paymentForm.status.confirmed">Confirmed</option>
+        <option value="FAILED" i18n="@@paymentForm.status.failed">Failed</option>
+        <option value="REFUNDED" i18n="@@paymentForm.status.refunded">Refunded</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="form-field">
+    <label for="reference" i18n="@@paymentForm.reference">Reference (optional)</label>
+    <input id="reference" formControlName="reference" />
+  </div>
+
+  <div class="grid-2">
+    <div class="form-field">
+      <label for="receivedAt" i18n="@@paymentForm.receivedAt">Received at</label>
+      <input id="receivedAt" type="datetime-local" formControlName="receivedAt" />
+    </div>
+    <div class="form-field">
+      <label for="receivedBy" i18n="@@paymentForm.receivedBy">Received by</label>
+      <input id="receivedBy" formControlName="receivedBy" />
+    </div>
+  </div>
+
+  <div class="payment-form__actions">
+    <button type="button" class="btn btn--ghost" (click)="cancel.emit()" i18n="@@common.cancel">Cancel</button>
+    <button type="submit" class="btn btn--primary" [disabled]="form.invalid" i18n="@@common.save">Save</button>
+  </div>
+</form>

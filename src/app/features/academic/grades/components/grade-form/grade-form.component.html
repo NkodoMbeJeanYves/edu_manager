@@ -1,0 +1,49 @@
+<form class="grade-form" [formGroup]="form" (ngSubmit)="submit()">
+  <div class="form-field">
+    <label for="registrationNumber" i18n="@@gradeForm.regNum">Registration #</label>
+    <input id="registrationNumber" formControlName="registrationNumber" />
+  </div>
+
+  <div class="form-field">
+    <label for="studentName" i18n="@@gradeForm.student">Student name</label>
+    <input id="studentName" formControlName="studentName" />
+  </div>
+
+  <div class="form-field">
+    <label for="subject" i18n="@@gradeForm.subject">Subject</label>
+    <input id="subject" formControlName="subject" />
+  </div>
+
+  <div class="form-field">
+    <label for="evaluationType" i18n="@@gradeForm.type">Evaluation type</label>
+    <select id="evaluationType" formControlName="evaluationType">
+      <option value="HOMEWORK" i18n="@@gradeForm.type.homework">Homework</option>
+      <option value="QUIZ" i18n="@@gradeForm.type.quiz">Quiz</option>
+      <option value="MIDTERM" i18n="@@gradeForm.type.midterm">Midterm</option>
+      <option value="FINAL" i18n="@@gradeForm.type.final">Final</option>
+      <option value="PROJECT" i18n="@@gradeForm.type.project">Project</option>
+    </select>
+  </div>
+
+  <div class="grid-2">
+    <div class="form-field">
+      <label for="score" i18n="@@gradeForm.score">Score</label>
+      <input id="score" type="number" formControlName="score" min="0" />
+    </div>
+
+    <div class="form-field">
+      <label for="maxScore" i18n="@@gradeForm.maxScore">Max score</label>
+      <input id="maxScore" type="number" formControlName="maxScore" min="1" />
+    </div>
+  </div>
+
+  <div class="form-field">
+    <label for="evaluatedAt" i18n="@@gradeForm.date">Date</label>
+    <input id="evaluatedAt" type="date" formControlName="evaluatedAt" />
+  </div>
+
+  <div class="grade-form__actions">
+    <button type="button" class="btn btn--ghost" (click)="cancel.emit()" i18n="@@common.cancel">Cancel</button>
+    <button type="submit" class="btn btn--primary" [disabled]="form.invalid" i18n="@@common.save">Save</button>
+  </div>
+</form>

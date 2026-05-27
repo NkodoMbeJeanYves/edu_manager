@@ -1,0 +1,52 @@
+<section class="invoices">
+  <header class="invoices__header">
+    <div>
+      <h1 i18n="@@invoices.title">Invoices</h1>
+      <p class="invoices__hint" i18n="@@invoices.count">
+        {{ store.visibleCount() }} of {{ store.total() }} invoices
+      </p>
+    </div>
+
+    <div class="invoices__actions">
+      <input
+        type="search"
+        i18n-placeholder="@@invoices.searchPlaceholder"
+        placeholder="Search by number, student, description…"
+        [value]="store.filter().search ?? ''"
+        (input)="search($any($event.target).value)"
+        class="invoices__search" />
+      <button class="btn btn--primary" (click)="openCreate()" i18n="@@invoices.new">New invoice</button>
+    </div>
+  </header>
+
+  @if (store.loading()) {
+    <div class="invoices__state" i18n="@@common.loading">Loading…</div>
+  } @else if (store.error()) {
+    <div class="invoices__state invoices__state--error">{{ store.error() }}</div>
+  } @else {
+    <app-invoice-list
+      [invoices]="store.filtered()"
+      (edit)="openEdit($event)"
+      (remove)="remove($event)" />
+  }
+
+  @if (drawerOpen()) {
+    <div class="drawer">
+      <div class="drawer__overlay" (click)="closeDrawer()"></div>
+      <div class="drawer__panel">
+        <div class="drawer__head">
+          @if (editing()) {
+            <h2 i18n="@@invoices.editTitle">Edit invoice</h2>
+          } @else {
+            <h2 i18n="@@invoices.newTitle">New invoice</h2>
+          }
+          <button class="btn btn--ghost" (click)="closeDrawer()" i18n="@@common.close">Close</button>
+        </div>
+        <app-invoice-form
+          [invoice]="editing()"
+          (save)="save($event)"
+          (cancel)="closeDrawer()" />
+      </div>
+    </div>
+  }
+</section>

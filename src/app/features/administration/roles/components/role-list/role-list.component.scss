@@ -1,0 +1,29 @@
+.role-list {
+  padding: 0;
+  overflow: hidden;
+
+  table { width: 100%; border-collapse: collapse; }
+  th, td { text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--color-border); }
+  th {
+    background: var(--color-bg); font-size: 12px; text-transform: uppercase;
+    letter-spacing: 0.04em; color: var(--color-text-muted); font-weight: 600;
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover { background: var(--color-bg); }
+  .mono { font-family: 'SFMono-Regular', Consolas, monospace; font-size: 13px; }
+  .muted { color: var(--color-text-muted); font-size: 13px; }
+  .actions { text-align: right; white-space: nowrap; .btn + .btn { margin-left: 8px; } }
+  .empty { text-align: center; color: var(--color-text-muted); padding: 32px; }
+}
+
+.chip {
+  display: inline-block; padding: 2px 10px; border-radius: 999px;
+  background: var(--color-bg); font-size: 12px; font-weight: 500;
+  color: var(--color-text-muted);
+
+  &--level { background: rgba(37, 99, 235, 0.1); color: var(--color-primary); }
+  &--system {
+    background: rgba(99, 102, 241, 0.12); color: #4338ca;
+    margin-left: 8px; font-size: 11px;
+  }
+}

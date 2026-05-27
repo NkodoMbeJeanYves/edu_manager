@@ -1,0 +1,85 @@
+<section class="modeles">
+  <header class="modeles__header">
+    <div>
+      <h1 i18n="@@modeles.title">Message templates</h1>
+      <p class="modeles__hint" i18n="@@modeles.count">
+        {{ store.visibleCount() }} of {{ store.total() }} templates
+      </p>
+    </div>
+
+    <div class="modeles__actions">
+      <input
+        type="search"
+        i18n-placeholder="@@modeles.searchPlaceholder"
+        placeholder="Search…"
+        [value]="store.filter().search ?? ''"
+        (input)="store.setFilter({ search: $any($event.target).value })"
+        class="modeles__search" />
+      <button class="btn btn--primary" (click)="openCreate()" i18n="@@modeles.new">New template</button>
+    </div>
+  </header>
+
+  @if (store.loading()) {
+    <div class="modeles__state" i18n="@@common.loading">Loading…</div>
+  } @else if (store.error()) {
+    <div class="modeles__state modeles__state--error">{{ store.error() }}</div>
+  } @else {
+    <div class="modele-list card">
+      <table>
+        <thead>
+          <tr>
+            <th i18n="@@modeleList.name">Name</th>
+            <th i18n="@@modeleList.type">Channel</th>
+            <th i18n="@@modeleList.event">Trigger</th>
+            <th i18n="@@modeleList.subject">Subject</th>
+            <th i18n="@@modeleList.active">Active</th>
+            <th i18n="@@modeleList.updated">Updated</th>
+            <th class="actions" i18n="@@modeleList.actions">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (m of store.filtered(); track m.id) {
+            <tr>
+              <td>{{ m.name }}</td>
+              <td><span class="chip chip--level">{{ m.type }}</span></td>
+              <td><span class="chip">{{ m.event }}</span></td>
+              <td class="muted">{{ m.subject || '—' }}</td>
+              <td>
+                <span class="chip" [attr.data-active]="m.active ? 'yes' : 'no'">
+                  {{ m.active ? 'YES' : 'NO' }}
+                </span>
+              </td>
+              <td class="mono">{{ m.updatedAt | date:'short' }}</td>
+              <td class="actions">
+                <button class="btn btn--ghost" (click)="openEdit(m)" i18n="@@common.edit">Edit</button>
+                <button class="btn btn--danger" (click)="remove(m)" i18n="@@common.delete">Delete</button>
+              </td>
+            </tr>
+          } @empty {
+            <tr><td colspan="7" class="empty" i18n="@@modeleList.empty">No templates.</td></tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+
+  @if (drawerOpen()) {
+    <div class="drawer">
+      <div class="drawer__overlay" (click)="closeDrawer()"></div>
+      <div class="drawer__panel">
+        <div class="drawer__head">
+          @if (editing()) {
+            <h2 i18n="@@modeles.editTitle">Edit template</h2>
+          } @else {
+            <h2 i18n="@@modeles.newTitle">New template</h2>
+          }
+          <button class="btn btn--ghost" (click)="closeDrawer()" i18n="@@common.close">Close</button>
+        </div>
+        <app-modele-form
+          [modele]="editing()"
+          (save)="save($event)"
+          (cancel)="closeDrawer()" />
+      </div>
+    </div>
+  }
+</section>

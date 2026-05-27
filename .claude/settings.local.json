@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx ng *)",
+      "Bash(ls -la \"C:/Users/jean.yves.nkodo.mbe/.claude/projects/c--dev-angular-edu-app/memory/\")",
+      "Read(//c/Users/jean.yves.nkodo.mbe/.claude/projects/c--dev-angular-edu-app/memory/**)",
+      "Bash(Get-ChildItem -Path \"c:\\\\dev\\\\angular-edu-app\\\\src\\\\app\\\\core\\\\services\" -Filter \"*.service.ts\")",
+      "Bash(Select-Object Name, FullName)",
+      "Bash(Get-ChildItem -Path \"c:\\\\dev\\\\angular-edu-app\\\\src\\\\app\\\\core\\\\mocks\" -Recurse -File)",
+      "Bash(Select-Object FullName)",
+      "Bash(Get-ChildItem -Path \"c:\\\\dev\\\\angular-edu-app\" -Recurse -ErrorAction SilentlyContinue)",
+      "Bash(Select-Object -First 20)",
+      "Bash(Format-Table)"
+    ]
+  }
+}

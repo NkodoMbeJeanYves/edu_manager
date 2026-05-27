@@ -1,0 +1,18 @@
+<div class="acces-refuse">
+  <div class="acces-refuse__card">
+    <div class="acces-refuse__icon" aria-hidden="true">🔒</div>
+    <h1 class="acces-refuse__title" i18n="@@accesRefuse.title">Accès refusé</h1>
+    <p class="acces-refuse__message" i18n="@@accesRefuse.message">
+      Vous n'avez pas les droits nécessaires pour consulter cette page.
+      Contactez votre administrateur si vous pensez qu'il s'agit d'une erreur.
+    </p>
+    <div class="acces-refuse__actions">
+      <button type="button" class="btn btn--ghost" (click)="back()" i18n="@@accesRefuse.back">
+        Revenir en arrière
+      </button>
+      <a routerLink="/" class="btn btn--primary" i18n="@@accesRefuse.home">
+        Aller à l'accueil
+      </a>
+    </div>
+  </div>
+</div>

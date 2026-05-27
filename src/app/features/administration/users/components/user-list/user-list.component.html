@@ -1,0 +1,35 @@
+<div class="user-list card">
+  <table>
+    <thead>
+      <tr>
+        <th i18n="@@userList.username">Username</th>
+        <th i18n="@@userList.name">Name</th>
+        <th i18n="@@userList.email">Email</th>
+        <th i18n="@@userList.role">Role</th>
+        <th i18n="@@userList.status">Status</th>
+        <th i18n="@@userList.lastLogin">Last login</th>
+        <th class="actions" i18n="@@userList.actions">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (u of users; track u.id) {
+        <tr>
+          <td class="mono">{{ u.username }}</td>
+          <td>{{ u.firstName }} {{ u.lastName }}</td>
+          <td>{{ u.email }}</td>
+          <td><span class="chip chip--level">{{ u.role }}</span></td>
+          <td><span class="chip" [attr.data-status]="u.status">{{ u.status }}</span></td>
+          <td class="mono">{{ u.lastLoginAt ? (u.lastLoginAt | date:'short') : '—' }}</td>
+          <td class="actions">
+            <button class="btn btn--ghost" (click)="edit.emit(u)" i18n="@@common.edit">Edit</button>
+            <button class="btn btn--danger" (click)="remove.emit(u)" i18n="@@common.delete">Delete</button>
+          </td>
+        </tr>
+      } @empty {
+        <tr>
+          <td colspan="7" class="empty" i18n="@@userList.empty">No users found.</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

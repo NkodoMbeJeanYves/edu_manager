@@ -1,0 +1,126 @@
+@if (rapport()) {
+  <section class="rapport">
+    <header class="rapport__header">
+      <h1 i18n="@@rapport.fin.title">Financial report</h1>
+      <p class="rapport__sub">{{ rapport()!.periodLabel }}</p>
+    </header>
+
+    <div class="totals">
+      <div class="total card">
+        <div class="total__label" i18n="@@rapport.fin.expected">Expected</div>
+        <div class="total__value">{{ rapport()!.totalExpected | currency:rapport()!.currency:'symbol':'1.0-0' }}</div>
+      </div>
+      <div class="total card">
+        <div class="total__label" i18n="@@rapport.fin.recovered">Recovered</div>
+        <div class="total__value">{{ rapport()!.totalRecovered | currency:rapport()!.currency:'symbol':'1.0-0' }}</div>
+      </div>
+      <div class="total card">
+        <div class="total__label" i18n="@@rapport.fin.rate">Recovery rate</div>
+        <div class="total__value">{{ rapport()!.recoveryRate }}%</div>
+      </div>
+      <div class="total card">
+        <div class="total__label" i18n="@@rapport.fin.outstanding">Outstanding</div>
+        <div class="total__value total__value--danger">
+          {{ rapport()!.outstanding | currency:rapport()!.currency:'symbol':'1.0-0' }}
+        </div>
+      </div>
+    </div>
+
+    <h2 i18n="@@rapport.fin.monthly">Monthly recovery</h2>
+    <div class="card chart">
+      @for (m of rapport()!.monthly; track m.month) {
+        <div class="chart__col">
+          <div class="chart__stack">
+            <div class="chart__bar chart__bar--recovered"
+                 [style.height.%]="(m.recovered / maxMonthly()) * 100"
+                 [title]="m.recovered.toString()"></div>
+            <div class="chart__bar chart__bar--gap"
+                 [style.height.%]="((m.expected - m.recovered) / maxMonthly()) * 100"
+                 [title]="(m.expected - m.recovered).toString()"></div>
+          </div>
+          <div class="chart__label">{{ m.month }}</div>
+        </div>
+      }
+    </div>
+    <div class="legend">
+      <span><span class="legend__swatch legend__swatch--recovered"></span><span i18n="@@rapport.fin.legend.recovered">Recovered</span></span>
+      <span><span class="legend__swatch legend__swatch--gap"></span><span i18n="@@rapport.fin.legend.gap">Outstanding</span></span>
+    </div>
+
+    <h2 i18n="@@rapport.fin.byFiliere">By study track</h2>
+    <div class="card">
+      <table>
+        <thead>
+          <tr>
+            <th i18n="@@rapport.fin.col.filiere">Track</th>
+            <th i18n="@@rapport.fin.col.expected">Expected</th>
+            <th i18n="@@rapport.fin.col.recovered">Recovered</th>
+            <th i18n="@@rapport.fin.col.rate">Rate</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (f of rapport()!.byFiliere; track f.filiere) {
+            <tr>
+              <td>{{ f.filiere }}</td>
+              <td class="mono">{{ f.expected | currency:rapport()!.currency:'symbol':'1.0-0' }}</td>
+              <td class="mono">{{ f.recovered | currency:rapport()!.currency:'symbol':'1.0-0' }}</td>
+              <td>
+                <div class="rate">
+                  <span class="rate__value mono">{{ f.rate }}%</span>
+                  <div class="rate__bar"><div class="rate__fill" [style.width.%]="f.rate"></div></div>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <div class="grid-2">
+      <div>
+        <h2 i18n="@@rapport.fin.byMethod">Payment methods</h2>
+        <div class="card">
+          <ul class="methods">
+            @for (m of rapport()!.byMethod; track m.method) {
+              <li>
+                <span class="methods__name">{{ m.method }}</span>
+                <span class="methods__amount mono">
+                  {{ m.amount | currency:rapport()!.currency:'symbol':'1.0-0' }}
+                </span>
+                <span class="methods__share">{{ m.share }}%</span>
+              </li>
+            }
+          </ul>
+        </div>
+      </div>
+
+      <div>
+        <h2 i18n="@@rapport.fin.topDebtors">Top debtors</h2>
+        <div class="card">
+          <table>
+            <thead>
+              <tr>
+                <th i18n="@@rapport.fin.col.name">Student</th>
+                <th i18n="@@rapport.fin.col.reg">Reg. #</th>
+                <th i18n="@@rapport.fin.col.outstanding">Outstanding</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (d of rapport()!.topDebtors; track d.registrationNumber) {
+                <tr>
+                  <td>{{ d.name }}</td>
+                  <td class="mono">{{ d.registrationNumber }}</td>
+                  <td class="mono danger">
+                    {{ d.outstanding | currency:rapport()!.currency:'symbol':'1.0-0' }}
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+} @else if (loading()) {
+  <div class="state" i18n="@@common.loading">Loading…</div>
+}

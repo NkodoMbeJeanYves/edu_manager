@@ -1,0 +1,27 @@
+<header class="navbar">
+  <div class="navbar__brand">
+    <a routerLink="/">EduManager</a>
+  </div>
+
+  <div class="navbar__tenant" (click)="switchTenant()" role="button" tabindex="0">
+    <span class="navbar__tenant-label" i18n="@@navbar.tenantLabel">Tenant</span>
+    <span class="navbar__tenant-name">{{ tenant.current()?.name ?? noneLabel }}</span>
+  </div>
+
+  <div class="navbar__actions">
+    <div class="navbar__lang">
+      <a href="/en/" [class.active]="currentLocale === 'en-US'">EN</a>
+      <span>·</span>
+      <a href="/fr/" [class.active]="currentLocale === 'fr'">FR</a>
+    </div>
+    @if (auth.user(); as user) {
+      <div class="navbar__user">
+        <span class="navbar__user-name">{{ user.firstName }} {{ user.lastName }}</span>
+        @if (authorityLabel(); as level) {
+          <span class="navbar__user-level">{{ level }}</span>
+        }
+      </div>
+    }
+    <button class="btn btn--ghost" (click)="logout()" i18n="@@navbar.logout">Log out</button>
+  </div>
+</header>

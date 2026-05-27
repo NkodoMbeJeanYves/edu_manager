@@ -1,0 +1,38 @@
+{
+  "name": "angular-edu-app",
+  "version": "1.0.0",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve --configuration=en",
+    "start:fr": "ng serve --configuration=fr",
+    "build": "ng build",
+    "build:en": "ng build --configuration=en",
+    "build:fr": "ng build --configuration=fr",
+    "watch": "ng build --watch --configuration development",
+    "extract-i18n": "ng extract-i18n --output-path src/locale",
+    "test": "ng test"
+  },
+  "private": true,
+  "dependencies": {
+    "@angular/animations": "^17.3.0",
+    "@angular/cdk": "^17.3.10",
+    "@angular/common": "^17.3.0",
+    "@angular/compiler": "^17.3.0",
+    "@angular/core": "^17.3.0",
+    "@angular/forms": "^17.3.0",
+    "@angular/localize": "^17.3.12",
+    "@angular/material": "^17.3.10",
+    "@angular/platform-browser": "^17.3.0",
+    "@angular/platform-browser-dynamic": "^17.3.0",
+    "@angular/router": "^17.3.0",
+    "rxjs": "~7.8.0",
+    "tslib": "^2.3.0",
+    "zone.js": "~0.14.3"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "^17.3.0",
+    "@angular/cli": "^17.3.0",
+    "@angular/compiler-cli": "^17.3.0",
+    "typescript": "~5.4.2"
+  }
+}

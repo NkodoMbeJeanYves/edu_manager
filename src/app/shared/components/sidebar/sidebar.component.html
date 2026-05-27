@@ -1,0 +1,17 @@
+<aside class="sidebar">
+  @for (group of groups(); track group.label) {
+    <div class="sidebar__group">
+      <div class="sidebar__label">{{ group.label }}</div>
+      <nav class="sidebar__nav">
+        @for (item of group.items; track item.path) {
+          <a
+            [routerLink]="item.path"
+            routerLinkActive="active"
+            class="sidebar__link">
+            {{ item.label }}
+          </a>
+        }
+      </nav>
+    </div>
+  }
+</aside>

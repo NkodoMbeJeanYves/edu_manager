@@ -1,0 +1,78 @@
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+# Compiled output
+/dist
+/tmp
+/out-tsc
+/bazel-out
+/build
+/coverage
+/.angular/cache
+
+# Node
+/node_modules
+npm-debug.log
+yarn-error.log
+pnpm-debug.log*
+.pnpm-store/
+
+# IDEs and editors
+.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-snippets
+.history/*
+
+# Visual Studio Code Insiders / Cursor
+.cursor/
+
+# Miscellaneous
+/.sass-cache
+/connect.lock
+/libpeerconnection.log
+testem.log
+/typings
+
+# System files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Environment files (keep .env.example tracked)
+.env
+.env.*
+!.env.example
+
+# Logs
+logs
+*.log
+
+# Test / coverage
+/coverage
+*.lcov
+.nyc_output
+
+# Angular & build cache
+.angular/
+*.tsbuildinfo
+
+# OS / editor swap files
+*.swp
+*.swo
+*~
+
+# Optional: package manager lockfiles to keep (uncomment to ignore)
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml

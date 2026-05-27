@@ -1,0 +1,57 @@
+.tenant-select {
+  min-height: 100vh;
+  padding: 48px 24px;
+  background: var(--color-bg);
+
+  &__inner {
+    max-width: 960px;
+    margin: 0 auto;
+  }
+
+  h1 {
+    margin: 0 0 4px;
+  }
+
+  &__hint {
+    color: var(--color-text-muted);
+    margin: 0 0 24px;
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+  }
+}
+
+.tenant-card {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  gap: 6px;
+  background: var(--color-surface);
+  cursor: pointer;
+  transition: border-color 0.15s, transform 0.15s;
+
+  &:hover {
+    border-color: var(--color-primary);
+    transform: translateY(-2px);
+  }
+
+  &__type {
+    font-size: 11px;
+    color: var(--color-primary);
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  &__name {
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  &__code {
+    color: var(--color-text-muted);
+    font-size: 12px;
+  }
+}

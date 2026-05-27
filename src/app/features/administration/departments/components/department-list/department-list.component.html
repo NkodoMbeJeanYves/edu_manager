@@ -1,0 +1,35 @@
+<div class="department-list card">
+  <table>
+    <thead>
+      <tr>
+        <th i18n="@@deptList.code">Code</th>
+        <th i18n="@@deptList.name">Name</th>
+        <th i18n="@@deptList.description">Description</th>
+        <th i18n="@@deptList.manager">Manager</th>
+        <th i18n="@@deptList.staff">Staff</th>
+        <th i18n="@@deptList.status">Status</th>
+        <th class="actions" i18n="@@deptList.actions">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (d of departments; track d.id) {
+        <tr>
+          <td class="mono">{{ d.code }}</td>
+          <td>{{ d.name }}</td>
+          <td class="muted">{{ d.description }}</td>
+          <td>{{ d.managerName }}</td>
+          <td class="mono">{{ d.staffCount }}</td>
+          <td><span class="chip" [attr.data-status]="d.status">{{ d.status }}</span></td>
+          <td class="actions">
+            <button class="btn btn--ghost" (click)="edit.emit(d)" i18n="@@common.edit">Edit</button>
+            <button class="btn btn--danger" (click)="remove.emit(d)" i18n="@@common.delete">Delete</button>
+          </td>
+        </tr>
+      } @empty {
+        <tr>
+          <td colspan="7" class="empty" i18n="@@deptList.empty">No departments found.</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

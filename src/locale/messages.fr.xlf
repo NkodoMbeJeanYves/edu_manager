@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en-US" target-language="fr" datatype="plaintext" original="ng2.template">
+    <body>
+      <trans-unit id="grades.title" datatype="html">
+        <source>Grades</source>
+        <target>Notes</target>
+      </trans-unit>
+      <trans-unit id="grades.description" datatype="html">
+        <source>Record evaluations and generate report cards / transcripts.</source>
+        <target>Enregistrer les évaluations et générer les bulletins et relevés de notes.</target>
+      </trans-unit>
+      <trans-unit id="sessions.title" datatype="html">
+        <source>Academic sessions</source>
+        <target>Sessions académiques</target>
+      </trans-unit>
+      <trans-unit id="sessions.description" datatype="html">
+        <source>Define academic years, terms and exam periods.</source>
+        <target>Définir les années scolaires, les trimestres et les périodes d'examen.</target>
+      </trans-unit>
+      <trans-unit id="studentForm.regNum" datatype="html">
+        <source>Registration #</source>
+        <target>N° d'inscription</target>
+      </trans-unit>
+      <trans-unit id="studentForm.firstName" datatype="html">
+        <source>First name</source>
+        <target>Prénom</target>
+      </trans-unit>
+      <trans-unit id="studentForm.lastName" datatype="html">
+        <source>Last name</source>
+        <target>Nom</target>
+      </trans-unit>
+      <trans-unit id="studentForm.email" datatype="html">
+        <source>Email</source>
+        <target>E-mail</target>
+      </trans-unit>
+      <trans-unit id="studentForm.birthDate" datatype="html">
+        <source>Birth date</source>
+        <target>Date de naissance</target>
+      </trans-unit>
+      <trans-unit id="studentForm.level" datatype="html">
+        <source>Level</source>
+        <target>Niveau</target>
+      </trans-unit>
+      <trans-unit id="studentForm.level.primary" datatype="html">
+        <source>Primary</source>
+        <target>Primaire</target>
+      </trans-unit>
+      <trans-unit id="studentForm.level.secondary" datatype="html">
+        <source>Secondary</source>
+        <target>Secondaire</target>
+      </trans-unit>
+      <trans-unit id="studentForm.level.undergrad" datatype="html">
+        <source>Undergraduate</source>
+        <target>Licence</target>
+      </trans-unit>
+      <trans-unit id="studentForm.level.graduate" datatype="html">
+        <source>Graduate</source>
+        <target>Master</target>
+      </trans-unit>
+      <trans-unit id="studentForm.status" datatype="html">
+        <source>Status</source>
+        <target>Statut</target>
+      </trans-unit>
+      <trans-unit id="studentForm.status.active" datatype="html">
+        <source>Active</source>
+        <target>Actif</target>
+      </trans-unit>
+      <trans-unit id="studentForm.status.graduated" datatype="html">
+        <source>Graduated</source>
+        <target>Diplômé</target>
+      </trans-unit>
+      <trans-unit id="studentForm.status.suspended" datatype="html">
+        <source>Suspended</source>
+        <target>Suspendu</target>
+      </trans-unit>
+      <trans-unit id="studentForm.status.withdrawn" datatype="html">
+        <source>Withdrawn</source>
+        <target>Retiré</target>
+      </trans-unit>
+      <trans-unit id="common.cancel" datatype="html">
+        <source>Cancel</source>
+        <target>Annuler</target>
+      </trans-unit>
+      <trans-unit id="common.save" datatype="html">
+        <source>Save</source>
+        <target>Enregistrer</target>
+      </trans-unit>
+      <trans-unit id="studentList.regNum" datatype="html">
+        <source>Reg. #</source>
+        <target>N° insc.</target>
+      </trans-unit>
+      <trans-unit id="studentList.name" datatype="html">
+        <source>Name</source>
+        <target>Nom</target>
+      </trans-unit>
+      <trans-unit id="studentList.email" datatype="html">
+        <source>Email</source>
+        <target>E-mail</target>
+      </trans-unit>
+      <trans-unit id="studentList.level" datatype="html">
+        <source>Level</source>
+        <target>Niveau</target>
+      </trans-unit>
+      <trans-unit id="studentList.status" datatype="html">
+        <source>Status</source>
+        <target>Statut</target>
+      </trans-unit>
+      <trans-unit id="studentList.actions" datatype="html">
+        <source>Actions</source>
+        <target>Actions</target>
+      </trans-unit>
+      <trans-unit id="common.edit" datatype="html">
+        <source>Edit</source>
+        <target>Modifier</target>
+      </trans-unit>
+      <trans-unit id="common.delete" datatype="html">
+        <source>Delete</source>
+        <target>Supprimer</target>
+      </trans-unit>
+      <trans-unit id="studentList.empty" datatype="html">
+        <source>No students found.</source>
+        <target>Aucun étudiant trouvé.</target>
+      </trans-unit>
+      <trans-unit id="students.title" datatype="html">
+        <source>Students</source>
+        <target>Étudiants</target>
+      </trans-unit>
+      <trans-unit id="students.count" datatype="html">
+        <source> <x id="INTERPOLATION" equiv-text="{{ store.visibleCount() }}"/> of <x id="INTERPOLATION_1" equiv-text="{{ store.total() }}"/> students </source>
+        <target> <x id="INTERPOLATION" equiv-text="{{ store.visibleCount() }}"/> sur <x id="INTERPOLATION_1" equiv-text="{{ store.total() }}"/> étudiants </target>
+      </trans-unit>
+      <trans-unit id="students.searchPlaceholder" datatype="html">
+        <source>Search by name, email, registration…</source>
+        <target>Rechercher par nom, e-mail, inscription…</target>
+      </trans-unit>
+      <trans-unit id="students.new" datatype="html">
+        <source>New student</source>
+        <target>Nouvel étudiant</target>
+      </trans-unit>
+      <trans-unit id="common.loading" datatype="html">
+        <source>Loading…</source>
+        <target>Chargement…</target>
+      </trans-unit>
+      <trans-unit id="students.editTitle" datatype="html">
+        <source>Edit student</source>
+        <target>Modifier l'étudiant</target>
+      </trans-unit>
+      <trans-unit id="students.newTitle" datatype="html">
+        <source>New student</source>
+        <target>Nouvel étudiant</target>
+      </trans-unit>
+      <trans-unit id="common.close" datatype="html">
+        <source>Close</source>
+        <target>Fermer</target>
+      </trans-unit>
+      <trans-unit id="students.confirmRemove" datatype="html">
+        <source>Remove student <x id="PH" equiv-text="student.firstName"/> <x id="PH_1" equiv-text="student.lastName"/>?</source>
+        <target>Supprimer l'étudiant <x id="PH" equiv-text="student.firstName"/> <x id="PH_1" equiv-text="student.lastName"/> ?</target>
+      </trans-unit>
+      <trans-unit id="teachers.title" datatype="html">
+        <source>Teachers</source>
+        <target>Enseignants</target>
+      </trans-unit>
+      <trans-unit id="teachers.description" datatype="html">
+        <source>Manage teaching staff, assignments and contracts.</source>
+        <target>Gérer le personnel enseignant, les affectations et les contrats.</target>
+      </trans-unit>
+      <trans-unit id="timetable.title" datatype="html">
+        <source>Timetable</source>
+        <target>Emploi du temps</target>
+      </trans-unit>
+      <trans-unit id="timetable.description" datatype="html">
+        <source>Build and publish weekly class schedules.</source>
+        <target>Construire et publier les emplois du temps hebdomadaires.</target>
+      </trans-unit>
+      <trans-unit id="departments.title" datatype="html">
+        <source>Departments</source>
+        <target>Départements</target>
+      </trans-unit>
+      <trans-unit id="departments.description" datatype="html">
+        <source>Structure the institution into departments and faculties.</source>
+        <target>Structurer l'établissement en départements et facultés.</target>
+      </trans-unit>
+      <trans-unit id="roles.title" datatype="html">
+        <source>Roles &amp; Permissions</source>
+        <target>Rôles et permissions</target>
+      </trans-unit>
+      <trans-unit id="roles.description" datatype="html">
+        <source>Define roles and grant fine-grained permissions.</source>
+        <target>Définir les rôles et accorder des permissions détaillées.</target>
+      </trans-unit>
+      <trans-unit id="users.title" datatype="html">
+        <source>Users</source>
+        <target>Utilisateurs</target>
+      </trans-unit>
+      <trans-unit id="users.description" datatype="html">
+        <source>Manage user accounts across the tenant.</source>
+        <target>Gérer les comptes utilisateurs du tenant.</target>
+      </trans-unit>
+      <trans-unit id="login.subtitle" datatype="html">
+        <source>Sign in to your account</source>
+        <target>Connectez-vous à votre compte</target>
+      </trans-unit>
+      <trans-unit id="login.email" datatype="html">
+        <source>Email</source>
+        <target>E-mail</target>
+      </trans-unit>
+      <trans-unit id="login.password" datatype="html">
+        <source>Password</source>
+        <target>Mot de passe</target>
+      </trans-unit>
+      <trans-unit id="login.submitting" datatype="html">
+        <source>Signing in…</source>
+        <target>Connexion…</target>
+      </trans-unit>
+      <trans-unit id="login.submit" datatype="html">
+        <source>Sign in</source>
+        <target>Se connecter</target>
+      </trans-unit>
+      <trans-unit id="invoices.title" datatype="html">
+        <source>Invoices</source>
+        <target>Factures</target>
+      </trans-unit>
+      <trans-unit id="invoices.description" datatype="html">
+        <source>Generate, send and reconcile invoices.</source>
+        <target>Générer, envoyer et rapprocher les factures.</target>
+      </trans-unit>
+      <trans-unit id="payments.title" datatype="html">
+        <source>Payments</source>
+        <target>Paiements</target>
+      </trans-unit>
+      <trans-unit id="payments.description" datatype="html">
+        <source>Track tuition fees, scholarships and balances.</source>
+        <target>Suivre les frais de scolarité, les bourses et les soldes.</target>
+      </trans-unit>
+      <trans-unit id="tenantSelect.title" datatype="html">
+        <source>Select an institution</source>
+        <target>Sélectionner un établissement</target>
+      </trans-unit>
+      <trans-unit id="tenantSelect.hint" datatype="html">
+        <source>Choose the tenant you want to work in.</source>
+        <target>Choisissez le tenant dans lequel vous souhaitez travailler.</target>
+      </trans-unit>
+      <trans-unit id="tenantSelect.empty" datatype="html">
+        <source>No tenants available.</source>
+        <target>Aucun tenant disponible.</target>
+      </trans-unit>
+      <trans-unit id="navbar.tenantLabel" datatype="html">
+        <source>Tenant</source>
+        <target>Tenant</target>
+      </trans-unit>
+      <trans-unit id="navbar.logout" datatype="html">
+        <source>Log out</source>
+        <target>Déconnexion</target>
+      </trans-unit>
+      <trans-unit id="navbar.tenantNone" datatype="html">
+        <source>None</source>
+        <target>Aucun</target>
+      </trans-unit>
+      <trans-unit id="sidebar.group.academic" datatype="html">
+        <source>Academic</source>
+        <target>Pédagogie</target>
+      </trans-unit>
+      <trans-unit id="sidebar.students" datatype="html">
+        <source>Students</source>
+        <target>Étudiants</target>
+      </trans-unit>
+      <trans-unit id="sidebar.teachers" datatype="html">
+        <source>Teachers</source>
+        <target>Enseignants</target>
+      </trans-unit>
+      <trans-unit id="sidebar.timetable" datatype="html">
+        <source>Timetable</source>
+        <target>Emploi du temps</target>
+      </trans-unit>
+      <trans-unit id="sidebar.grades" datatype="html">
+        <source>Grades</source>
+        <target>Notes</target>
+      </trans-unit>
+      <trans-unit id="sidebar.sessions" datatype="html">
+        <source>Sessions</source>
+        <target>Sessions</target>
+      </trans-unit>
+      <trans-unit id="sidebar.group.administration" datatype="html">
+        <source>Administration</source>
+        <target>Administration</target>
+      </trans-unit>
+      <trans-unit id="sidebar.users" datatype="html">
+        <source>Users</source>
+        <target>Utilisateurs</target>
+      </trans-unit>
+      <trans-unit id="sidebar.roles" datatype="html">
+        <source>Roles</source>
+        <target>Rôles</target>
+      </trans-unit>
+      <trans-unit id="sidebar.departments" datatype="html">
+        <source>Departments</source>
+        <target>Départements</target>
+      </trans-unit>
+      <trans-unit id="sidebar.group.finance" datatype="html">
+        <source>Finance</source>
+        <target>Finance</target>
+      </trans-unit>
+      <trans-unit id="sidebar.payments" datatype="html">
+        <source>Payments</source>
+        <target>Paiements</target>
+      </trans-unit>
+      <trans-unit id="sidebar.invoices" datatype="html">
+        <source>Invoices</source>
+        <target>Factures</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

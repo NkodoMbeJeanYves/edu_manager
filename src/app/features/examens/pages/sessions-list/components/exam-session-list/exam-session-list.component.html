@@ -1,0 +1,37 @@
+<div class="exam-session-list card">
+  <table>
+    <thead>
+      <tr>
+        <th i18n="@@examList.label">Label</th>
+        <th i18n="@@examList.type">Type</th>
+        <th i18n="@@examList.start">Start</th>
+        <th i18n="@@examList.end">End</th>
+        <th i18n="@@examList.exams">Exams</th>
+        <th i18n="@@examList.status">Status</th>
+        <th class="actions" i18n="@@examList.actions">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (s of sessions; track s.id) {
+        <tr>
+          <td>
+            <a class="link" [routerLink]="['/examens', s.id]">{{ s.label }}</a>
+          </td>
+          <td><span class="chip chip--level">{{ s.type }}</span></td>
+          <td class="mono">{{ s.startDate | date:'mediumDate' }}</td>
+          <td class="mono">{{ s.endDate | date:'mediumDate' }}</td>
+          <td class="mono">{{ s.examsCount }}</td>
+          <td><span class="chip" [attr.data-status]="s.status">{{ s.status }}</span></td>
+          <td class="actions">
+            <button class="btn btn--ghost" (click)="edit.emit(s)" i18n="@@common.edit">Edit</button>
+            <button class="btn btn--danger" (click)="remove.emit(s)" i18n="@@common.delete">Delete</button>
+          </td>
+        </tr>
+      } @empty {
+        <tr>
+          <td colspan="7" class="empty" i18n="@@examList.empty">No sessions found.</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

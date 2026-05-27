@@ -1,0 +1,33 @@
+<div class="session-list card">
+  <table>
+    <thead>
+      <tr>
+        <th i18n="@@sessionList.label">Label</th>
+        <th i18n="@@sessionList.type">Type</th>
+        <th i18n="@@sessionList.startDate">Start</th>
+        <th i18n="@@sessionList.endDate">End</th>
+        <th i18n="@@sessionList.status">Status</th>
+        <th class="actions" i18n="@@sessionList.actions">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (s of sessions; track s.id) {
+        <tr>
+          <td>{{ s.label }}</td>
+          <td><span class="chip chip--level">{{ s.type }}</span></td>
+          <td class="mono">{{ s.startDate }}</td>
+          <td class="mono">{{ s.endDate }}</td>
+          <td><span class="chip" [attr.data-status]="s.status">{{ s.status }}</span></td>
+          <td class="actions">
+            <button class="btn btn--ghost" (click)="edit.emit(s)" i18n="@@common.edit">Edit</button>
+            <button class="btn btn--danger" (click)="remove.emit(s)" i18n="@@common.delete">Delete</button>
+          </td>
+        </tr>
+      } @empty {
+        <tr>
+          <td colspan="6" class="empty" i18n="@@sessionList.empty">No sessions found.</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

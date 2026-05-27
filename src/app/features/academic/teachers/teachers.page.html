@@ -1,0 +1,52 @@
+<section class="teachers">
+  <header class="teachers__header">
+    <div>
+      <h1 i18n="@@teachers.title">Teachers</h1>
+      <p class="teachers__hint" i18n="@@teachers.count">
+        {{ store.visibleCount() }} of {{ store.total() }} teachers
+      </p>
+    </div>
+
+    <div class="teachers__actions">
+      <input
+        type="search"
+        i18n-placeholder="@@teachers.searchPlaceholder"
+        placeholder="Search by name, email, staff number…"
+        [value]="store.filter().search ?? ''"
+        (input)="search($any($event.target).value)"
+        class="teachers__search" />
+      <button class="btn btn--primary" (click)="openCreate()" i18n="@@teachers.new">New teacher</button>
+    </div>
+  </header>
+
+  @if (store.loading()) {
+    <div class="teachers__state" i18n="@@common.loading">Loading…</div>
+  } @else if (store.error()) {
+    <div class="teachers__state teachers__state--error">{{ store.error() }}</div>
+  } @else {
+    <app-teacher-list
+      [teachers]="store.filtered()"
+      (edit)="openEdit($event)"
+      (remove)="remove($event)" />
+  }
+
+  @if (drawerOpen()) {
+    <div class="drawer">
+      <div class="drawer__overlay" (click)="closeDrawer()"></div>
+      <div class="drawer__panel">
+        <div class="drawer__head">
+          @if (editing()) {
+            <h2 i18n="@@teachers.editTitle">Edit teacher</h2>
+          } @else {
+            <h2 i18n="@@teachers.newTitle">New teacher</h2>
+          }
+          <button class="btn btn--ghost" (click)="closeDrawer()" i18n="@@common.close">Close</button>
+        </div>
+        <app-teacher-form
+          [teacher]="editing()"
+          (save)="save($event)"
+          (cancel)="closeDrawer()" />
+      </div>
+    </div>
+  }
+</section>

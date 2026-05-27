@@ -1,0 +1,40 @@
+<form class="annonce-form" [formGroup]="form" (ngSubmit)="submit()">
+  <div class="form-field">
+    <label for="title" i18n="@@annonceForm.title">Title</label>
+    <input id="title" formControlName="title" />
+  </div>
+
+  <div class="form-field">
+    <label for="body" i18n="@@annonceForm.body">Body</label>
+    <textarea id="body" formControlName="body" rows="5"></textarea>
+  </div>
+
+  <div class="grid-2">
+    <div class="form-field">
+      <label for="audience" i18n="@@annonceForm.audience">Audience</label>
+      <select id="audience" formControlName="audience">
+        <option value="ALL" i18n="@@annonceForm.audience.all">All</option>
+        <option value="STUDENTS" i18n="@@annonceForm.audience.students">Students</option>
+        <option value="TEACHERS" i18n="@@annonceForm.audience.teachers">Teachers</option>
+        <option value="PARENTS" i18n="@@annonceForm.audience.parents">Parents</option>
+        <option value="STAFF" i18n="@@annonceForm.audience.staff">Staff</option>
+      </select>
+    </div>
+    <div class="form-field">
+      <label for="publishedBy" i18n="@@annonceForm.publishedBy">Published by</label>
+      <input id="publishedBy" formControlName="publishedBy" />
+    </div>
+  </div>
+
+  <div class="form-field form-field--inline">
+    <label>
+      <input type="checkbox" formControlName="pinned" />
+      <span i18n="@@annonceForm.pinned">Pin this announcement</span>
+    </label>
+  </div>
+
+  <div class="annonce-form__actions">
+    <button type="button" class="btn btn--ghost" (click)="cancel.emit()" i18n="@@common.cancel">Cancel</button>
+    <button type="submit" class="btn btn--primary" [disabled]="form.invalid" i18n="@@common.save">Save</button>
+  </div>
+</form>

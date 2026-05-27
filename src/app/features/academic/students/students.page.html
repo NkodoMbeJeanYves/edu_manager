@@ -1,0 +1,52 @@
+<section class="students">
+  <header class="students__header">
+    <div>
+      <h1 i18n="@@students.title">Students</h1>
+      <p class="students__hint" i18n="@@students.count">
+        {{ store.visibleCount() }} of {{ store.total() }} students
+      </p>
+    </div>
+
+    <div class="students__actions">
+      <input
+        type="search"
+        i18n-placeholder="@@students.searchPlaceholder"
+        placeholder="Search by name, email, registration…"
+        [value]="store.filter().search ?? ''"
+        (input)="search($any($event.target).value)"
+        class="students__search" />
+      <button class="btn btn--primary" (click)="openCreate()" i18n="@@students.new">New student</button>
+    </div>
+  </header>
+
+  @if (store.loading()) {
+    <div class="students__state" i18n="@@common.loading">Loading…</div>
+  } @else if (store.error()) {
+    <div class="students__state students__state--error">{{ store.error() }}</div>
+  } @else {
+    <app-student-list
+      [students]="store.filtered()"
+      (edit)="openEdit($event)"
+      (remove)="remove($event)" />
+  }
+
+  @if (drawerOpen()) {
+    <div class="drawer">
+      <div class="drawer__overlay" (click)="closeDrawer()"></div>
+      <div class="drawer__panel">
+        <div class="drawer__head">
+          @if (editing()) {
+            <h2 i18n="@@students.editTitle">Edit student</h2>
+          } @else {
+            <h2 i18n="@@students.newTitle">New student</h2>
+          }
+          <button class="btn btn--ghost" (click)="closeDrawer()" i18n="@@common.close">Close</button>
+        </div>
+        <app-student-form
+          [student]="editing()"
+          (save)="save($event)"
+          (cancel)="closeDrawer()" />
+      </div>
+    </div>
+  }
+</section>

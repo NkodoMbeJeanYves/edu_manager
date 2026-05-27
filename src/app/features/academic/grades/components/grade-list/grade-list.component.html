@@ -1,0 +1,39 @@
+<div class="grade-list card">
+  <table>
+    <thead>
+      <tr>
+        <th i18n="@@gradeList.regNum">Reg. #</th>
+        <th i18n="@@gradeList.student">Student</th>
+        <th i18n="@@gradeList.subject">Subject</th>
+        <th i18n="@@gradeList.type">Type</th>
+        <th i18n="@@gradeList.score">Score</th>
+        <th i18n="@@gradeList.date">Date</th>
+        <th class="actions" i18n="@@gradeList.actions">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (g of grades; track g.id) {
+        <tr>
+          <td class="mono">{{ g.registrationNumber }}</td>
+          <td>{{ g.studentName }}</td>
+          <td>{{ g.subject }}</td>
+          <td><span class="chip chip--level">{{ g.evaluationType }}</span></td>
+          <td>
+            <span class="chip" [attr.data-pass]="passingThreshold(g) ? 'yes' : 'no'">
+              {{ g.score }} / {{ g.maxScore }}
+            </span>
+          </td>
+          <td class="mono">{{ g.evaluatedAt }}</td>
+          <td class="actions">
+            <button class="btn btn--ghost" (click)="edit.emit(g)" i18n="@@common.edit">Edit</button>
+            <button class="btn btn--danger" (click)="remove.emit(g)" i18n="@@common.delete">Delete</button>
+          </td>
+        </tr>
+      } @empty {
+        <tr>
+          <td colspan="7" class="empty" i18n="@@gradeList.empty">No grades found.</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

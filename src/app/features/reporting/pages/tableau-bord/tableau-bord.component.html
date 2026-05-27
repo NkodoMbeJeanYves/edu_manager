@@ -1,0 +1,75 @@
+@if (dashboard()) {
+  <section class="dashboard">
+    <header class="dashboard__header">
+      <h1 i18n="@@dashboard.title">Dashboard</h1>
+      <span class="dashboard__period">{{ dashboard()!.periodLabel }}</span>
+    </header>
+
+    <!-- Alerts -->
+    @if (dashboard()!.alerts.length) {
+      <div class="alerts">
+        @for (a of dashboard()!.alerts; track a.id) {
+          <div class="alert" [attr.data-level]="a.level">
+            <span class="alert__level">{{ a.level }}</span>
+            <span class="alert__module">{{ a.module }}</span>
+            <span class="alert__message">{{ a.message }}</span>
+          </div>
+        }
+      </div>
+    }
+
+    <!-- Sections -->
+    <h2 i18n="@@dashboard.effectives">Enrolment</h2>
+    <div class="kpis">
+      @for (k of dashboard()!.effectives; track k.id) {
+        <div class="kpi card">
+          <div class="kpi__label">{{ k.label }}</div>
+          <div class="kpi__value">
+            {{ k.value }}<span class="kpi__unit">{{ k.unit }}</span>
+          </div>
+          @if (k.trend !== undefined && k.trend !== null) {
+            <div class="kpi__trend" [class.kpi__trend--up]="k.trend > 0" [class.kpi__trend--down]="k.trend < 0">
+              {{ k.trend > 0 ? '▲' : '▼' }} {{ k.trend }}%
+            </div>
+          }
+        </div>
+      }
+    </div>
+
+    <h2 i18n="@@dashboard.pedagogy">Pedagogy</h2>
+    <div class="kpis">
+      @for (k of dashboard()!.pedagogy; track k.id) {
+        <div class="kpi card">
+          <div class="kpi__label">{{ k.label }}</div>
+          <div class="kpi__value">
+            {{ k.value }}<span class="kpi__unit">{{ k.unit }}</span>
+          </div>
+          @if (k.trend !== undefined && k.trend !== null) {
+            <div class="kpi__trend" [class.kpi__trend--up]="k.trend > 0" [class.kpi__trend--down]="k.trend < 0">
+              {{ k.trend > 0 ? '▲' : '▼' }} {{ k.trend }}%
+            </div>
+          }
+        </div>
+      }
+    </div>
+
+    <h2 i18n="@@dashboard.finance">Finance</h2>
+    <div class="kpis">
+      @for (k of dashboard()!.finance; track k.id) {
+        <div class="kpi card">
+          <div class="kpi__label">{{ k.label }}</div>
+          <div class="kpi__value">
+            {{ k.value }}<span class="kpi__unit">{{ k.unit }}</span>
+          </div>
+          @if (k.trend !== undefined && k.trend !== null) {
+            <div class="kpi__trend" [class.kpi__trend--up]="k.trend > 0" [class.kpi__trend--down]="k.trend < 0">
+              {{ k.trend > 0 ? '▲' : '▼' }} {{ k.trend }}%
+            </div>
+          }
+        </div>
+      }
+    </div>
+  </section>
+} @else if (loading()) {
+  <div class="state" i18n="@@common.loading">Loading…</div>
+}

@@ -1,0 +1,40 @@
+<div class="role-list card">
+  <table>
+    <thead>
+      <tr>
+        <th i18n="@@roleList.code">Code</th>
+        <th i18n="@@roleList.name">Name</th>
+        <th i18n="@@roleList.description">Description</th>
+        <th i18n="@@roleList.scope">Scope</th>
+        <th i18n="@@roleList.permissions">Permissions</th>
+        <th i18n="@@roleList.users">Users</th>
+        <th class="actions" i18n="@@roleList.actions">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (r of roles; track r.id) {
+        <tr>
+          <td class="mono">{{ r.code }}</td>
+          <td>
+            {{ r.name }}
+            @if (r.isSystem) {
+              <span class="chip chip--system" i18n="@@roleList.system">System</span>
+            }
+          </td>
+          <td class="muted">{{ r.description }}</td>
+          <td><span class="chip chip--level">{{ r.scope }}</span></td>
+          <td class="mono">{{ r.permissionsCount }}</td>
+          <td class="mono">{{ r.usersCount }}</td>
+          <td class="actions">
+            <button class="btn btn--ghost" (click)="edit.emit(r)" i18n="@@common.edit">Edit</button>
+            <button class="btn btn--danger" (click)="remove.emit(r)" [disabled]="r.isSystem" i18n="@@common.delete">Delete</button>
+          </td>
+        </tr>
+      } @empty {
+        <tr>
+          <td colspan="7" class="empty" i18n="@@roleList.empty">No roles found.</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,43 @@
+<div class="timetable-detail">
+  <h3 class="timetable-detail__subject">{{ slot.subject }}</h3>
+
+  <dl class="timetable-detail__list">
+    <div class="timetable-detail__row">
+      <dt i18n="@@timetableDetail.day">Jour</dt>
+      <dd>{{ dayLabel(slot.day) }}</dd>
+    </div>
+    <div class="timetable-detail__row">
+      <dt i18n="@@timetableDetail.time">Horaire</dt>
+      <dd class="mono">{{ slot.startTime }} – {{ slot.endTime }}</dd>
+    </div>
+    <div class="timetable-detail__row">
+      <dt i18n="@@timetableDetail.teacher">Enseignant</dt>
+      <dd>{{ slot.teacherName }}</dd>
+    </div>
+    <div class="timetable-detail__row">
+      <dt i18n="@@timetableDetail.classGroup">Classe</dt>
+      <dd>{{ slot.classGroup }}</dd>
+    </div>
+    <div class="timetable-detail__row">
+      <dt i18n="@@timetableDetail.room">Salle</dt>
+      <dd class="mono">{{ slot.room }}</dd>
+    </div>
+  </dl>
+
+  <div class="timetable-detail__actions">
+    <button
+      type="button"
+      class="btn btn--danger"
+      (click)="remove.emit(slot)"
+      i18n="@@common.delete">
+      Supprimer
+    </button>
+    <button
+      type="button"
+      class="btn btn--primary"
+      (click)="edit.emit(slot)"
+      i18n="@@common.edit">
+      Modifier
+    </button>
+  </div>
+</div>

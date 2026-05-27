@@ -1,0 +1,78 @@
+.rapport {
+  display: flex; flex-direction: column; gap: 16px;
+
+  &__header h1 { margin: 0; font-size: 22px; }
+  &__sub { margin: 4px 0 0; color: var(--color-text-muted); font-size: 14px; }
+}
+
+h2 {
+  margin: 12px 0 0; font-size: 14px;
+  text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--color-text-muted); font-weight: 600;
+}
+
+.totals {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+}
+
+.total {
+  padding: 16px 20px;
+  &__label {
+    font-size: 11px; color: var(--color-text-muted);
+    text-transform: uppercase; letter-spacing: 0.04em;
+  }
+  &__value { font-size: 26px; font-weight: 700; margin-top: 4px; }
+}
+
+table { width: 100%; border-collapse: collapse; }
+th, td { text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--color-border); }
+th {
+  background: var(--color-bg); font-size: 12px; text-transform: uppercase;
+  letter-spacing: 0.04em; color: var(--color-text-muted); font-weight: 600;
+}
+tbody tr:last-child td { border-bottom: none; }
+.mono { font-family: 'SFMono-Regular', Consolas, monospace; font-size: 13px; }
+
+.bar {
+  width: 100%; height: 8px;
+  background: var(--color-bg); border-radius: 4px; overflow: hidden;
+
+  &__fill {
+    height: 100%; transition: width 0.3s;
+    &--low  { background: var(--color-danger); }
+    &--mid  { background: #f59e0b; }
+    &--high { background: var(--color-success); }
+  }
+}
+
+.rankings {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+}
+
+.ranking {
+  list-style: none; padding: 0; margin: 0;
+  counter-reset: rank;
+
+  li {
+    counter-increment: rank;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 16px; border-bottom: 1px solid var(--color-border);
+
+    &::before {
+      content: counter(rank);
+      width: 24px; height: 24px; border-radius: 50%;
+      background: var(--color-bg); color: var(--color-text-muted);
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 600; margin-right: 12px;
+    }
+    &:last-child { border-bottom: none; }
+  }
+  &__name { flex: 1; font-size: 13px; }
+  &__score {
+    font-family: 'SFMono-Regular', Consolas, monospace;
+    color: var(--color-success); font-weight: 600;
+    &--low { color: var(--color-danger); }
+  }
+}
+
+.state { padding: 48px; text-align: center; color: var(--color-text-muted); }

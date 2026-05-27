@@ -1,0 +1,546 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en-US" datatype="plaintext" original="ng2.template">
+    <body>
+      <trans-unit id="grades.title" datatype="html">
+        <source>Grades</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/academic/grades/grades.page.ts</context>
+          <context context-type="linenumber">9,10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="grades.description" datatype="html">
+        <source>Record evaluations and generate report cards / transcripts.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/academic/grades/grades.page.ts</context>
+          <context context-type="linenumber">10,14</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sessions.title" datatype="html">
+        <source>Academic sessions</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/academic/sessions/sessions.page.ts</context>
+          <context context-type="linenumber">9,10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sessions.description" datatype="html">
+        <source>Define academic years, terms and exam periods.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/academic/sessions/sessions.page.ts</context>
+          <context context-type="linenumber">10,14</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="studentForm.regNum" datatype="html">
+        <source>Registration #</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/academic/students/components/student-form/student-form.component.html</context>
+          <context context-type="linenumber">3,4</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="studentForm.firstName" datatype="html">
+        <source>First name</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/academic/students/components/student-form/student-form.component.html</context>
+          <context context-type="linenumber">9,10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="studentForm.lastName" datatype="html">
+        <source>Last name</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/academic/students/components/student-form/student-form.component.html</context>
+          <context context-type="linenumber">14,15</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="studentForm.email" datatype="html">
+        <source>Email</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/academic/students/components/student-form/student-form.component.html</context>
+          <context context-type="linenumber">20,21</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="studentForm.birthDate" datatype="html">
+        <source>Birth date</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/academic/students/components/student-form/student-form.component.html</context>
+          <context context-type="linenumber">25,26</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="studentForm.level" datatype="html">
+        <source>Level</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/academic/students/components/student-form/student-form.component.html</context>
+          <context context-type="linenumber">31,32</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="studentForm.level.primary" datatype="html">
+        <source>Primary</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/academic/students/components/student-form/student-form.component.html</context>
+          <context context-type="linenumber">33,34</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="studentForm.level.secondary" datatype="html">
+        <source>Secondary</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/academic/students/components/student-form/student-form.component.html</context>
+          <context context-type="linenumber">34,35</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="studentForm.level.undergrad" datatype="html">
+        <source>Undergraduate</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/academic/students/components/student-form/student-form.component.html</context>
+          <context context-type="linenumber">35,36</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="studentForm.level.graduate" datatype="html">
+        <source>Graduate</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/academic/students/components/student-form/student-form.component.html</context>
+          <context context-type="linenumber">36,40</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="studentForm.status" datatype="html">
+        <source>Status</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/academic/students/components/student-form/student-form.component.html</context>
+          <context context-type="linenumber">41,42</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="studentForm.status.active" datatype="html">
+        <source>Active</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/academic/students/components/student-form/student-form.component.html</context>
+          <context context-type="linenumber">43,44</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="studentForm.status.graduated" datatype="html">
+        <source>Graduated</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/academic/students/components/student-form/student-form.component.html</context>
+          <context context-type="linenumber">44,45</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="studentForm.status.suspended" datatype="html">
+        <source>Suspended</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/academic/students/components/student-form/student-form.component.html</context>
+          <context context-type="linenumber">45,46</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="studentForm.status.withdrawn" datatype="html">
+        <source>Withdrawn</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/academic/students/components/student-form/student-form.component.html</context>
+          <context context-type="linenumber">46,49</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="common.cancel" datatype="html">
+        <source>Cancel</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/academic/students/components/student-form/student-form.component.html</context>
+          <context context-type="linenumber">52,53</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="common.save" datatype="html">
+        <source>Save</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/academic/students/components/student-form/student-form.component.html</context>
+          <context context-type="linenumber">53,55</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="studentList.regNum" datatype="html">
+        <source>Reg. #</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/academic/students/components/student-list/student-list.component.html</context>
+          <context context-type="linenumber">5,6</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="studentList.name" datatype="html">
+        <source>Name</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/academic/students/components/student-list/student-list.component.html</context>
+          <context context-type="linenumber">6,7</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="studentList.email" datatype="html">
+        <source>Email</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/academic/students/components/student-list/student-list.component.html</context>
+          <context context-type="linenumber">7,8</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="studentList.level" datatype="html">
+        <source>Level</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/academic/students/components/student-list/student-list.component.html</context>
+          <context context-type="linenumber">8,9</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="studentList.status" datatype="html">
+        <source>Status</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/academic/students/components/student-list/student-list.component.html</context>
+          <context context-type="linenumber">9,10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="studentList.actions" datatype="html">
+        <source>Actions</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/academic/students/components/student-list/student-list.component.html</context>
+          <context context-type="linenumber">10,13</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="common.edit" datatype="html">
+        <source>Edit</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/academic/students/components/student-list/student-list.component.html</context>
+          <context context-type="linenumber">22,23</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="common.delete" datatype="html">
+        <source>Delete</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/academic/students/components/student-list/student-list.component.html</context>
+          <context context-type="linenumber">23,25</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="studentList.empty" datatype="html">
+        <source>No students found.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/academic/students/components/student-list/student-list.component.html</context>
+          <context context-type="linenumber">28,31</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="students.title" datatype="html">
+        <source>Students</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/academic/students/students.page.html</context>
+          <context context-type="linenumber">4,5</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="students.count" datatype="html">
+        <source> <x id="INTERPOLATION" equiv-text="{{ store.visibleCount() }}"/> of <x id="INTERPOLATION_1" equiv-text="{{ store.total() }}"/> students </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/academic/students/students.page.html</context>
+          <context context-type="linenumber">6,8</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="students.searchPlaceholder" datatype="html">
+        <source>Search by name, email, registration…</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/academic/students/students.page.html</context>
+          <context context-type="linenumber">14,15</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="students.new" datatype="html">
+        <source>New student</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/academic/students/students.page.html</context>
+          <context context-type="linenumber">18,20</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="common.loading" datatype="html">
+        <source>Loading…</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/academic/students/students.page.html</context>
+          <context context-type="linenumber">23,24</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="students.editTitle" datatype="html">
+        <source>Edit student</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/academic/students/students.page.html</context>
+          <context context-type="linenumber">39,41</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="students.newTitle" datatype="html">
+        <source>New student</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/academic/students/students.page.html</context>
+          <context context-type="linenumber">41,43</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="common.close" datatype="html">
+        <source>Close</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/academic/students/students.page.html</context>
+          <context context-type="linenumber">43,45</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="students.confirmRemove" datatype="html">
+        <source>Remove student <x id="PH" equiv-text="student.firstName"/> <x id="PH_1" equiv-text="student.lastName"/>?</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/academic/students/students.page.ts</context>
+          <context context-type="linenumber">51</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="teachers.title" datatype="html">
+        <source>Teachers</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/academic/teachers/teachers.page.ts</context>
+          <context context-type="linenumber">9,10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="teachers.description" datatype="html">
+        <source>Manage teaching staff, assignments and contracts.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/academic/teachers/teachers.page.ts</context>
+          <context context-type="linenumber">10,14</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="timetable.title" datatype="html">
+        <source>Timetable</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/academic/timetable/timetable.page.ts</context>
+          <context context-type="linenumber">9,10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="timetable.description" datatype="html">
+        <source>Build and publish weekly class schedules.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/academic/timetable/timetable.page.ts</context>
+          <context context-type="linenumber">10,14</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="departments.title" datatype="html">
+        <source>Departments</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/administration/departments/departments.page.ts</context>
+          <context context-type="linenumber">9,10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="departments.description" datatype="html">
+        <source>Structure the institution into departments and faculties.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/administration/departments/departments.page.ts</context>
+          <context context-type="linenumber">10,14</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="roles.title" datatype="html">
+        <source>Roles &amp; Permissions</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/administration/roles/roles.page.ts</context>
+          <context context-type="linenumber">9,10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="roles.description" datatype="html">
+        <source>Define roles and grant fine-grained permissions.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/administration/roles/roles.page.ts</context>
+          <context context-type="linenumber">10,14</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="users.title" datatype="html">
+        <source>Users</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/administration/users/users.page.ts</context>
+          <context context-type="linenumber">9,10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="users.description" datatype="html">
+        <source>Manage user accounts across the tenant.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/administration/users/users.page.ts</context>
+          <context context-type="linenumber">10,14</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="login.subtitle" datatype="html">
+        <source>Sign in to your account</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/login/login.page.html</context>
+          <context context-type="linenumber">4,6</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="login.email" datatype="html">
+        <source>Email</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/login/login.page.html</context>
+          <context context-type="linenumber">7,8</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="login.password" datatype="html">
+        <source>Password</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/login/login.page.html</context>
+          <context context-type="linenumber">12,13</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="login.submitting" datatype="html">
+        <source>Signing in…</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/login/login.page.html</context>
+          <context context-type="linenumber">22,23</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="login.submit" datatype="html">
+        <source>Sign in</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/login/login.page.html</context>
+          <context context-type="linenumber">24,26</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="invoices.title" datatype="html">
+        <source>Invoices</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/finance/invoices/invoices.page.ts</context>
+          <context context-type="linenumber">9,10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="invoices.description" datatype="html">
+        <source>Generate, send and reconcile invoices.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/finance/invoices/invoices.page.ts</context>
+          <context context-type="linenumber">10,14</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="payments.title" datatype="html">
+        <source>Payments</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/finance/payments/payments.page.ts</context>
+          <context context-type="linenumber">9,10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="payments.description" datatype="html">
+        <source>Track tuition fees, scholarships and balances.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/finance/payments/payments.page.ts</context>
+          <context context-type="linenumber">10,14</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="tenantSelect.title" datatype="html">
+        <source>Select an institution</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/tenant-select/tenant-select.page.html</context>
+          <context context-type="linenumber">3,4</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="tenantSelect.hint" datatype="html">
+        <source>Choose the tenant you want to work in.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/tenant-select/tenant-select.page.html</context>
+          <context context-type="linenumber">4,6</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="tenantSelect.empty" datatype="html">
+        <source>No tenants available.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/tenant-select/tenant-select.page.html</context>
+          <context context-type="linenumber">14,18</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="navbar.tenantLabel" datatype="html">
+        <source>Tenant</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/navbar/navbar.component.html</context>
+          <context context-type="linenumber">7,8</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="navbar.logout" datatype="html">
+        <source>Log out</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/navbar/navbar.component.html</context>
+          <context context-type="linenumber">20,22</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="navbar.tenantNone" datatype="html">
+        <source>None</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/navbar/navbar.component.ts</context>
+          <context context-type="linenumber">22</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sidebar.group.academic" datatype="html">
+        <source>Academic</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/sidebar/sidebar.component.ts</context>
+          <context context-type="linenumber">26</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sidebar.students" datatype="html">
+        <source>Students</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/sidebar/sidebar.component.ts</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sidebar.teachers" datatype="html">
+        <source>Teachers</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/sidebar/sidebar.component.ts</context>
+          <context context-type="linenumber">29</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sidebar.timetable" datatype="html">
+        <source>Timetable</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/sidebar/sidebar.component.ts</context>
+          <context context-type="linenumber">30</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sidebar.grades" datatype="html">
+        <source>Grades</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/sidebar/sidebar.component.ts</context>
+          <context context-type="linenumber">31</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sidebar.sessions" datatype="html">
+        <source>Sessions</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/sidebar/sidebar.component.ts</context>
+          <context context-type="linenumber">32</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sidebar.group.administration" datatype="html">
+        <source>Administration</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/sidebar/sidebar.component.ts</context>
+          <context context-type="linenumber">36</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sidebar.users" datatype="html">
+        <source>Users</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/sidebar/sidebar.component.ts</context>
+          <context context-type="linenumber">38</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sidebar.roles" datatype="html">
+        <source>Roles</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/sidebar/sidebar.component.ts</context>
+          <context context-type="linenumber">39</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sidebar.departments" datatype="html">
+        <source>Departments</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/sidebar/sidebar.component.ts</context>
+          <context context-type="linenumber">40</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sidebar.group.finance" datatype="html">
+        <source>Finance</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/sidebar/sidebar.component.ts</context>
+          <context context-type="linenumber">44</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sidebar.payments" datatype="html">
+        <source>Payments</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/sidebar/sidebar.component.ts</context>
+          <context context-type="linenumber">46</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sidebar.invoices" datatype="html">
+        <source>Invoices</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/sidebar/sidebar.component.ts</context>
+          <context context-type="linenumber">47</context>
+        </context-group>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

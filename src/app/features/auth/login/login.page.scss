@@ -1,0 +1,37 @@
+.login {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+
+  &__card {
+    width: 100%;
+    max-width: 400px;
+  }
+
+  &__title {
+    margin: 0 0 4px;
+    font-size: 24px;
+    color: var(--color-primary);
+  }
+
+  &__subtitle {
+    margin: 0 0 24px;
+    color: var(--color-text-muted);
+  }
+
+  &__submit {
+    width: 100%;
+    margin-top: 8px;
+  }
+
+  &__error {
+    padding: 8px 12px;
+    margin-bottom: 12px;
+    border-radius: var(--radius-md);
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--color-danger);
+    font-size: 13px;
+  }
+}

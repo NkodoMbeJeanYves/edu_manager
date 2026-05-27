@@ -1,0 +1,43 @@
+<form class="session-form" [formGroup]="form" (ngSubmit)="submit()">
+  <div class="form-field">
+    <label for="label" i18n="@@sessionForm.label">Label</label>
+    <input id="label" formControlName="label" />
+  </div>
+
+  <div class="form-field">
+    <label for="type" i18n="@@sessionForm.type">Type</label>
+    <select id="type" formControlName="type">
+      <option value="YEAR" i18n="@@sessionForm.type.year">Academic year</option>
+      <option value="TERM" i18n="@@sessionForm.type.term">Term</option>
+      <option value="SEMESTER" i18n="@@sessionForm.type.semester">Semester</option>
+      <option value="EXAM_PERIOD" i18n="@@sessionForm.type.exam">Exam period</option>
+    </select>
+  </div>
+
+  <div class="grid-2">
+    <div class="form-field">
+      <label for="startDate" i18n="@@sessionForm.startDate">Start date</label>
+      <input id="startDate" type="date" formControlName="startDate" />
+    </div>
+
+    <div class="form-field">
+      <label for="endDate" i18n="@@sessionForm.endDate">End date</label>
+      <input id="endDate" type="date" formControlName="endDate" />
+    </div>
+  </div>
+
+  <div class="form-field">
+    <label for="status" i18n="@@sessionForm.status">Status</label>
+    <select id="status" formControlName="status">
+      <option value="UPCOMING" i18n="@@sessionForm.status.upcoming">Upcoming</option>
+      <option value="ACTIVE" i18n="@@sessionForm.status.active">Active</option>
+      <option value="CLOSED" i18n="@@sessionForm.status.closed">Closed</option>
+      <option value="ARCHIVED" i18n="@@sessionForm.status.archived">Archived</option>
+    </select>
+  </div>
+
+  <div class="session-form__actions">
+    <button type="button" class="btn btn--ghost" (click)="cancel.emit()" i18n="@@common.cancel">Cancel</button>
+    <button type="submit" class="btn btn--primary" [disabled]="form.invalid" i18n="@@common.save">Save</button>
+  </div>
+</form>

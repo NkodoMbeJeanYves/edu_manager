@@ -1,0 +1,18 @@
+<div class="tenant-select">
+  <div class="tenant-select__inner">
+    <h1 i18n="@@tenantSelect.title">Select an institution</h1>
+    <p class="tenant-select__hint" i18n="@@tenantSelect.hint">Choose the tenant you want to work in.</p>
+
+    <div class="tenant-select__grid">
+      @for (tenant of store.available(); track tenant.id) {
+        <button class="tenant-card card" (click)="select(tenant)" [disabled]="!tenant.active">
+          <span class="tenant-card__type">{{ tenant.type }}</span>
+          <span class="tenant-card__name">{{ tenant.name }}</span>
+          <span class="tenant-card__code">{{ tenant.code }}</span>
+        </button>
+      } @empty {
+        <p i18n="@@tenantSelect.empty">No tenants available.</p>
+      }
+    </div>
+  </div>
+</div>

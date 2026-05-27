@@ -1,0 +1,56 @@
+<section class="notifications">
+  <header class="notifications__header">
+    <div>
+      <h1 i18n="@@notifications.title">Notifications</h1>
+      <p class="notifications__hint" i18n="@@notifications.count">
+        {{ store.unreadCount() }} unread of {{ store.total() }}
+      </p>
+    </div>
+
+    <div class="notifications__actions">
+      <button
+        class="btn btn--ghost"
+        [class.btn--active]="store.filterUnread()"
+        (click)="store.toggleUnreadFilter()"
+        i18n="@@notifications.unreadOnly">
+        Unread only
+      </button>
+      <button
+        class="btn btn--primary"
+        [disabled]="store.unreadCount() === 0"
+        (click)="store.markAllRead()"
+        i18n="@@notifications.markAllRead">
+        Mark all as read
+      </button>
+    </div>
+  </header>
+
+  @if (store.loading()) {
+    <div class="notifications__state" i18n="@@common.loading">Loading…</div>
+  } @else if (store.error()) {
+    <div class="notifications__state notifications__state--error">{{ store.error() }}</div>
+  } @else {
+    <div class="feed card">
+      @for (n of store.filtered(); track n.id) {
+        <article class="notif" [class.notif--unread]="n.status === 'UNREAD'">
+          <span class="notif__dot" [attr.data-type]="n.type" aria-hidden="true"></span>
+          <div class="notif__body">
+            <div class="notif__head">
+              <span class="chip chip--level">{{ n.type }}</span>
+              <span class="notif__time mono">{{ n.createdAt | date:'short' }}</span>
+            </div>
+            <h3 class="notif__title">{{ n.title }}</h3>
+            <p class="notif__msg">{{ n.body }}</p>
+          </div>
+          @if (n.status === 'UNREAD') {
+            <button class="btn btn--ghost" (click)="store.markRead(n.id)" i18n="@@notifications.markRead">
+              Mark read
+            </button>
+          }
+        </article>
+      } @empty {
+        <div class="empty" i18n="@@notifications.empty">No notifications.</div>
+      }
+    </div>
+  }
+</section>
