@@ -1,0 +1,29 @@
+<h2 mat-dialog-title>
+  <mat-icon>draw</mat-icon> {{ data.titre ?? 'Signer le document' }}
+</h2>
+<mat-dialog-content>
+  <form [formGroup]="form" class="form-grid">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Signataire *</mat-label>
+      <input matInput formControlName="signataire"
+             placeholder="Nom et prénom du signataire">
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Fonction *</mat-label>
+      <input matInput formControlName="fonction"
+             placeholder="Ex: Chef d'établissement, Président du jury">
+    </mat-form-field>
+  </form>
+  <div class="signature-info">
+    <mat-icon>info</mat-icon>
+    La signature est horodatée et archivée de façon définitive.
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Annuler</button>
+  <button mat-raised-button color="primary"
+          (click)="submit()" [disabled]="form.invalid">
+    <mat-icon>draw</mat-icon> Signer
+  </button>
+</mat-dialog-actions>
+  

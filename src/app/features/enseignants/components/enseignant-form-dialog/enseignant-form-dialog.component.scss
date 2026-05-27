@@ -1,0 +1,8 @@
+mat-dialog-content { min-width: 600px; }
+h2 mat-icon { vertical-align: middle; margin-right: 8px; }
+.form-grid { display: flex; flex-direction: column; gap: 6px; padding-top: 4px; }
+.section-label { font-size: 13px; font-weight: 600; color: #555; margin: 4px 0 0; }
+.form-row { display: flex; gap: 16px; }
+.form-row mat-form-field { flex: 1; }
+.flex-2 { flex: 2 !important; }
+.full-width { width: 100%; }

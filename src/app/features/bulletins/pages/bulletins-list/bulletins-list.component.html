@@ -1,0 +1,246 @@
+<div class="page-container">
+
+  <div class="page-header">
+    <div class="header-left">
+      <h1 class="page-title">Bulletins & Relevés</h1>
+      <span class="total-badge">{{ state.total() }} document(s)</span>
+    </div>
+    <div class="header-actions">
+      <button mat-stroked-button color="primary" [routerLink]="['deliberations']">
+        <mat-icon>gavel</mat-icon> Délibérations
+      </button>
+      <button mat-raised-button color="primary" (click)="openGenererDialog()">
+        <mat-icon>description</mat-icon> Générer des bulletins
+      </button>
+    </div>
+  </div>
+
+  @if (state.statsBulletins(); as stats) {
+    <div class="stats-row">
+      <mat-card class="stat-card">
+        <div class="stat-value">{{ stats.total }}</div>
+        <div class="stat-label">Total</div>
+      </mat-card>
+      <mat-card class="stat-card stat-info">
+        <div class="stat-value">{{ stats.generes }}</div>
+        <div class="stat-label">Générés</div>
+      </mat-card>
+      <mat-card class="stat-card stat-success">
+        <div class="stat-value">{{ stats.publies }}</div>
+        <div class="stat-label">Publiés</div>
+      </mat-card>
+      <mat-card class="stat-card stat-warning">
+        <div class="stat-value">{{ stats.enAttente }}</div>
+        <div class="stat-label">En attente</div>
+      </mat-card>
+      <mat-card class="stat-card stat-accent">
+        <div class="stat-value">{{ stats.tauxGeneration }}%</div>
+        <div class="stat-label">Taux génération</div>
+      </mat-card>
+    </div>
+  }
+
+  <mat-tab-group (selectedTabChange)="onTabChange($event.index)" class="status-tabs">
+    <mat-tab label="Tous"></mat-tab>
+    <mat-tab label="Générés"></mat-tab>
+    <mat-tab label="Validés"></mat-tab>
+    <mat-tab label="Signés"></mat-tab>
+    <mat-tab label="Publiés"></mat-tab>
+  </mat-tab-group>
+
+  <div class="filters-bar">
+    <mat-form-field appearance="outline" class="search-field">
+      <mat-label>Rechercher</mat-label>
+      <input matInput [(ngModel)]="searchApprenant"
+             placeholder="Nom apprenant...">
+      <mat-icon matPrefix>search</mat-icon>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Type</mat-label>
+      <mat-select [(ngModel)]="filterType" (ngModelChange)="onFilter()">
+        <mat-option value="">Tous</mat-option>
+        <mat-option value="bulletin">Bulletins scolaires</mat-option>
+        <mat-option value="releve">Relevés universitaires</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  @if (state.loading() || state.loadingGeneration()) {
+    <div class="loading-container">
+      <mat-spinner diameter="48"></mat-spinner>
+      @if (state.loadingGeneration()) {
+        <p class="loading-label">Génération en cours...</p>
+      }
+    </div>
+  }
+
+  @if (state.error()) {
+    <div class="error-banner">
+      <mat-icon>error_outline</mat-icon>
+      <span>{{ state.error() }}</span>
+      <button mat-icon-button (click)="state.clearError()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  }
+
+  @if (!state.loading() && !state.loadingGeneration()) {
+    <div class="table-container mat-elevation-z2">
+      <table mat-table [dataSource]="state.bulletins()">
+
+        <ng-container matColumnDef="apprenant">
+          <th mat-header-cell *matHeaderCellDef>Apprenant</th>
+          <td mat-cell *matCellDef="let b">
+            <div class="apprenant-cell">
+              <div class="avatar-sm">
+                {{ b.apprenant?.prenom?.[0] }}{{ b.apprenant?.nom?.[0] }}
+              </div>
+              <div>
+                <div class="apprenant-nom">
+                  {{ b.apprenant?.prenom }} {{ b.apprenant?.nom }}
+                </div>
+                <div class="apprenant-num">
+                  {{ b.apprenant?.numeroInscription }}
+                </div>
+              </div>
+            </div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="type">
+          <th mat-header-cell *matHeaderCellDef>Type</th>
+          <td mat-cell *matCellDef="let b">
+            <mat-chip [class]="'chip-type chip-doc-' + b.type">
+              <mat-icon>{{ b.type === 'bulletin' ? 'receipt_long' : 'school' }}</mat-icon>
+              {{ b.type === 'bulletin' ? 'Bulletin' : 'Relevé' }}
+            </mat-chip>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="periode">
+          <th mat-header-cell *matHeaderCellDef>Période</th>
+          <td mat-cell *matCellDef="let b">
+            <div class="periode-cell">
+              {{ b.periode?.libelle ?? b.anneeAcademique?.libelle }}
+            </div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="resultat">
+          <th mat-header-cell *matHeaderCellDef>Résultat</th>
+          <td mat-cell *matCellDef="let b">
+            <div class="resultat-cell">
+              @if (b.moyenneGenerale !== null) {
+                <span class="moyenne-val"
+                      [class]="getMoyenneColor(b.moyenneGenerale)">
+                  {{ b.moyenneGenerale | number:'1.2-2' }}/20
+                </span>
+              }
+              @if (b.rang) {
+                <span class="rang-badge">{{ b.rang }}e</span>
+              }
+              @if (b.mention) {
+                <mat-chip [class]="'chip-mention chip-' + b.mention">
+                  {{ mentionLabel(b.mention) }}
+                </mat-chip>
+              }
+            </div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="decision">
+          <th mat-header-cell *matHeaderCellDef>Décision</th>
+          <td mat-cell *matCellDef="let b">
+            @if (b.decision) {
+              <mat-chip [class]="'chip-decision chip-dec-' + b.decision">
+                {{ decisionLabel(b.decision) }}
+              </mat-chip>
+            } @else {
+              <span class="cell-secondary">—</span>
+            }
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="statut">
+          <th mat-header-cell *matHeaderCellDef>Statut</th>
+          <td mat-cell *matCellDef="let b">
+            <mat-chip [class]="'chip-statut chip-doc-statut-' + b.statut">
+              {{ statutLabel(b.statut) }}
+            </mat-chip>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let b">
+            <div class="actions-cell">
+              <button mat-icon-button [routerLink]="[b.id]"
+                      matTooltip="Voir le bulletin">
+                <mat-icon>visibility</mat-icon>
+              </button>
+              <button mat-icon-button
+                      (click)="telecharger(b); $event.stopPropagation()"
+                      matTooltip="Télécharger PDF">
+                <mat-icon>picture_as_pdf</mat-icon>
+              </button>
+              <button mat-icon-button [matMenuTriggerFor]="menu"
+                      (click)="$event.stopPropagation()">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu">
+                @if (b.statut === 'genere') {
+                  <button mat-menu-item (click)="valider(b)">
+                    <mat-icon>check_circle</mat-icon> Valider
+                  </button>
+                }
+                @if (b.statut === 'valide') {
+                  <button mat-menu-item (click)="openSigner(b)">
+                    <mat-icon>draw</mat-icon> Signer
+                  </button>
+                }
+                @if (['genere', 'valide', 'signe'].includes(b.statut)) {
+                  <button mat-menu-item (click)="openAppreciation(b)">
+                    <mat-icon>rate_review</mat-icon> Appréciation
+                  </button>
+                }
+              </mat-menu>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+            class="table-row" [routerLink]="[row.id]"></tr>
+
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell no-data" [attr.colspan]="displayedColumns.length">
+            <mat-icon>description</mat-icon>
+            <p>Aucun bulletin trouvé</p>
+          </td>
+        </tr>
+      </table>
+
+      <mat-paginator
+        [length]="state.total()"
+        [pageSize]="state.limit()"
+        [pageSizeOptions]="[10, 20, 50]"
+        (page)="onPageChange($event)"
+        showFirstLastButtons>
+      </mat-paginator>
+    </div>
+
+    @if (state.bulletinsEnAttente().length > 0) {
+      <div class="publication-bar">
+        <span>
+          <mat-icon>info</mat-icon>
+          {{ state.bulletinsEnAttente().length }} bulletin(s) non encore publiés
+        </span>
+        <button mat-raised-button color="accent" (click)="publierTous()">
+          <mat-icon>publish</mat-icon>
+          Publier tous les bulletins signés
+        </button>
+      </div>
+    }
+  }
+</div>
+  

@@ -1,0 +1,124 @@
+<div class="page-container">
+  <button mat-button routerLink="/notes" class="back-btn">
+    <mat-icon>arrow_back</mat-icon> Retour
+  </button>
+
+  <div class="page-header">
+    <h1 class="page-title">Moyennes de classe</h1>
+    <div class="header-actions">
+      <button mat-stroked-button color="primary"
+              (click)="calculerMoyennes()"
+              [disabled]="!periodeId || state.calculEnCours()">
+        @if (state.calculEnCours()) {
+          <mat-spinner diameter="18" class="inline-spin"></mat-spinner>
+        } @else {
+          <mat-icon>calculate</mat-icon>
+        }
+        Recalculer les moyennes
+      </button>
+    </div>
+  </div>
+
+  <!-- Sélecteurs -->
+  <div class="filters-bar">
+    <mat-form-field appearance="outline">
+      <mat-label>Classe / Promotion</mat-label>
+      <mat-select [(ngModel)]="classeId" (ngModelChange)="onClasseChange()">
+        <mat-option value="">Sélectionner une classe</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Période</mat-label>
+      <mat-select [(ngModel)]="periodeId" (ngModelChange)="onPeriodeChange()">
+        <mat-option value="">Sélectionner une période</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  @if (state.loadingMoyennes()) {
+    <div class="loading-container"><mat-spinner diameter="48"></mat-spinner></div>
+  }
+
+  @if (!state.loadingMoyennes() && state.moyennesClasse().length > 0) {
+    <!-- Résumé statistiques classe -->
+    <div class="classe-stats">
+      <mat-card class="stat-card">
+        <div class="stat-v">{{ moyenneClasse() | number:'1.2-2' }}</div>
+        <div class="stat-l">Moyenne de classe</div>
+      </mat-card>
+      <mat-card class="stat-card">
+        <div class="stat-v">{{ state.moyennesClasse().length }}</div>
+        <div class="stat-l">Apprenants</div>
+      </mat-card>
+      <mat-card class="stat-card stat-success">
+        <div class="stat-v">{{ tauxReussite() }}%</div>
+        <div class="stat-l">Taux de réussite</div>
+      </mat-card>
+    </div>
+
+    <!-- Tableau des moyennes -->
+    <div class="tableau-moyennes mat-elevation-z2">
+      <table class="moyennes-table">
+        <thead>
+          <tr>
+            <th class="th-rang">Rang</th>
+            <th class="th-apprenant">Apprenant</th>
+            @for (mm of colonnesMatieres(); track mm) {
+              <th class="th-matiere" [matTooltip]="mm">
+                {{ abrev(mm) }}
+              </th>
+            }
+            <th class="th-moy-gen">Moy. Générale</th>
+            <th class="th-mention">Mention</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (moy of state.moyennesClasse(); track moy.apprenantId; let i = $index) {
+            <tr [class.top-trois]="i < 3">
+              <td class="td-rang">
+                <span class="rang-badge" [class]="'rang-' + (i + 1)">
+                  {{ moy.rang ?? i + 1 }}
+                </span>
+              </td>
+              <td class="td-apprenant">
+                <div class="apprenant-cell">
+                  <div class="avatar-xs">
+                    {{ moy.apprenant?.prenom?.[0] }}{{ moy.apprenant?.nom?.[0] }}
+                  </div>
+                  <span>{{ moy.apprenant?.prenom }} {{ moy.apprenant?.nom }}</span>
+                </div>
+              </td>
+              @for (mm of colonnesMatieres(); track mm) {
+                <td class="td-note-mat" [class]="getNoteColor(getMoyMatiere(moy, mm))">
+                  {{ getMoyMatiere(moy, mm) !== null ? (getMoyMatiere(moy, mm) | number:'1.2-2') : '—' }}
+                </td>
+              }
+              <td class="td-moy-gen" [class]="getNoteColor(moy.moyenne)">
+                <strong>{{ moy.moyenne !== null ? (moy.moyenne | number:'1.2-2') : '—' }}</strong>
+              </td>
+              <td class="td-mention">
+                @if (moy.mention) {
+                  <mat-chip [class]="'chip-mention chip-mention-' + moy.mention.toLowerCase().replace(' ', '_')">
+                    {{ moy.mention }}
+                  </mat-chip>
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+
+  @if (!state.loadingMoyennes() && state.moyennesClasse().length === 0 && classeId && periodeId) {
+    <div class="empty-state">
+      <mat-icon>bar_chart</mat-icon>
+      <p>Aucune moyenne disponible pour cette sélection</p>
+      <button mat-raised-button color="primary" (click)="calculerMoyennes()">
+        <mat-icon>calculate</mat-icon> Calculer les moyennes
+      </button>
+    </div>
+  }
+</div>
+  

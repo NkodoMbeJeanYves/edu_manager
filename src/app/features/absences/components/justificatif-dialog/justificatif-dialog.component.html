@@ -1,0 +1,44 @@
+<h2 mat-dialog-title>
+  <mat-icon>attach_file</mat-icon> Soumettre un justificatif
+</h2>
+<mat-dialog-content>
+  <div class="absence-info">
+    Absence du <strong>{{ data.absence.date | date:'d MMM yyyy' }}</strong>
+    · {{ data.absence.heureDebut }} – {{ data.absence.heureFin }}
+    · <em>{{ data.absence.matiereLibelle }}</em>
+  </div>
+  <form [formGroup]="form" class="form-grid">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Type de justificatif *</mat-label>
+      <mat-select formControlName="type">
+        <mat-option value="medical">Certificat médical</mat-option>
+        <mat-option value="familial">Motif familial</mat-option>
+        <mat-option value="administratif">Démarche administrative</mat-option>
+        <mat-option value="transport">Problème de transport</mat-option>
+        <mat-option value="autre">Autre</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Description *</mat-label>
+      <textarea matInput formControlName="description" rows="3"
+                placeholder="Expliquez le motif de l'absence..."></textarea>
+      @if (form.get('description')?.hasError('required') && form.get('description')?.touched) {
+        <mat-error>La description est obligatoire</mat-error>
+      }
+    </mat-form-field>
+    <div class="upload-zone" (click)="fileInput.click()">
+      <mat-icon>cloud_upload</mat-icon>
+      <span>{{ fichierNom || 'Cliquer pour joindre un document (optionnel)' }}</span>
+      <input #fileInput type="file" hidden accept=".pdf,.jpg,.jpeg,.png"
+             (change)="onFileChange($event)">
+    </div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Annuler</button>
+  <button mat-raised-button color="primary"
+          (click)="submit()" [disabled]="form.invalid">
+    <mat-icon>send</mat-icon> Soumettre
+  </button>
+</mat-dialog-actions>
+  

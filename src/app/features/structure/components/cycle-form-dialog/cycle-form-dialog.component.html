@@ -1,0 +1,53 @@
+<h2 mat-dialog-title>
+  <mat-icon>{{ data.cycle ? 'edit' : 'add_circle' }}</mat-icon>
+  {{ data.cycle ? 'Modifier le cycle' : 'Nouveau cycle' }}
+</h2>
+<mat-dialog-content>
+  <form [formGroup]="form" class="form-grid">
+    <div class="form-row">
+      <mat-form-field appearance="outline">
+        <mat-label>Code *</mat-label>
+        <input matInput formControlName="code" placeholder="Ex: SEC1">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Libellé *</mat-label>
+        <input matInput formControlName="libelle" placeholder="Ex: Secondaire 1er cycle">
+      </mat-form-field>
+    </div>
+    <div class="form-row">
+      <mat-form-field appearance="outline">
+        <mat-label>Type de cycle *</mat-label>
+        <mat-select formControlName="type">
+          <mat-option value="primaire">Primaire</mat-option>
+          <mat-option value="secondaire">Secondaire</mat-option>
+          <mat-option value="superieur">Supérieur</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Type formation *</mat-label>
+        <mat-select formControlName="typeFormation">
+          <mat-option value="scolaire">Scolaire</mat-option>
+          <mat-option value="universitaire">Universitaire</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Description</mat-label>
+      <textarea matInput formControlName="description" rows="2"></textarea>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="half-width">
+      <mat-label>Ordre d'affichage</mat-label>
+      <input matInput formControlName="ordre" type="number" min="1">
+    </mat-form-field>
+    @if (data.cycle) {
+      <mat-checkbox formControlName="actif">Cycle actif</mat-checkbox>
+    }
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Annuler</button>
+  <button mat-raised-button color="primary" (click)="submit()" [disabled]="form.invalid">
+    {{ data.cycle ? 'Enregistrer' : 'Créer' }}
+  </button>
+</mat-dialog-actions>
+  

@@ -1,0 +1,207 @@
+<div class="page-container">
+  <!-- Retour -->
+  <button mat-button routerLink="/etablissements" class="back-btn">
+    <mat-icon>arrow_back</mat-icon> Retour aux établissements
+  </button>
+
+  @if (state.loading()) {
+    <div class="loading-container"><mat-spinner diameter="48"></mat-spinner></div>
+  }
+
+  @if (state.selectedEtablissement(); as etab) {
+    <!-- En-tête établissement -->
+    <div class="detail-header">
+      <div class="header-info">
+        <span class="etab-code-large">{{ etab.code }}</span>
+        <h1>{{ etab.nom }}</h1>
+        <div class="header-meta">
+          <mat-chip [class]="'chip-type chip-' + etab.type">
+            {{ etab.type === 'scolaire' ? 'Scolaire' : 'Universitaire' }}
+          </mat-chip>
+          <mat-chip [class]="etab.actif ? 'chip-actif' : 'chip-inactif'">
+            {{ etab.actif ? 'Actif' : 'Inactif' }}
+          </mat-chip>
+          <span class="meta-text"><mat-icon>location_on</mat-icon> {{ etab.ville }}, {{ etab.pays }}</span>
+          <span class="meta-text"><mat-icon>email</mat-icon> {{ etab.email }}</span>
+          <span class="meta-text"><mat-icon>phone</mat-icon> {{ etab.telephone }}</span>
+        </div>
+      </div>
+      <button mat-raised-button color="primary" (click)="openEditDialog()">
+        <mat-icon>edit</mat-icon> Modifier
+      </button>
+    </div>
+
+    <!-- Onglets -->
+    <mat-tab-group animationDuration="200ms" class="detail-tabs">
+
+      <!-- Onglet Campus -->
+      <mat-tab label="Campus ({{ state.campus().length }})">
+        <div class="tab-content">
+          <div class="tab-header">
+            <h3>Campus rattachés</h3>
+            <button mat-raised-button color="primary" (click)="openCampusDialog()">
+              <mat-icon>add</mat-icon> Ajouter un campus
+            </button>
+          </div>
+          @if (state.loadingCampus()) {
+            <mat-spinner diameter="32"></mat-spinner>
+          } @else {
+            <div class="cards-grid">
+              @for (campus of state.campus(); track campus.id) {
+                <mat-card class="campus-card" [class.campus-principal]="campus.principal">
+                  <mat-card-header>
+                    <mat-card-title>{{ campus.nom }}</mat-card-title>
+                    <mat-card-subtitle>{{ campus.code }}</mat-card-subtitle>
+                    @if (campus.principal) {
+                      <mat-chip class="chip-principal">Principal</mat-chip>
+                    }
+                  </mat-card-header>
+                  <mat-card-content>
+                    <p class="campus-adresse">
+                      <mat-icon>location_on</mat-icon> {{ campus.adresse }}, {{ campus.ville }}
+                    </p>
+                    @if (campus.telephoneDirecteur) {
+                      <p><mat-icon>phone</mat-icon> {{ campus.telephoneDirecteur }}</p>
+                    }
+                  </mat-card-content>
+                  <mat-card-actions>
+                    <button mat-icon-button (click)="openCampusDialog(campus)" matTooltip="Modifier">
+                      <mat-icon>edit</mat-icon>
+                    </button>
+                    <button mat-icon-button (click)="confirmDeleteCampus(campus)" matTooltip="Supprimer" color="warn">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </mat-card-actions>
+                </mat-card>
+              }
+              @empty {
+                <div class="empty-state">
+                  <mat-icon>location_city</mat-icon>
+                  <p>Aucun campus rattaché</p>
+                </div>
+              }
+            </div>
+          }
+        </div>
+      </mat-tab>
+
+      <!-- Onglet Années académiques -->
+      <mat-tab label="Années académiques">
+        <div class="tab-content">
+          <div class="tab-header">
+            <h3>Années académiques</h3>
+            <button mat-raised-button color="primary" (click)="openAnneeDialog()">
+              <mat-icon>add</mat-icon> Nouvelle année
+            </button>
+          </div>
+          @if (state.loadingAnnees()) {
+            <mat-spinner diameter="32"></mat-spinner>
+          } @else {
+            <table mat-table [dataSource]="state.anneesAcademiques()" class="full-width mat-elevation-z1">
+              <ng-container matColumnDef="libelle">
+                <th mat-header-cell *matHeaderCellDef>Année</th>
+                <td mat-cell *matCellDef="let a">
+                  <strong>{{ a.libelle }}</strong>
+                  @if (a.active) {
+                    <mat-chip class="chip-active-small">En cours</mat-chip>
+                  }
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="periode">
+                <th mat-header-cell *matHeaderCellDef>Périodicité</th>
+                <td mat-cell *matCellDef="let a">
+                  {{ a.typePeriode === 'semestre' ? 'Semestres' : 'Trimestres' }}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="dates">
+                <th mat-header-cell *matHeaderCellDef>Période</th>
+                <td mat-cell *matCellDef="let a">
+                  {{ a.dateDebut | date:'dd/MM/yyyy' }} → {{ a.dateFin | date:'dd/MM/yyyy' }}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="statut">
+                <th mat-header-cell *matHeaderCellDef>Statut</th>
+                <td mat-cell *matCellDef="let a">
+                  <mat-chip [class]="'chip-statut chip-' + a.statut">{{ a.statut | titlecase }}</mat-chip>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td mat-cell *matCellDef="let a">
+                  <button mat-icon-button [matMenuTriggerFor]="anneeMenu">
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+                  <mat-menu #anneeMenu="matMenu">
+                    <button mat-menu-item (click)="state.activerAnneeAcademique(a.id)" [disabled]="a.active">
+                      <mat-icon>play_circle</mat-icon> Activer
+                    </button>
+                    <button mat-menu-item (click)="state.cloturerAnneeAcademique(a.id)" [disabled]="!a.active">
+                      <mat-icon>lock</mat-icon> Clôturer
+                    </button>
+                  </mat-menu>
+                </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="anneeColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: anneeColumns;"></tr>
+            </table>
+          }
+        </div>
+      </mat-tab>
+
+      <!-- Onglet Salles -->
+      <mat-tab label="Salles ({{ state.salles().length }})">
+        <div class="tab-content">
+          <div class="tab-header">
+            <h3>Salles et espaces</h3>
+            <button mat-raised-button color="primary" (click)="openSalleDialog()">
+              <mat-icon>add</mat-icon> Ajouter une salle
+            </button>
+          </div>
+          @if (state.loadingSalles()) {
+            <mat-spinner diameter="32"></mat-spinner>
+          } @else {
+            <table mat-table [dataSource]="state.salles()" class="full-width mat-elevation-z1">
+              <ng-container matColumnDef="code">
+                <th mat-header-cell *matHeaderCellDef>Code</th>
+                <td mat-cell *matCellDef="let s"><strong>{{ s.code }}</strong></td>
+              </ng-container>
+              <ng-container matColumnDef="nom">
+                <th mat-header-cell *matHeaderCellDef>Nom</th>
+                <td mat-cell *matCellDef="let s">{{ s.nom }}</td>
+              </ng-container>
+              <ng-container matColumnDef="type">
+                <th mat-header-cell *matHeaderCellDef>Type</th>
+                <td mat-cell *matCellDef="let s">{{ s.type | titlecase }}</td>
+              </ng-container>
+              <ng-container matColumnDef="capacite">
+                <th mat-header-cell *matHeaderCellDef>Capacité</th>
+                <td mat-cell *matCellDef="let s"><mat-icon>people</mat-icon> {{ s.capacite }}</td>
+              </ng-container>
+              <ng-container matColumnDef="statut">
+                <th mat-header-cell *matHeaderCellDef>Statut</th>
+                <td mat-cell *matCellDef="let s">
+                  <mat-chip [class]="'chip-salle-' + s.statut">{{ s.statut | titlecase }}</mat-chip>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td mat-cell *matCellDef="let s">
+                  <button mat-icon-button (click)="openSalleDialog(s)" matTooltip="Modifier">
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                  <button mat-icon-button (click)="confirmDeleteSalle(s)" color="warn" matTooltip="Supprimer">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="salleColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: salleColumns;"></tr>
+            </table>
+          }
+        </div>
+      </mat-tab>
+
+    </mat-tab-group>
+  }
+</div>
+  

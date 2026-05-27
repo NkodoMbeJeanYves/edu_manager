@@ -1,0 +1,262 @@
+<div class="page-container">
+  <button mat-button routerLink="/inscriptions" class="back-btn">
+    <mat-icon>arrow_back</mat-icon> Retour aux inscriptions
+  </button>
+
+  @if (state.loadingDetail()) {
+    <div class="loading-container"><mat-spinner diameter="48"></mat-spinner></div>
+  }
+
+  @if (state.selected(); as inscription) {
+    <!-- En-tête -->
+    <div class="detail-header">
+      <div class="header-info">
+        <div class="header-chips">
+          <mat-chip [class]="'chip-type chip-' + inscription.type">
+            {{ inscription.type === 'nouvelle' ? 'Nouvelle inscription' : 'Réinscription' }}
+          </mat-chip>
+          <mat-chip [class]="'chip-statut chip-' + inscription.statut">
+            {{ statutLabel(inscription.statut) }}
+          </mat-chip>
+          @if (inscription.fraisInscription) {
+            <mat-chip [class]="inscription.fraisPayes ? 'chip-payes' : 'chip-impaye'">
+              <mat-icon>{{ inscription.fraisPayes ? 'check_circle' : 'warning' }}</mat-icon>
+              Frais {{ inscription.fraisPayes ? 'payés' : 'non payés' }}
+            </mat-chip>
+          }
+        </div>
+        <h1>
+          {{ inscription.apprenant?.prenom }} {{ inscription.apprenant?.nom }}
+        </h1>
+        <div class="header-meta">
+          <span>
+            <mat-icon>badge</mat-icon> {{ inscription.numeroInscription }}
+          </span>
+          <span>
+            <mat-icon>event</mat-icon>
+            Inscrit le {{ inscription.dateInscription | date:'dd/MM/yyyy' }}
+          </span>
+          @if (inscription.classeLibelle || inscription.promotionLibelle) {
+            <span>
+              <mat-icon>class</mat-icon>
+              {{ inscription.classeLibelle ?? inscription.promotionLibelle }}
+            </span>
+          }
+          @if (inscription.anneeAcademique) {
+            <span>
+              <mat-icon>school</mat-icon>
+              {{ inscription.anneeAcademique.libelle }}
+            </span>
+          }
+        </div>
+      </div>
+      <div class="header-actions">
+        @if (inscription.statut === 'complete' || inscription.statut === 'en_validation') {
+          <button mat-raised-button color="primary" (click)="valider(inscription.id)">
+            <mat-icon>check_circle</mat-icon> Valider
+          </button>
+          <button mat-stroked-button color="warn" (click)="openRejeter()">
+            <mat-icon>cancel</mat-icon> Rejeter
+          </button>
+        }
+        @if (inscription.statut === 'validee' && !inscription.classeLibelle && !inscription.promotionLibelle) {
+          <button mat-stroked-button color="primary" (click)="openAffectation()">
+            <mat-icon>class</mat-icon> Affecter une classe
+          </button>
+        }
+        @if (inscription.statut === 'brouillon' || inscription.statut === 'incomplete') {
+          <button mat-stroked-button (click)="soumettre(inscription.id)">
+            <mat-icon>send</mat-icon> Soumettre
+          </button>
+        }
+      </div>
+    </div>
+
+    <!-- Workflow de progression -->
+    <mat-card class="workflow-card">
+      <mat-card-content>
+        <mat-stepper [selectedIndex]="getStepIndex(inscription.statut)">
+          <mat-step label="Brouillon" state="number"></mat-step>
+          <mat-step label="Dossier complété" state="number"></mat-step>
+          <mat-step label="En validation" state="number"></mat-step>
+          <mat-step label="Validée" state="number"></mat-step>
+        </mat-stepper>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Contenu principal : 2 colonnes -->
+    <div class="detail-grid">
+
+      <!-- Infos inscription -->
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>assignment</mat-icon> Détails de l'inscription
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <mat-list dense>
+            <mat-list-item>
+              <span class="info-label">Numéro</span>
+              <strong>{{ inscription.numeroInscription }}</strong>
+            </mat-list-item>
+            <mat-divider></mat-divider>
+            <mat-list-item>
+              <span class="info-label">Type</span>
+              <span>{{ inscription.type === 'nouvelle' ? 'Nouvelle inscription' : 'Réinscription' }}</span>
+            </mat-list-item>
+            <mat-divider></mat-divider>
+            <mat-list-item>
+              <span class="info-label">Date d'inscription</span>
+              <span>{{ inscription.dateInscription | date:'dd/MM/yyyy HH:mm' }}</span>
+            </mat-list-item>
+            @if (inscription.dateLimiteValidation) {
+              <mat-divider></mat-divider>
+              <mat-list-item>
+                <span class="info-label">Date limite</span>
+                <span [class.overdue]="isOverdue(inscription.dateLimiteValidation)">
+                  {{ inscription.dateLimiteValidation | date:'dd/MM/yyyy' }}
+                </span>
+              </mat-list-item>
+            }
+            @if (inscription.dateValidation) {
+              <mat-divider></mat-divider>
+              <mat-list-item>
+                <span class="info-label">Validée le</span>
+                <span>{{ inscription.dateValidation | date:'dd/MM/yyyy' }}</span>
+              </mat-list-item>
+            }
+            @if (inscription.validePar) {
+              <mat-divider></mat-divider>
+              <mat-list-item>
+                <span class="info-label">Validée par</span>
+                <span>{{ inscription.validePar }}</span>
+              </mat-list-item>
+            }
+            @if (inscription.motifRejet) {
+              <mat-divider></mat-divider>
+              <mat-list-item>
+                <span class="info-label">Motif rejet</span>
+                <span class="motif-rejet">{{ inscription.motifRejet }}</span>
+              </mat-list-item>
+            }
+            @if (inscription.commentaire) {
+              <mat-divider></mat-divider>
+              <mat-list-item>
+                <span class="info-label">Commentaire</span>
+                <span>{{ inscription.commentaire }}</span>
+              </mat-list-item>
+            }
+          </mat-list>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Apprenant + Documents manquants -->
+      <div class="right-column">
+        <mat-card class="apprenant-card">
+          <mat-card-header>
+            <mat-card-title>
+              <mat-icon>person</mat-icon> Apprenant
+            </mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="apprenant-identity">
+              <div class="avatar-medium">
+                {{ inscription.apprenant?.prenom?.[0] }}{{ inscription.apprenant?.nom?.[0] }}
+              </div>
+              <div>
+                <div class="apprenant-nom">
+                  {{ inscription.apprenant?.prenom }} {{ inscription.apprenant?.nom }}
+                </div>
+                <div class="apprenant-sub">{{ inscription.apprenant?.numeroInscription }}</div>
+                <button mat-stroked-button class="btn-voir-dossier"
+                        [routerLink]="['/apprenants', inscription.apprenantId]">
+                  <mat-icon>open_in_new</mat-icon> Voir le dossier
+                </button>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        @if (inscription.documentsManquants?.length) {
+          <mat-card class="docs-manquants-card">
+            <mat-card-header>
+              <mat-card-title>
+                <mat-icon color="warn">warning</mat-icon>
+                Documents manquants
+              </mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <mat-list dense>
+                @for (doc of inscription.documentsManquants; track doc) {
+                  <mat-list-item>
+                    <mat-icon matListItemIcon color="warn">radio_button_unchecked</mat-icon>
+                    <span>{{ doc }}</span>
+                  </mat-list-item>
+                }
+              </mat-list>
+            </mat-card-content>
+          </mat-card>
+        }
+      </div>
+    </div>
+
+    <!-- UE inscrites (universitaire) -->
+    @if (inscription.ueInscrites?.length) {
+      <mat-card class="ue-card">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>library_books</mat-icon>
+            Unités d'enseignement inscrites
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="ue-grid">
+            @for (ue of inscription.ueInscrites; track ue.ueId) {
+              <div class="ue-item">
+                <div class="ue-code">{{ ue.ueCode }}</div>
+                <div class="ue-libelle">{{ ue.ueLibelle }}</div>
+                <div class="ue-credits">{{ ue.credits }} ECTS</div>
+                <mat-chip [class]="ue.obligatoire ? 'chip-obligatoire' : 'chip-optionnel'">
+                  {{ ue.obligatoire ? 'Obligatoire' : 'Optionnelle' }}
+                </mat-chip>
+              </div>
+            }
+          </div>
+        </mat-card-content>
+      </mat-card>
+    }
+
+    <!-- Historique des statuts -->
+    <mat-card class="historique-card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>history</mat-icon> Historique
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        @if (state.historique().length === 0) {
+          <p class="no-historique">Aucun historique disponible</p>
+        } @else {
+          <div class="historique-list">
+            @for (h of state.historique(); track h.date) {
+              <div class="historique-item">
+                <mat-chip [class]="'chip-statut chip-' + h.statut" class="chip-sm">
+                  {{ statutLabel(h.statut) }}
+                </mat-chip>
+                <div class="historique-detail">
+                  <span class="historique-date">{{ h.date | date:'dd/MM/yyyy HH:mm' }}</span>
+                  <span class="historique-par">par {{ h.par }}</span>
+                  @if (h.commentaire) {
+                    <span class="historique-comment">{{ h.commentaire }}</span>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+        }
+      </mat-card-content>
+    </mat-card>
+  }
+</div>
+  

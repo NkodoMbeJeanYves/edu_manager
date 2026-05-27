@@ -1,0 +1,198 @@
+<div class="page-container">
+
+  <!-- En-tête -->
+  <div class="page-header">
+    <div class="header-left">
+      <h1 class="page-title">Évaluations & Notes</h1>
+      <span class="total-badge">{{ state.total() }} évaluation(s)</span>
+    </div>
+    <button mat-raised-button color="primary" (click)="openCreateDialog()">
+      <mat-icon>add</mat-icon> Nouvelle évaluation
+    </button>
+  </div>
+
+  <!-- Filtres -->
+  <div class="filters-bar">
+    <mat-form-field appearance="outline" class="search-field">
+      <mat-label>Rechercher</mat-label>
+      <input matInput [(ngModel)]="searchQuery"
+             placeholder="Intitulé, matière, classe...">
+      <mat-icon matPrefix>search</mat-icon>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Type</mat-label>
+      <mat-select [(ngModel)]="filterType" (ngModelChange)="onFilter()">
+        <mat-option value="">Tous</mat-option>
+        <mat-option value="cc">Contrôle continu</mat-option>
+        <mat-option value="partiel">Partiel</mat-option>
+        <mat-option value="examen_final">Examen final</mat-option>
+        <mat-option value="tp">TP noté</mat-option>
+        <mat-option value="oral">Oral</mat-option>
+        <mat-option value="projet">Projet</mat-option>
+        <mat-option value="rattrapage">Rattrapage</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Statut</mat-label>
+      <mat-select [(ngModel)]="filterStatut" (ngModelChange)="onFilter()">
+        <mat-option value="">Tous</mat-option>
+        <mat-option value="planifiee">Planifiée</mat-option>
+        <mat-option value="en_cours">En cours</mat-option>
+        <mat-option value="cloturee">Clôturée</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  @if (state.loading()) {
+    <div class="loading-container"><mat-spinner diameter="48"></mat-spinner></div>
+  }
+
+  @if (state.error()) {
+    <div class="error-banner">
+      <mat-icon>error_outline</mat-icon>
+      <span>{{ state.error() }}</span>
+      <button mat-icon-button (click)="state.clearError()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  }
+
+  @if (!state.loading()) {
+    <div class="table-container mat-elevation-z2">
+      <table mat-table [dataSource]="state.evaluations()">
+
+        <!-- Évaluation -->
+        <ng-container matColumnDef="evaluation">
+          <th mat-header-cell *matHeaderCellDef>Évaluation</th>
+          <td mat-cell *matCellDef="let e">
+            <div class="eval-nom">{{ e.intitule }}</div>
+            <div class="eval-meta">
+              <span class="matiere-badge">{{ e.matiereLibelle }}</span>
+              <span class="cell-secondary">{{ e.dateEvaluation | date:'dd/MM/yyyy' }}</span>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Type -->
+        <ng-container matColumnDef="type">
+          <th mat-header-cell *matHeaderCellDef>Type</th>
+          <td mat-cell *matCellDef="let e">
+            <mat-chip [class]="'chip-type chip-' + e.type">
+              <mat-icon>{{ typeIcon(e.type) }}</mat-icon>
+              {{ typeLabel(e.type) }}
+            </mat-chip>
+          </td>
+        </ng-container>
+
+        <!-- Pondération -->
+        <ng-container matColumnDef="ponderation">
+          <th mat-header-cell *matHeaderCellDef>Pondération</th>
+          <td mat-cell *matCellDef="let e">
+            <div class="ponderation-cell">
+              <span class="ponder-val">{{ e.ponderation }}%</span>
+              <mat-progress-bar mode="determinate"
+                                [value]="e.ponderation"
+                                class="ponder-bar">
+              </mat-progress-bar>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Classe / Promotion -->
+        <ng-container matColumnDef="groupe">
+          <th mat-header-cell *matHeaderCellDef>Classe / Promotion</th>
+          <td mat-cell *matCellDef="let e">
+            <div class="cell-secondary">
+              {{ e.classeLibelle ?? e.promotionLibelle ?? '—' }}
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Progression saisie -->
+        <ng-container matColumnDef="progression">
+          <th mat-header-cell *matHeaderCellDef>Notes saisies</th>
+          <td mat-cell *matCellDef="let e">
+            @if (e.totalApprenants) {
+              <div class="progression-cell">
+                <span class="prog-text">
+                  {{ e.noteSaisieCount ?? 0 }} / {{ e.totalApprenants }}
+                </span>
+                <mat-progress-bar
+                  mode="determinate"
+                  [value]="((e.noteSaisieCount ?? 0) / e.totalApprenants) * 100"
+                  [color]="progressColor(e)">
+                </mat-progress-bar>
+              </div>
+            } @else {
+              <span class="cell-secondary">—</span>
+            }
+          </td>
+        </ng-container>
+
+        <!-- Statut -->
+        <ng-container matColumnDef="statut">
+          <th mat-header-cell *matHeaderCellDef>Statut</th>
+          <td mat-cell *matCellDef="let e">
+            <mat-chip [class]="'chip-statut chip-' + e.statut">
+              {{ statutLabel(e.statut) }}
+            </mat-chip>
+          </td>
+        </ng-container>
+
+        <!-- Actions -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let e">
+            <div class="actions-cell">
+              <button mat-icon-button [routerLink]="[e.id]"
+                      matTooltip="Saisir les notes">
+                <mat-icon>edit_note</mat-icon>
+              </button>
+              <button mat-icon-button [matMenuTriggerFor]="menu"
+                      (click)="$event.stopPropagation()">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="openEditDialog(e)">
+                  <mat-icon>edit</mat-icon> Modifier
+                </button>
+                @if (e.statut !== 'cloturee') {
+                  <button mat-menu-item (click)="cloturer(e)">
+                    <mat-icon>lock</mat-icon> Clôturer
+                  </button>
+                }
+                <mat-divider></mat-divider>
+                <button mat-menu-item class="menu-delete"
+                        (click)="confirmDelete(e)">
+                  <mat-icon>delete</mat-icon> Supprimer
+                </button>
+              </mat-menu>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+            class="table-row" [routerLink]="[row.id]"></tr>
+
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell no-data" [attr.colspan]="displayedColumns.length">
+            <mat-icon>grading</mat-icon>
+            <p>Aucune évaluation trouvée</p>
+          </td>
+        </tr>
+      </table>
+
+      <mat-paginator
+        [length]="state.total()"
+        [pageSize]="state.limit()"
+        [pageSizeOptions]="[10, 20, 50]"
+        (page)="onPageChange($event)"
+        showFirstLastButtons>
+      </mat-paginator>
+    </div>
+  }
+</div>
+  

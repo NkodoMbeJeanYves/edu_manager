@@ -1,0 +1,29 @@
+<h2 mat-dialog-title>
+  <mat-icon color="warn">cancel</mat-icon>
+  Rejeter l'inscription
+</h2>
+<mat-dialog-content>
+  <p class="apprenant-label">
+    Inscription de <strong>{{ data.inscription.apprenant?.prenom }} {{ data.inscription.apprenant?.nom }}</strong>
+  </p>
+  <form [formGroup]="form">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Motif du rejet *</mat-label>
+      <textarea matInput formControlName="motifRejet" rows="4"
+                placeholder="Expliquez la raison du rejet..."></textarea>
+      @if (form.get('motifRejet')?.hasError('required') && form.get('motifRejet')?.touched) {
+        <mat-error>Le motif est obligatoire</mat-error>
+      }
+      @if (form.get('motifRejet')?.hasError('minlength') && form.get('motifRejet')?.touched) {
+        <mat-error>Minimum 10 caractères</mat-error>
+      }
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Annuler</button>
+  <button mat-raised-button color="warn" (click)="submit()" [disabled]="form.invalid">
+    <mat-icon>cancel</mat-icon> Confirmer le rejet
+  </button>
+</mat-dialog-actions>
+  

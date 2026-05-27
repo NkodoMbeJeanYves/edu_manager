@@ -1,0 +1,205 @@
+<div class="page-container">
+
+  <!-- En-tête -->
+  <div class="page-header">
+    <div class="header-left">
+      <h1 class="page-title">Absences & Présences</h1>
+      <span class="total-badge">{{ state.total() }} absence(s)</span>
+    </div>
+    <div class="header-actions">
+      @if (state.nombreJustificatifsEnAttente() > 0) {
+        <button mat-raised-button color="warn"
+                (click)="goToJustificatifs()"
+                [matBadge]="state.nombreJustificatifsEnAttente()"
+                matBadgeColor="warn">
+          <mat-icon>pending_actions</mat-icon>
+          Justificatifs à valider
+        </button>
+      }
+      <button mat-stroked-button [routerLink]="['alertes']">
+        <mat-icon>notification_important</mat-icon>
+        Alertes absentéisme
+        @if (state.apprenantsDessusSeui().length > 0) {
+          <span class="alerte-count">{{ state.apprenantsDessusSeui().length }}</span>
+        }
+      </button>
+    </div>
+  </div>
+
+  <!-- Onglets -->
+  <mat-tab-group (selectedTabChange)="onTabChange($event.index)" class="status-tabs">
+    <mat-tab label="Toutes"></mat-tab>
+    <mat-tab label="Non justifiées"></mat-tab>
+    <mat-tab label="En attente"></mat-tab>
+    <mat-tab label="Justifiées"></mat-tab>
+    <mat-tab label="Examens"></mat-tab>
+  </mat-tab-group>
+
+  <!-- Filtres -->
+  <div class="filters-bar">
+    <mat-form-field appearance="outline" class="search-field">
+      <mat-label>Rechercher un apprenant</mat-label>
+      <input matInput [(ngModel)]="searchQuery"
+             placeholder="Nom, prénom...">
+      <mat-icon matPrefix>search</mat-icon>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Date début</mat-label>
+      <input matInput type="date" [(ngModel)]="filterDateDebut"
+             (ngModelChange)="onFilter()">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Date fin</mat-label>
+      <input matInput type="date" [(ngModel)]="filterDateFin"
+             (ngModelChange)="onFilter()">
+    </mat-form-field>
+  </div>
+
+  @if (state.loading()) {
+    <div class="loading-container"><mat-spinner diameter="48"></mat-spinner></div>
+  }
+
+  @if (state.error()) {
+    <div class="error-banner">
+      <mat-icon>error_outline</mat-icon>
+      <span>{{ state.error() }}</span>
+      <button mat-icon-button (click)="state.clearError()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  }
+
+  <!-- Table -->
+  @if (!state.loading()) {
+    <div class="table-container mat-elevation-z2">
+      <table mat-table [dataSource]="state.absences()">
+
+        <!-- Apprenant -->
+        <ng-container matColumnDef="apprenant">
+          <th mat-header-cell *matHeaderCellDef>Apprenant</th>
+          <td mat-cell *matCellDef="let a">
+            <div class="apprenant-cell">
+              <div class="avatar-sm">
+                {{ a.apprenant?.prenom?.[0] }}{{ a.apprenant?.nom?.[0] }}
+              </div>
+              <div>
+                <div class="apprenant-nom">
+                  {{ a.apprenant?.prenom }} {{ a.apprenant?.nom }}
+                </div>
+                <div class="apprenant-num">{{ a.apprenant?.numeroInscription }}</div>
+              </div>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Date & Matière -->
+        <ng-container matColumnDef="seance">
+          <th mat-header-cell *matHeaderCellDef>Séance</th>
+          <td mat-cell *matCellDef="let a">
+            <div class="seance-cell">
+              <div class="seance-date">{{ a.date | date:'EEE d MMM' }}</div>
+              <div class="seance-horaire">
+                {{ a.heureDebut }} – {{ a.heureFin }}
+              </div>
+              <div class="seance-mat">{{ a.matiereLibelle }}</div>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Durée -->
+        <ng-container matColumnDef="duree">
+          <th mat-header-cell *matHeaderCellDef>Durée</th>
+          <td mat-cell *matCellDef="let a">
+            <span class="duree-val">{{ a.dureeHeures }}h</span>
+            @if (a.estExamen) {
+              <mat-chip class="chip-examen">Examen</mat-chip>
+            }
+          </td>
+        </ng-container>
+
+        <!-- Statut -->
+        <ng-container matColumnDef="statut">
+          <th mat-header-cell *matHeaderCellDef>Statut</th>
+          <td mat-cell *matCellDef="let a">
+            <mat-chip [class]="'chip-abs chip-abs-' + a.statut">
+              {{ statutLabel(a.statut) }}
+            </mat-chip>
+            @if (a.impactNote) {
+              <mat-chip class="chip-note0" matTooltip="Note 0 appliquée">
+                <mat-icon>grade</mat-icon> Note 0
+              </mat-chip>
+            }
+          </td>
+        </ng-container>
+
+        <!-- Notification parent -->
+        <ng-container matColumnDef="notification">
+          <th mat-header-cell *matHeaderCellDef>Notification</th>
+          <td mat-cell *matCellDef="let a">
+            @if (a.notifieeParent) {
+              <mat-chip class="chip-notif-ok">
+                <mat-icon>notifications_active</mat-icon> Envoyée
+              </mat-chip>
+            } @else {
+              <button mat-stroked-button
+                      (click)="notifierParent(a); $event.stopPropagation()"
+                      class="btn-notif">
+                <mat-icon>send</mat-icon> Notifier
+              </button>
+            }
+          </td>
+        </ng-container>
+
+        <!-- Actions -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let a">
+            <div class="actions-cell">
+              @if (a.statut === 'non_justifiee') {
+                <button mat-icon-button
+                        (click)="ouvrirJustificatif(a); $event.stopPropagation()"
+                        matTooltip="Soumettre justificatif">
+                  <mat-icon>attach_file</mat-icon>
+                </button>
+              }
+              @if (a.statut === 'en_attente') {
+                <button mat-icon-button color="primary"
+                        (click)="ouvrirValidation(a); $event.stopPropagation()"
+                        matTooltip="Valider le justificatif">
+                  <mat-icon>fact_check</mat-icon>
+                </button>
+              }
+              @if (a.justificatif?.fichierUrl) {
+                <button mat-icon-button
+                        (click)="voirJustificatif(a.justificatif!.fichierUrl!); $event.stopPropagation()"
+                        matTooltip="Voir le justificatif">
+                  <mat-icon>open_in_new</mat-icon>
+                </button>
+              }
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+            class="table-row"></tr>
+
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell no-data" [attr.colspan]="displayedColumns.length">
+            <mat-icon>event_available</mat-icon>
+            <p>Aucune absence trouvée</p>
+          </td>
+        </tr>
+      </table>
+
+      <mat-paginator
+        [length]="state.total()"
+        [pageSize]="state.limit()"
+        [pageSizeOptions]="[10, 20, 50]"
+        (page)="onPageChange($event)"
+        showFirstLastButtons>
+      </mat-paginator>
+    </div>
+  }
+</div>
+  

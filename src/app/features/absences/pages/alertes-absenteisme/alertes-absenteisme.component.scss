@@ -1,0 +1,40 @@
+.page-container { padding: 24px; max-width: 1200px; margin: 0 auto; }
+.page-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; }
+.header-left { display: flex; align-items: flex-start; gap: 8px; }
+.back-btn { min-width: 40px; margin-top: 4px; }
+.page-title { margin: 0; font-size: 22px; font-weight: 600; }
+.page-sub { margin: 4px 0 0; font-size: 13px; color: #757575; }
+.header-actions { display: flex; align-items: flex-end; gap: 8px; }
+.seuil-field { width: 160px; }
+
+.alerte-globale { display: flex; align-items: center; gap: 12px; background: #fff3e0; border: 1px solid #ffcc80; padding: 14px 18px; border-radius: 8px; margin-bottom: 20px; color: #e65100; font-size: 14px; }
+.alerte-globale mat-icon { font-size: 24px; color: #e65100; }
+.ok-globale { display: flex; align-items: center; gap: 10px; background: #e8f5e9; padding: 14px 18px; border-radius: 8px; margin-bottom: 20px; color: #2e7d32; font-size: 14px; }
+.ok-globale mat-icon { color: #2e7d32; }
+.loading-container { display: flex; justify-content: center; padding: 40px; }
+.table-container { border-radius: 8px; overflow: hidden; margin-bottom: 24px; }
+
+.apprenant-cell { display: flex; align-items: center; gap: 10px; }
+.avatar-sm { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; }
+.alert-avatar { background: #fdecea; color: #c62828; }
+.apprenant-nom { font-weight: 500; }
+.h-val { font-weight: 600; font-size: 14px; }
+.h-danger { color: #c62828; }
+.taux-cell { display: flex; flex-direction: column; gap: 4px; min-width: 120px; }
+.taux-bar { height: 6px; border-radius: 3px; }
+.taux-ok   { color: #2e7d32; font-weight: 600; }
+.taux-warn { color: #e65100; font-weight: 600; }
+.taux-danger { color: #c62828; font-weight: 700; }
+.chip-examen-alerte { background: #fdecea !important; color: #c62828 !important; font-size: 11px !important; }
+.chip-examen-alerte mat-icon { font-size: 12px !important; }
+.cell-ok { color: #9e9e9e; font-size: 12px; }
+.btn-detail { font-size: 12px; }
+.alerte-row { background: #fff8f5; }
+.no-data { text-align: center; padding: 40px !important; color: #9e9e9e; }
+.no-data mat-icon { font-size: 40px; width: 40px; height: 40px; display: block; margin: 0 auto 8px; }
+
+.matieres-section h3 { font-size: 16px; font-weight: 600; margin-bottom: 16px; }
+.matieres-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+.matiere-card { border: 1px solid #e0e0e0; }
+.matiere-alerte { border-color: #ffb74d; }
+  

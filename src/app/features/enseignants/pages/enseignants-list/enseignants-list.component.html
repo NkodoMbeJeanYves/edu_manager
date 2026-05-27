@@ -1,0 +1,229 @@
+<div class="page-container">
+
+  <!-- En-tête -->
+  <div class="page-header">
+    <div class="header-left">
+      <h1 class="page-title">Enseignants</h1>
+      <span class="total-badge">{{ state.total() }} enseignant(s)</span>
+    </div>
+    <button mat-raised-button color="primary" (click)="openCreateDialog()">
+      <mat-icon>person_add</mat-icon> Nouvel enseignant
+    </button>
+  </div>
+
+  <!-- Stats rapides -->
+  @if (state.stats(); as stats) {
+    <div class="stats-row">
+      <mat-card class="stat-card stat-actif">
+        <div class="stat-v">{{ stats.actifs }}</div>
+        <div class="stat-l">Actifs</div>
+      </mat-card>
+      <mat-card class="stat-card">
+        <div class="stat-v">{{ stats.titulaires }}</div>
+        <div class="stat-l">Titulaires</div>
+      </mat-card>
+      <mat-card class="stat-card stat-vac">
+        <div class="stat-v">{{ stats.vacataires }}</div>
+        <div class="stat-l">Vacataires</div>
+      </mat-card>
+      @if (state.enseignantsEnSurcharge().length > 0) {
+        <mat-card class="stat-card stat-warn">
+          <div class="stat-v">{{ state.enseignantsEnSurcharge().length }}</div>
+          <div class="stat-l">En surcharge</div>
+        </mat-card>
+      }
+    </div>
+  }
+
+  <!-- Filtres -->
+  <div class="filters-bar">
+    <mat-form-field appearance="outline" class="search-field">
+      <mat-label>Rechercher</mat-label>
+      <input matInput [(ngModel)]="searchQuery" (ngModelChange)="onFilter()"
+             placeholder="Nom, prénom, matricule...">
+      <mat-icon matPrefix>search</mat-icon>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Statut</mat-label>
+      <mat-select [(ngModel)]="filterStatut" (ngModelChange)="onFilter()">
+        <mat-option value="">Tous</mat-option>
+        <mat-option value="actif">Actif</mat-option>
+        <mat-option value="inactif">Inactif</mat-option>
+        <mat-option value="suspendu">Suspendu</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Contrat</mat-label>
+      <mat-select [(ngModel)]="filterContrat" (ngModelChange)="onFilter()">
+        <mat-option value="">Tous</mat-option>
+        <mat-option value="titulaire">Titulaire</mat-option>
+        <mat-option value="vacataire">Vacataire</mat-option>
+        <mat-option value="contractuel">Contractuel</mat-option>
+        <mat-option value="fonctionnaire">Fonctionnaire</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  @if (state.loading()) {
+    <div class="loading-container"><mat-spinner diameter="48"></mat-spinner></div>
+  }
+
+  @if (state.error()) {
+    <div class="error-banner">
+      <mat-icon>error_outline</mat-icon>
+      <span>{{ state.error() }}</span>
+      <button mat-icon-button (click)="state.clearError()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  }
+
+  <!-- Table -->
+  @if (!state.loading()) {
+    <div class="table-container mat-elevation-z2">
+      <table mat-table [dataSource]="state.enseignants()">
+
+        <!-- Enseignant -->
+        <ng-container matColumnDef="enseignant">
+          <th mat-header-cell *matHeaderCellDef>Enseignant</th>
+          <td mat-cell *matCellDef="let e">
+            <div class="ens-cell">
+              <div class="avatar-ens" [class]="'avatar-' + e.genre">
+                @if (e.photoUrl) {
+                  <img [src]="e.photoUrl" [alt]="e.prenom">
+                } @else {
+                  {{ e.prenom[0] }}{{ e.nom[0] }}
+                }
+              </div>
+              <div>
+                <div class="ens-nom">{{ e.prenom }} {{ e.nom }}</div>
+                <div class="ens-meta">
+                  <span class="matricule">{{ e.matricule }}</span>
+                  <span class="ens-email">{{ e.email }}</span>
+                </div>
+              </div>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Contrat & Spécialité -->
+        <ng-container matColumnDef="contrat">
+          <th mat-header-cell *matHeaderCellDef>Contrat</th>
+          <td mat-cell *matCellDef="let e">
+            <mat-chip [class]="'chip-contrat chip-' + e.typeContrat">
+              {{ contratLabel(e.typeContrat) }}
+            </mat-chip>
+            @if (e.niveauDiplome) {
+              <div class="diplome-label">{{ diplomeLabel(e.niveauDiplome) }}</div>
+            }
+          </td>
+        </ng-container>
+
+        <!-- Matières -->
+        <ng-container matColumnDef="matieres">
+          <th mat-header-cell *matHeaderCellDef>Matières</th>
+          <td mat-cell *matCellDef="let e">
+            <div class="matieres-chips">
+              @for (m of e.matieres?.slice(0, 3); track m.id) {
+                <span class="mat-chip-sm">{{ m.code }}</span>
+              }
+              @if ((e.matieres?.length ?? 0) > 3) {
+                <span class="mat-more">+{{ (e.matieres?.length ?? 0) - 3 }}</span>
+              }
+              @if (!e.matieres?.length) {
+                <span class="cell-secondary">Aucune</span>
+              }
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Charge horaire -->
+        <ng-container matColumnDef="charge">
+          <th mat-header-cell *matHeaderCellDef>Charge horaire</th>
+          <td mat-cell *matCellDef="let e">
+            @if (e.chargeHoraireMax) {
+              <div class="charge-cell">
+                <span class="charge-val"
+                      [class.charge-ok]="(e.chargeHoraireReelle ?? 0) <= e.chargeHoraireMax"
+                      [class.charge-warn]="(e.chargeHoraireReelle ?? 0) > e.chargeHoraireMax">
+                  {{ e.chargeHoraireReelle ?? 0 }}h / {{ e.chargeHoraireMax }}h
+                </span>
+                <mat-progress-bar
+                  mode="determinate"
+                  [value]="((e.chargeHoraireReelle ?? 0) / e.chargeHoraireMax) * 100"
+                  [color]="(e.chargeHoraireReelle ?? 0) > e.chargeHoraireMax ? 'warn' : 'primary'">
+                </mat-progress-bar>
+              </div>
+            } @else {
+              <span class="cell-secondary">—</span>
+            }
+          </td>
+        </ng-container>
+
+        <!-- Statut -->
+        <ng-container matColumnDef="statut">
+          <th mat-header-cell *matHeaderCellDef>Statut</th>
+          <td mat-cell *matCellDef="let e">
+            <mat-chip [class]="'chip-statut-ens chip-' + e.statut">
+              {{ statutLabel(e.statut) }}
+            </mat-chip>
+          </td>
+        </ng-container>
+
+        <!-- Actions -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let e">
+            <div class="actions-cell">
+              <button mat-icon-button [routerLink]="[e.id]"
+                      matTooltip="Voir le dossier">
+                <mat-icon>person</mat-icon>
+              </button>
+              <button mat-icon-button
+                      (click)="openAffectationDialog(e); $event.stopPropagation()"
+                      matTooltip="Gérer les affectations matières">
+                <mat-icon>book</mat-icon>
+              </button>
+              <button mat-icon-button [matMenuTriggerFor]="menu"
+                      (click)="$event.stopPropagation()">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="openEditDialog(e)">
+                  <mat-icon>edit</mat-icon> Modifier
+                </button>
+                <button mat-menu-item (click)="toggleStatut(e)">
+                  <mat-icon>{{ e.statut === 'actif' ? 'pause' : 'play_arrow' }}</mat-icon>
+                  {{ e.statut === 'actif' ? 'Désactiver' : 'Activer' }}
+                </button>
+                <mat-divider></mat-divider>
+                <button mat-menu-item class="menu-delete" (click)="confirmDelete(e)">
+                  <mat-icon>delete</mat-icon> Supprimer
+                </button>
+              </mat-menu>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="cols"></tr>
+        <tr mat-row *matRowDef="let row; columns: cols;"
+            class="table-row" [routerLink]="[row.id]"></tr>
+
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell no-data" [attr.colspan]="cols.length">
+            <mat-icon>school</mat-icon>
+            <p>Aucun enseignant trouvé</p>
+          </td>
+        </tr>
+      </table>
+
+      <mat-paginator
+        [length]="state.total()"
+        [pageSize]="state.limit()"
+        [pageSizeOptions]="[10, 20, 50]"
+        (page)="onPageChange($event)"
+        showFirstLastButtons>
+      </mat-paginator>
+    </div>
+  }
+</div>

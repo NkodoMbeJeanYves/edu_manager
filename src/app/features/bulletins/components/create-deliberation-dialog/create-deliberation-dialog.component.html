@@ -1,0 +1,63 @@
+<h2 mat-dialog-title>
+  <mat-icon>gavel</mat-icon> Nouvelle délibération
+</h2>
+<mat-dialog-content>
+  <form [formGroup]="form" class="form-grid">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Établissement (ID) *</mat-label>
+      <input matInput formControlName="etablissementId">
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Année académique (ID) *</mat-label>
+      <input matInput formControlName="anneeAcademiqueId">
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Période (ID) *</mat-label>
+      <input matInput formControlName="periodeId">
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Classe / Promotion (ID) *</mat-label>
+      <input matInput formControlName="classeOuPromotionId">
+    </mat-form-field>
+    <div class="form-row">
+      <mat-form-field appearance="outline">
+        <mat-label>Type *</mat-label>
+        <mat-select formControlName="type">
+          <mat-option value="conseil_classe">Conseil de classe</mat-option>
+          <mat-option value="jury_universitaire">Jury universitaire</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Session</mat-label>
+        <mat-select formControlName="session">
+          <mat-option value="">—</mat-option>
+          <mat-option value="S1">Session 1</mat-option>
+          <mat-option value="S2">Session 2 (rattrapage)</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Date de délibération</mat-label>
+      <input matInput [matDatepicker]="dp" formControlName="dateDeliberation">
+      <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+      <mat-datepicker #dp></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Président du jury / Prof. principal</mat-label>
+      <input matInput formControlName="president">
+    </mat-form-field>
+    @if (form.get('type')?.value === 'jury_universitaire') {
+      <mat-checkbox formControlName="compensationActivee">
+        Activer la compensation inter-UE
+      </mat-checkbox>
+    }
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Annuler</button>
+  <button mat-raised-button color="primary"
+          (click)="submit()" [disabled]="form.invalid">
+    <mat-icon>add</mat-icon> Créer
+  </button>
+</mat-dialog-actions>
+  

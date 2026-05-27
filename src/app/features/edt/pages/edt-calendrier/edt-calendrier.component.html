@@ -1,0 +1,165 @@
+<div class="page-container">
+
+  <div class="edt-header">
+    <div class="header-left">
+      <h1 class="page-title">Emplois du temps</h1>
+    </div>
+
+    <div class="vue-selector">
+      <mat-form-field appearance="outline" class="select-vue">
+        <mat-label>Vue</mat-label>
+        <mat-select [(ngModel)]="vueMode" (ngModelChange)="onVueChange()">
+          <mat-option value="classe">Par classe</mat-option>
+          <mat-option value="enseignant">Par enseignant</mat-option>
+          <mat-option value="salle">Par salle</mat-option>
+          <mat-option value="promotion">Par promotion</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="select-entity">
+        <mat-label>{{ entityLabel() }}</mat-label>
+        <input matInput [(ngModel)]="entityId"
+               (ngModelChange)="onEntityChange()"
+               placeholder="ID ou sélectionner...">
+        <mat-hint>Sera remplacé par sélecteur dynamique</mat-hint>
+      </mat-form-field>
+    </div>
+
+    <div class="nav-semaine">
+      <button mat-icon-button (click)="semainePrecedente()" matTooltip="Semaine précédente">
+        <mat-icon>chevron_left</mat-icon>
+      </button>
+      <div class="semaine-label">
+        <span class="semaine-range">{{ semaineLabel() }}</span>
+        <button mat-button (click)="semaineAujourdhui()">Aujourd'hui</button>
+      </div>
+      <button mat-icon-button (click)="semaineSuivante()" matTooltip="Semaine suivante">
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+    </div>
+
+    <div class="header-actions">
+      @if (state.aConflits()) {
+        <button mat-raised-button color="warn"
+                (click)="ouvrirConflits()"
+                [matBadge]="state.conflits().length"
+                matBadgeColor="warn">
+          <mat-icon>warning</mat-icon> Conflits
+        </button>
+      }
+      <button mat-raised-button color="primary" (click)="openSeanceDialog()">
+        <mat-icon>add</mat-icon> Ajouter une séance
+      </button>
+      <button mat-icon-button [matMenuTriggerFor]="actionsMenu" matTooltip="Plus d'actions">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #actionsMenu="matMenu">
+        <button mat-menu-item [routerLink]="['cours-planifies']">
+          <mat-icon>repeat</mat-icon> Cours récurrents
+        </button>
+        <button mat-menu-item [routerLink]="['creneaux']">
+          <mat-icon>schedule</mat-icon> Créneaux horaires
+        </button>
+        <button mat-menu-item [routerLink]="['couverture']">
+          <mat-icon>analytics</mat-icon> Couverture programme
+        </button>
+      </mat-menu>
+    </div>
+  </div>
+
+  @if (state.loadingCalendrier()) {
+    <div class="loading-container"><mat-spinner diameter="48"></mat-spinner></div>
+  }
+
+  @if (state.error()) {
+    <div class="error-banner">
+      <mat-icon>error_outline</mat-icon>
+      <span>{{ state.error() }}</span>
+      <button mat-icon-button (click)="state.clearError()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  }
+
+  @if (!state.loadingCalendrier()) {
+    <div class="calendrier-wrapper">
+      <div class="calendrier-grid">
+
+        <div class="grid-header">
+          <div class="time-col-header"></div>
+          @for (jour of joursAffichage(); track jour.date) {
+            <div class="jour-header"
+                 [class.jour-today]="isToday(jour.date)">
+              <div class="jour-nom">{{ jour.nom }}</div>
+              <div class="jour-date">{{ jour.date | date:'d MMM' }}</div>
+            </div>
+          }
+        </div>
+
+        <div class="grid-body">
+          <div class="time-col">
+            @for (heure of heuresAffichage; track heure) {
+              <div class="time-slot-label">{{ heure }}</div>
+            }
+          </div>
+
+          @for (jour of joursAffichage(); track jour.date) {
+            <div class="jour-col"
+                 [class.jour-col-today]="isToday(jour.date)"
+                 (click)="onSlotClick(jour.date, $event)">
+
+              @for (heure of heuresAffichage; track heure) {
+                <div class="heure-ligne"></div>
+              }
+
+              @for (event of getEventsJour(jour.date); track event.id) {
+                <div class="event-card"
+                     [style.top.px]="getEventTop(event)"
+                     [style.height.px]="getEventHeight(event)"
+                     [style.background]="event.couleur || getCouleurType(event.typeCours)"
+                     [class]="'event-statut-' + event.statut"
+                     [matTooltip]="event.titre + ' — ' + event.salle"
+                     (click)="openSeanceDetail(event); $event.stopPropagation()">
+                  <div class="event-titre">{{ event.titre }}</div>
+                  @if (event.sous_titre) {
+                    <div class="event-sous">{{ event.sous_titre }}</div>
+                  }
+                  <div class="event-heure">
+                    {{ event.heureDebut }} – {{ event.heureFin }}
+                  </div>
+                  @if (event.salle) {
+                    <div class="event-salle">
+                      <mat-icon>room</mat-icon>{{ event.salle }}
+                    </div>
+                  }
+                  @if (event.statut === 'annulee') {
+                    <div class="event-annule-overlay">ANNULÉE</div>
+                  }
+                </div>
+              }
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+
+    <div class="legende">
+      <div class="legende-item">
+        <div class="legende-dot" style="background: #42a5f5"></div><span>CM</span>
+      </div>
+      <div class="legende-item">
+        <div class="legende-dot" style="background: #66bb6a"></div><span>TD</span>
+      </div>
+      <div class="legende-item">
+        <div class="legende-dot" style="background: #ff7043"></div><span>TP</span>
+      </div>
+      <div class="legende-item">
+        <div class="legende-dot" style="background: #ab47bc"></div><span>Examen</span>
+      </div>
+      <div class="legende-item">
+        <div class="legende-dot legende-annule"></div><span>Annulée</span>
+      </div>
+    </div>
+  }
+</div>
+  

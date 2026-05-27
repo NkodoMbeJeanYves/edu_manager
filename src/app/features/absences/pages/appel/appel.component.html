@@ -1,0 +1,170 @@
+<div class="page-container">
+  <div class="appel-header">
+    <button mat-button routerLink="/absences" class="back-btn">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <div class="seance-info">
+      @if (state.feuillePresence(); as feuille) {
+        <h2>{{ feuille.matiereLibelle }}</h2>
+        <div class="seance-meta">
+          <span><mat-icon>person</mat-icon> {{ feuille.enseignantNom }}</span>
+          <span><mat-icon>class</mat-icon> {{ feuille.classeOuGroupeLibelle }}</span>
+          <span><mat-icon>schedule</mat-icon> {{ feuille.heureDebut }} – {{ feuille.heureFin }}</span>
+          <span><mat-icon>event</mat-icon> {{ feuille.date | date:'EEE d MMMM yyyy' }}</span>
+        </div>
+      }
+    </div>
+
+    <!-- Compteurs temps réel -->
+    <div class="compteurs">
+      <div class="compteur compteur-present">
+        <span class="compteur-val">{{ state.presentsCount() }}</span>
+        <span class="compteur-label">Présents</span>
+      </div>
+      <div class="compteur compteur-absent">
+        <span class="compteur-val">{{ state.absentsCount() }}</span>
+        <span class="compteur-label">Absents</span>
+      </div>
+      <div class="compteur compteur-retard">
+        <span class="compteur-val">{{ retardsCount() }}</span>
+        <span class="compteur-label">Retards</span>
+      </div>
+      <div class="compteur compteur-total">
+        <span class="compteur-val">{{ lignes.length }}</span>
+        <span class="compteur-label">Total</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Barre de progression -->
+  <mat-progress-bar
+    mode="determinate"
+    [value]="progression()"
+    [color]="progression() === 100 ? 'accent' : 'primary'"
+    class="prog-bar">
+  </mat-progress-bar>
+  <div class="prog-label">
+    {{ progression() }}% de l'appel complété
+    @if (progression() === 100) {
+      <mat-icon class="check-icon">check_circle</mat-icon>
+    }
+  </div>
+
+  @if (state.loadingFeuille()) {
+    <div class="loading-container"><mat-spinner diameter="48"></mat-spinner></div>
+  }
+
+  <!-- Actions groupées -->
+  <div class="actions-groupees">
+    <button mat-stroked-button (click)="tousPresents()">
+      <mat-icon>done_all</mat-icon> Tous présents
+    </button>
+    <button mat-stroked-button color="warn" (click)="tousAbsents()">
+      <mat-icon>do_not_disturb</mat-icon> Tous absents
+    </button>
+    <div class="spacer"></div>
+    @if (lignesModifiees().length > 0) {
+      <span class="modif-indicator">
+        <mat-icon>pending</mat-icon>
+        {{ lignesModifiees().length }} modification(s) non sauvegardée(s)
+      </span>
+    }
+    <button mat-raised-button color="primary"
+            (click)="sauvegarder()"
+            [disabled]="lignesModifiees().length === 0 || state.loadingFeuille()">
+      <mat-icon>save</mat-icon> Sauvegarder l'appel
+    </button>
+  </div>
+
+  <!-- Grille d'appel -->
+  @if (!state.loadingFeuille()) {
+    <div class="grille-appel mat-elevation-z2">
+      <table class="appel-table">
+        <thead>
+          <tr>
+            <th class="th-rang">#</th>
+            <th class="th-apprenant">Apprenant</th>
+            <th class="th-statut">Statut</th>
+            <th class="th-retard">Retard (min.)</th>
+            <th class="th-remarque">Remarque</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (ligne of lignes; track ligne.apprenantId; let i = $index) {
+            <tr [class]="'ligne-' + ligne.statut"
+                [class.ligne-modifiee]="ligne.modifie">
+              <td class="td-rang">{{ i + 1 }}</td>
+              <td class="td-apprenant">
+                <div class="apprenant-row">
+                  <div class="avatar-xs"
+                       [class]="'avatar-' + (i % 2 === 0 ? 'masc' : 'fem')">
+                    {{ ligne.prenom[0] }}{{ ligne.nom[0] }}
+                  </div>
+                  <div>
+                    <div class="apprenant-nom">{{ ligne.prenom }} {{ ligne.nom }}</div>
+                    <div class="apprenant-num">{{ ligne.numeroInscription }}</div>
+                  </div>
+                </div>
+              </td>
+              <td class="td-statut">
+                <div class="statut-btns">
+                  <button class="statut-btn"
+                          [class.active-present]="ligne.statut === 'present'"
+                          (click)="setStatut(ligne, 'present')"
+                          matTooltip="Présent">
+                    <mat-icon>check</mat-icon>
+                  </button>
+                  <button class="statut-btn"
+                          [class.active-absent]="ligne.statut === 'absent'"
+                          (click)="setStatut(ligne, 'absent')"
+                          matTooltip="Absent">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                  <button class="statut-btn"
+                          [class.active-retard]="ligne.statut === 'retard'"
+                          (click)="setStatut(ligne, 'retard')"
+                          matTooltip="En retard">
+                    <mat-icon>schedule</mat-icon>
+                  </button>
+                  <button class="statut-btn"
+                          [class.active-dispense]="ligne.statut === 'dispense'"
+                          (click)="setStatut(ligne, 'dispense')"
+                          matTooltip="Dispensé">
+                    <mat-icon>medical_services</mat-icon>
+                  </button>
+                </div>
+              </td>
+              <td class="td-retard">
+                @if (ligne.statut === 'retard') {
+                  <input type="number" class="retard-input"
+                         [(ngModel)]="ligne.minutesRetard"
+                         (ngModelChange)="ligne.modifie = true"
+                         min="1" max="90" placeholder="min.">
+                } @else {
+                  <span class="cell-na">—</span>
+                }
+              </td>
+              <td class="td-remarque">
+                <input type="text" class="remarque-input"
+                       [(ngModel)]="ligne.remarque"
+                       (ngModelChange)="ligne.modifie = true"
+                       placeholder="Facultatif...">
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+
+  @if (state.error()) {
+    <div class="error-banner">
+      <mat-icon>error_outline</mat-icon>
+      <span>{{ state.error() }}</span>
+      <button mat-icon-button (click)="state.clearError()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  }
+</div>
+  

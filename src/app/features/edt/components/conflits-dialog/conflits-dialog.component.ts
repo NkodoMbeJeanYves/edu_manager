@@ -13,51 +13,8 @@ import { ConflitEDT } from '../../../../core/models/edt.models';
   standalone: true,
   imports: [CommonModule, MatDialogModule, MatButtonModule,
     MatIconModule, MatChipsModule, MatListModule, MatDividerModule],
-  template: `
-    <h2 mat-dialog-title>
-      <mat-icon color="warn">warning</mat-icon>
-      Conflits détectés ({{ data.conflits.length }})
-    </h2>
-    <mat-dialog-content>
-      <mat-list>
-        @for (conflit of data.conflits; track $index) {
-          <mat-list-item>
-            <mat-icon matListItemIcon color="warn">
-              {{ conflitIcon(conflit.type) }}
-            </mat-icon>
-            <div matListItemTitle>{{ conflitLabel(conflit.type) }}</div>
-            <div matListItemLine>{{ conflit.message }}</div>
-          </mat-list-item>
-
-          @if (conflit.sallesAlternatives?.length) {
-            <div class="alternatives">
-              <span class="alt-label">Salles disponibles :</span>
-              @for (salle of conflit.sallesAlternatives; track salle.id) {
-                <mat-chip class="chip-salle-alt">
-                  {{ salle.code }} ({{ salle.capacite }} places)
-                </mat-chip>
-              }
-            </div>
-          }
-          <mat-divider></mat-divider>
-        }
-      </mat-list>
-    </mat-dialog-content>
-    <mat-dialog-actions align="end">
-      <button mat-button mat-dialog-close>Fermer</button>
-      <button mat-raised-button color="warn"
-              (click)="dialogRef.close('forcer')">
-        <mat-icon>warning</mat-icon> Forcer la création
-      </button>
-    </mat-dialog-actions>
-  `,
-  styles: [`
-    mat-dialog-content { min-width: 480px; }
-    h2 mat-icon { vertical-align: middle; margin-right: 8px; }
-    .alternatives { padding: 6px 16px 10px 56px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-    .alt-label { font-size: 12px; color: #555; }
-    .chip-salle-alt { background: #e8f5e9 !important; color: #2e7d32 !important; font-size: 11px !important; }
-  `]
+  templateUrl: './conflits-dialog.component.html',
+  styleUrl: './conflits-dialog.component.scss'
 })
 export class ConflitsDialogComponent {
   readonly dialogRef = inject(MatDialogRef<ConflitsDialogComponent>);

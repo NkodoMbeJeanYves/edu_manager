@@ -1,0 +1,33 @@
+<h2 mat-dialog-title>
+  <mat-icon>{{ data.niveau ? 'edit' : 'add' }}</mat-icon>
+  {{ data.niveau ? 'Modifier le niveau' : 'Nouveau niveau' }}
+  <span class="filiere-badge">{{ data.filiere.libelle }}</span>
+</h2>
+<mat-dialog-content>
+  <form [formGroup]="form" class="form-grid">
+    <div class="form-row">
+      <mat-form-field appearance="outline">
+        <mat-label>Code *</mat-label>
+        <input matInput formControlName="code"
+               [placeholder]="data.filiere.cycle?.typeFormation === 'universitaire' ? 'Ex: L1, M2' : 'Ex: 6EME, TLE'">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Libellé *</mat-label>
+        <input matInput formControlName="libelle"
+               [placeholder]="data.filiere.cycle?.typeFormation === 'universitaire' ? 'Ex: Licence 1' : 'Ex: 6ème'">
+      </mat-form-field>
+    </div>
+    <mat-form-field appearance="outline" class="half-width">
+      <mat-label>Ordre dans la filière *</mat-label>
+      <input matInput formControlName="ordre" type="number" min="1">
+      <mat-hint>1 = premier niveau</mat-hint>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Annuler</button>
+  <button mat-raised-button color="primary" (click)="submit()" [disabled]="form.invalid">
+    {{ data.niveau ? 'Enregistrer' : 'Créer' }}
+  </button>
+</mat-dialog-actions>
+  

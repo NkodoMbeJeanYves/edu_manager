@@ -1,0 +1,159 @@
+<h2 mat-dialog-title>
+  <mat-icon>{{ data.type === 'nouvelle' ? 'assignment_ind' : 'autorenew' }}</mat-icon>
+  {{ data.type === 'nouvelle' ? 'Nouvelle inscription' : 'Réinscription' }}
+</h2>
+
+<mat-dialog-content class="dialog-content">
+  <mat-stepper [linear]="true" #stepper>
+
+    <!-- Étape 1 : Sélection de l'apprenant -->
+    <mat-step [stepControl]="apprenantForm" label="Apprenant">
+      <form [formGroup]="apprenantForm" class="form-grid">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Rechercher un apprenant *</mat-label>
+          <input matInput formControlName="search"
+                 (input)="onSearchApprenant($event)"
+                 placeholder="Nom, prénom ou numéro...">
+          <mat-icon matPrefix>search</mat-icon>
+        </mat-form-field>
+
+        @if (apprenantState.loading()) {
+          <mat-spinner diameter="24" class="inline-spinner"></mat-spinner>
+        }
+
+        <div class="apprenants-results">
+          @for (a of apprenantState.apprenants(); track a.id) {
+            <div class="apprenant-item"
+                 [class.selected]="apprenantForm.get('apprenantId')?.value === a.id"
+                 (click)="selectApprenant(a.id)">
+              <div class="avatar-sm">{{ a.prenom[0] }}{{ a.nom[0] }}</div>
+              <div>
+                <div class="apprenant-nom">{{ a.prenom }} {{ a.nom }}</div>
+                <div class="apprenant-sub">{{ a.numeroInscription }} · {{ a.type === 'eleve' ? 'Élève' : 'Étudiant' }}</div>
+              </div>
+              @if (apprenantForm.get('apprenantId')?.value === a.id) {
+                <mat-icon class="check-icon">check_circle</mat-icon>
+              }
+            </div>
+          }
+        </div>
+
+        @if (data.type === 'reinscription' && apprenantForm.get('apprenantId')?.value) {
+          @if (inscriptionState.loadingEligibilite()) {
+            <mat-spinner diameter="24" class="inline-spinner"></mat-spinner>
+          }
+          @if (inscriptionState.eligibilite(); as eligibilite) {
+            @if (eligibilite.eligible) {
+              <div class="eligibilite-ok">
+                <mat-icon>check_circle</mat-icon>
+                Éligible à la réinscription
+              </div>
+            } @else {
+              <div class="eligibilite-ko">
+                <mat-icon>cancel</mat-icon>
+                Non éligible — {{ eligibilite.blocages.join(' · ') }}
+              </div>
+            }
+          }
+        }
+
+        <div class="step-actions">
+          <button mat-raised-button color="primary" matStepperNext
+                  [disabled]="!apprenantForm.get('apprenantId')?.value ||
+                              (data.type === 'reinscription' && inscriptionState.peutEtreReinscrit() === false)">
+            Suivant <mat-icon>arrow_forward</mat-icon>
+          </button>
+        </div>
+      </form>
+    </mat-step>
+
+    <!-- Étape 2 : Année académique & établissement -->
+    <mat-step [stepControl]="anneeForm" label="Année académique">
+      <form [formGroup]="anneeForm" class="form-grid">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Établissement *</mat-label>
+          <mat-select formControlName="etablissementId"
+                      (selectionChange)="onEtablissementChange($event.value)">
+            @for (e of etablissementState.etablissements(); track e.id) {
+              <mat-option [value]="e.id">{{ e.nom }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Année académique *</mat-label>
+          <mat-select formControlName="anneeAcademiqueId">
+            @for (a of etablissementState.anneesAcademiques(); track a.id) {
+              <mat-option [value]="a.id">
+                {{ a.libelle }}
+                @if (a.active) { <span> (En cours)</span> }
+              </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Commentaire</mat-label>
+          <textarea matInput formControlName="commentaire" rows="3"
+                    placeholder="Informations complémentaires..."></textarea>
+        </mat-form-field>
+
+        <div class="step-actions">
+          <button mat-button matStepperPrevious>
+            <mat-icon>arrow_back</mat-icon> Précédent
+          </button>
+          <button mat-raised-button color="primary" matStepperNext
+                  [disabled]="anneeForm.invalid">
+            Suivant <mat-icon>arrow_forward</mat-icon>
+          </button>
+        </div>
+      </form>
+    </mat-step>
+
+    <!-- Étape 3 : Récapitulatif -->
+    <mat-step label="Confirmation">
+      <div class="recapitulatif">
+        <h3>Récapitulatif de l'inscription</h3>
+        <div class="recap-item">
+          <span class="recap-label">Type</span>
+          <mat-chip [class]="'chip-' + data.type">
+            {{ data.type === 'nouvelle' ? 'Nouvelle inscription' : 'Réinscription' }}
+          </mat-chip>
+        </div>
+        <div class="recap-item">
+          <span class="recap-label">Apprenant</span>
+          <span>{{ apprenantSelectionne?.prenom }} {{ apprenantSelectionne?.nom }}</span>
+        </div>
+        <div class="recap-item">
+          <span class="recap-label">Établissement</span>
+          <span>{{ etablissementSelectionne }}</span>
+        </div>
+        <div class="recap-item">
+          <span class="recap-label">Année académique</span>
+          <span>{{ anneeSelectionnee }}</span>
+        </div>
+        @if (anneeForm.get('commentaire')?.value) {
+          <div class="recap-item">
+            <span class="recap-label">Commentaire</span>
+            <span>{{ anneeForm.get('commentaire')?.value }}</span>
+          </div>
+        }
+      </div>
+      <div class="step-actions">
+        <button mat-button matStepperPrevious>
+          <mat-icon>arrow_back</mat-icon> Précédent
+        </button>
+        <button mat-raised-button color="primary" (click)="submit()">
+          <mat-icon>check</mat-icon>
+          Créer l'inscription
+        </button>
+      </div>
+    </mat-step>
+
+  </mat-stepper>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Annuler</button>
+</mat-dialog-actions>
+  

@@ -1,0 +1,9 @@
+mat-dialog-content { min-width: 420px; }
+h2 { display: flex; align-items: center; gap: 8px; }
+h2 mat-icon { vertical-align: middle; }
+.filiere-badge { font-size: 13px; font-weight: 400; color: #757575; margin-left: 4px; }
+.form-grid { display: flex; flex-direction: column; gap: 8px; padding-top: 8px; }
+.form-row { display: flex; gap: 16px; }
+.form-row mat-form-field { flex: 1; }
+.half-width { width: 48%; }
+  

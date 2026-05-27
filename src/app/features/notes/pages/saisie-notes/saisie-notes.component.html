@@ -1,0 +1,222 @@
+<div class="page-container">
+  <button mat-button routerLink="/notes" class="back-btn">
+    <mat-icon>arrow_back</mat-icon> Retour aux évaluations
+  </button>
+
+  @if (state.loading()) {
+    <div class="loading-container"><mat-spinner diameter="48"></mat-spinner></div>
+  }
+
+  @if (state.selectedEvaluation(); as evaluation) {
+    <!-- En-tête évaluation -->
+    <div class="detail-header">
+      <div class="header-info">
+        <div class="header-chips">
+          <mat-chip [class]="'chip-type chip-' + evaluation.type">
+            {{ typeLabel(evaluation.type) }}
+          </mat-chip>
+          <mat-chip [class]="'chip-statut chip-' + evaluation.statut">
+            {{ statutLabel(evaluation.statut) }}
+          </mat-chip>
+        </div>
+        <h1>{{ evaluation.intitule }}</h1>
+        <div class="header-meta">
+          <span><mat-icon>book</mat-icon> {{ evaluation.matiereLibelle }}</span>
+          <span><mat-icon>class</mat-icon> {{ evaluation.classeLibelle ?? evaluation.promotionLibelle }}</span>
+          <span><mat-icon>event</mat-icon> {{ evaluation.dateEvaluation | date:'dd/MM/yyyy' }}</span>
+          <span><mat-icon>percent</mat-icon> Pondération : {{ evaluation.ponderation }}%</span>
+          <span><mat-icon>calculate</mat-icon> Coefficient : {{ evaluation.coefficient }}</span>
+        </div>
+      </div>
+
+      <!-- Progression -->
+      <div class="progression-bloc">
+        <div class="progression-label">
+          Saisie : <strong>{{ state.progressionSaisie() }}%</strong>
+          ({{ state.notesSaisies().length }} / {{ state.notes().length }})
+        </div>
+        <mat-progress-bar
+          mode="determinate"
+          [value]="state.progressionSaisie()"
+          [color]="state.progressionSaisie() === 100 ? 'accent' : 'primary'"
+          class="progression-bar">
+        </mat-progress-bar>
+      </div>
+    </div>
+
+    <!-- Statistiques rapides -->
+    @if (state.statistiques(); as stats) {
+      <div class="stats-inline">
+        <div class="stat-item">
+          <span class="stat-v">{{ stats.moyenne | number:'1.2-2' }}</span>
+          <span class="stat-l">Moyenne</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-v">{{ stats.noteMin }}</span>
+          <span class="stat-l">Min</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-v">{{ stats.noteMax }}</span>
+          <span class="stat-l">Max</span>
+        </div>
+        <div class="stat-item stat-reussite">
+          <span class="stat-v">{{ stats.tauxReussite }}%</span>
+          <span class="stat-l">Réussite</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-v">{{ stats.absents }}</span>
+          <span class="stat-l">Absents</span>
+        </div>
+      </div>
+    }
+
+    <!-- Actions globales -->
+    <div class="actions-bar">
+      @if (lignesModifiees().length > 0) {
+        <span class="modif-count">
+          <mat-icon>pending</mat-icon>
+          {{ lignesModifiees().length }} modification(s) non sauvegardée(s)
+        </span>
+      }
+      <div class="actions-right">
+        <button mat-stroked-button (click)="reinitialiser()"
+                [disabled]="lignesModifiees().length === 0">
+          <mat-icon>undo</mat-icon> Annuler les modifications
+        </button>
+        <button mat-stroked-button color="primary"
+                (click)="sauvegarder()"
+                [disabled]="lignesModifiees().length === 0">
+          <mat-icon>save</mat-icon> Sauvegarder
+        </button>
+        @if (evaluation.statut !== 'cloturee') {
+          <button mat-raised-button color="primary"
+                  (click)="soumettreNotes(evaluation.id)"
+                  [disabled]="state.progressionSaisie() < 100">
+            <mat-icon>send</mat-icon> Soumettre pour validation
+          </button>
+        }
+        @if (evaluation.statut === 'en_cours' && !state.tousNotesValides()) {
+          <button mat-raised-button color="accent"
+                  (click)="validerNotes(evaluation.id)">
+            <mat-icon>check_circle</mat-icon> Valider les notes
+          </button>
+        }
+        @if (state.tousNotesValides()) {
+          <button mat-raised-button color="accent"
+                  (click)="publierNotes(evaluation.id)">
+            <mat-icon>publish</mat-icon> Publier
+          </button>
+        }
+      </div>
+    </div>
+
+    <!-- Grille de saisie -->
+    @if (state.loadingNotes()) {
+      <div class="loading-container"><mat-spinner diameter="32"></mat-spinner></div>
+    } @else {
+      <div class="grille-container mat-elevation-z2">
+        <table class="grille-table">
+          <thead>
+            <tr>
+              <th class="th-rang">#</th>
+              <th class="th-apprenant">Apprenant</th>
+              <th class="th-note">Note / {{ evaluation.noteMax }}</th>
+              <th class="th-absent">Absent</th>
+              <th class="th-dispense">Dispensé</th>
+              <th class="th-commentaire">Commentaire</th>
+              <th class="th-statut">Statut</th>
+              <th class="th-actions"></th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (ligne of lignes; track ligne.apprenantId; let i = $index) {
+              <tr [class.ligne-absent]="ligne.absent"
+                  [class.ligne-dispense]="ligne.dispense"
+                  [class.ligne-modifiee]="ligne.modifie"
+                  [class.ligne-validee]="ligne.statut === 'validee' || ligne.statut === 'publiee'">
+
+                <td class="td-rang">{{ i + 1 }}</td>
+
+                <td class="td-apprenant">
+                  <div class="apprenant-cell">
+                    <div class="avatar-xs">
+                      {{ ligne.prenom[0] }}{{ ligne.nom[0] }}
+                    </div>
+                    <div>
+                      <div class="apprenant-nom">{{ ligne.prenom }} {{ ligne.nom }}</div>
+                      <div class="apprenant-num">{{ ligne.numeroInscription }}</div>
+                    </div>
+                  </div>
+                </td>
+
+                <td class="td-note">
+                  <input
+                    type="number"
+                    class="note-input"
+                    [class.note-input-valid]="isNoteValide(ligne)"
+                    [class.note-input-error]="!isNoteValide(ligne) && ligne.valeur !== ''"
+                    [(ngModel)]="ligne.valeur"
+                    (ngModelChange)="onNoteChange(ligne)"
+                    [disabled]="ligne.absent || ligne.dispense ||
+                                ligne.statut === 'validee' || ligne.statut === 'publiee'"
+                    min="0"
+                    [max]="evaluation.noteMax"
+                    step="0.25"
+                    placeholder="—">
+                  @if (ligne.valeur !== '' && !isNoteValide(ligne)) {
+                    <span class="note-error">0–{{ evaluation.noteMax }}</span>
+                  }
+                </td>
+
+                <td class="td-absent">
+                  <mat-slide-toggle
+                    [(ngModel)]="ligne.absent"
+                    (ngModelChange)="onAbsentChange(ligne)"
+                    [disabled]="ligne.statut === 'validee' || ligne.statut === 'publiee'"
+                    color="warn">
+                  </mat-slide-toggle>
+                </td>
+
+                <td class="td-dispense">
+                  <mat-slide-toggle
+                    [(ngModel)]="ligne.dispense"
+                    (ngModelChange)="onDispenseChange(ligne)"
+                    [disabled]="ligne.statut === 'validee' || ligne.statut === 'publiee'"
+                    color="accent">
+                  </mat-slide-toggle>
+                </td>
+
+                <td class="td-commentaire">
+                  <input
+                    type="text"
+                    class="comment-input"
+                    [(ngModel)]="ligne.commentaire"
+                    (ngModelChange)="ligne.modifie = true"
+                    [disabled]="ligne.statut === 'validee' || ligne.statut === 'publiee'"
+                    placeholder="Commentaire...">
+                </td>
+
+                <td class="td-statut">
+                  <mat-chip [class]="'chip-note-statut chip-' + ligne.statut">
+                    {{ noteStatutLabel(ligne.statut) }}
+                  </mat-chip>
+                </td>
+
+                <td class="td-actions">
+                  @if (ligne.statut === 'validee' || ligne.statut === 'publiee') {
+                    <button mat-icon-button
+                            (click)="openModifierNote(ligne)"
+                            matTooltip="Modifier avec motif">
+                      <mat-icon>edit</mat-icon>
+                    </button>
+                  }
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  }
+</div>
+  

@@ -1,0 +1,16 @@
+<h2 mat-dialog-title>
+  <mat-icon [style.color]="data.confirmColor === 'warn' ? '#d32f2f' : 'inherit'">
+    {{ data.icon ?? (data.confirmColor === 'warn' ? 'warning' : 'help_outline') }}
+  </mat-icon>
+  {{ data.titre }}
+</h2>
+<mat-dialog-content>
+  <p>{{ data.message }}</p>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Annuler</button>
+  <button mat-raised-button [color]="data.confirmColor ?? 'primary'" (click)="confirm()">
+    {{ data.confirmLabel ?? 'Confirmer' }}
+  </button>
+</mat-dialog-actions>
+  

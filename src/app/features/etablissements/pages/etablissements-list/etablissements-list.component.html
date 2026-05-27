@@ -1,0 +1,140 @@
+<div class="page-container">
+  <!-- En-tête -->
+  <div class="page-header">
+    <div class="header-left">
+      <h1 class="page-title">Établissements</h1>
+      <span class="total-badge">{{ state.total() }} établissement(s)</span>
+    </div>
+    <button mat-raised-button color="primary" (click)="openCreateDialog()">
+      <mat-icon>add</mat-icon>
+      Nouvel établissement
+    </button>
+  </div>
+
+  <!-- Filtres -->
+  <div class="filters-bar">
+    <mat-form-field appearance="outline" class="search-field">
+      <mat-label>Rechercher</mat-label>
+      <input matInput [(ngModel)]="searchQuery" (ngModelChange)="onSearch()" placeholder="Nom, code, ville...">
+      <mat-icon matPrefix>search</mat-icon>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Type</mat-label>
+      <mat-select [(ngModel)]="filterType" (ngModelChange)="onFilter()">
+        <mat-option value="">Tous</mat-option>
+        <mat-option value="scolaire">Scolaire</mat-option>
+        <mat-option value="universitaire">Universitaire</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Statut</mat-label>
+      <mat-select [(ngModel)]="filterActif" (ngModelChange)="onFilter()">
+        <mat-option [value]="null">Tous</mat-option>
+        <mat-option [value]="true">Actifs</mat-option>
+        <mat-option [value]="false">Inactifs</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <!-- Spinner -->
+  @if (state.loading()) {
+    <div class="loading-container">
+      <mat-spinner diameter="48"></mat-spinner>
+    </div>
+  }
+
+  <!-- Erreur -->
+  @if (state.error()) {
+    <div class="error-banner">
+      <mat-icon>error_outline</mat-icon>
+      <span>{{ state.error() }}</span>
+      <button mat-icon-button (click)="state.clearError()"><mat-icon>close</mat-icon></button>
+    </div>
+  }
+
+  <!-- Table -->
+  @if (!state.loading()) {
+    <div class="table-container mat-elevation-z2">
+      <table mat-table [dataSource]="state.etablissements()" class="full-width">
+
+        <ng-container matColumnDef="nom">
+          <th mat-header-cell *matHeaderCellDef>Établissement</th>
+          <td mat-cell *matCellDef="let e">
+            <div class="cell-primary">
+              <span class="etab-code">{{ e.code }}</span>
+              <span class="etab-nom">{{ e.nom }}</span>
+            </div>
+            <div class="cell-secondary">{{ e.ville }}, {{ e.pays }}</div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="type">
+          <th mat-header-cell *matHeaderCellDef>Type</th>
+          <td mat-cell *matCellDef="let e">
+            <mat-chip [class]="'chip-type chip-' + e.type">
+              {{ e.type === 'scolaire' ? 'Scolaire' : 'Universitaire' }}
+            </mat-chip>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="contact">
+          <th mat-header-cell *matHeaderCellDef>Contact</th>
+          <td mat-cell *matCellDef="let e">
+            <div class="cell-secondary">{{ e.email }}</div>
+            <div class="cell-secondary">{{ e.telephone }}</div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="statut">
+          <th mat-header-cell *matHeaderCellDef>Statut</th>
+          <td mat-cell *matCellDef="let e">
+            <mat-chip [class]="e.actif ? 'chip-actif' : 'chip-inactif'">
+              {{ e.actif ? 'Actif' : 'Inactif' }}
+            </mat-chip>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let e">
+            <div class="actions-cell">
+              <button mat-icon-button [routerLink]="[e.id]" matTooltip="Voir les détails">
+                <mat-icon>visibility</mat-icon>
+              </button>
+              <button mat-icon-button (click)="openEditDialog(e)" matTooltip="Modifier">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button [matMenuTriggerFor]="menu" matTooltip="Plus d'actions">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="toggleActif(e)">
+                  <mat-icon>{{ e.actif ? 'block' : 'check_circle' }}</mat-icon>
+                  {{ e.actif ? 'Désactiver' : 'Activer' }}
+                </button>
+                <button mat-menu-item class="menu-delete" (click)="confirmDelete(e)">
+                  <mat-icon>delete</mat-icon>
+                  Supprimer
+                </button>
+              </mat-menu>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+            class="table-row" [routerLink]="[row.id]"></tr>
+
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell no-data" [attr.colspan]="displayedColumns.length">
+            <mat-icon>business</mat-icon>
+            <p>Aucun établissement trouvé</p>
+          </td>
+        </tr>
+      </table>
+    </div>
+  }
+</div>
+  

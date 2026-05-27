@@ -1,0 +1,174 @@
+<h2 mat-dialog-title>
+  <mat-icon>{{ data.matiere ? 'edit' : 'menu_book' }}</mat-icon>
+  {{ data.matiere ? 'Modifier la matière' : 'Nouvelle matière' }}
+</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="form" class="form-grid">
+
+    <div class="form-row">
+      <mat-form-field appearance="outline">
+        <mat-label>Code *</mat-label>
+        <input matInput formControlName="code"
+               placeholder="Ex: MATH101, PHYS-L1">
+        @if (form.get('code')?.hasError('required') && form.get('code')?.touched) {
+          <mat-error>Obligatoire</mat-error>
+        }
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="flex-2">
+        <mat-label>Libellé *</mat-label>
+        <input matInput formControlName="libelle"
+               placeholder="Ex: Mathématiques générales">
+      </mat-form-field>
+    </div>
+
+    <div class="form-row">
+      <mat-form-field appearance="outline">
+        <mat-label>Type *</mat-label>
+        <mat-select formControlName="type">
+          <mat-option value="cours_magistral">Cours magistral (CM)</mat-option>
+          <mat-option value="td">Travaux dirigés (TD)</mat-option>
+          <mat-option value="tp">Travaux pratiques (TP)</mat-option>
+          <mat-option value="projet">Projet</mat-option>
+          <mat-option value="stage">Stage</mat-option>
+          <mat-option value="memoire">Mémoire / PFE</mat-option>
+          <mat-option value="seminaire">Séminaire</mat-option>
+          <mat-option value="sport">Sport</mat-option>
+          <mat-option value="langue">Langue vivante</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Coefficient *</mat-label>
+        <input matInput formControlName="coefficient"
+               type="number" min="0.5" step="0.5">
+        <mat-hint>Pondération dans la moyenne</mat-hint>
+      </mat-form-field>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <p class="section-label">Volume horaire</p>
+    <div class="form-row">
+      <mat-form-field appearance="outline">
+        <mat-label>CM (heures)</mat-label>
+        <input matInput formControlName="volumeHoraireCM" type="number" min="0">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>TD (heures)</mat-label>
+        <input matInput formControlName="volumeHoraireTD" type="number" min="0">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>TP (heures)</mat-label>
+        <input matInput formControlName="volumeHoraireTP" type="number" min="0">
+      </mat-form-field>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <p class="section-label">Évaluation</p>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Nature de l'évaluation *</mat-label>
+      <mat-select formControlName="natureEvaluation">
+        <mat-option value="cc_uniquement">Contrôle continu uniquement</mat-option>
+        <mat-option value="examen_uniquement">Examen final uniquement</mat-option>
+        <mat-option value="cc_et_examen">CC + Examen final</mat-option>
+        <mat-option value="tp_et_examen">TP noté + Examen</mat-option>
+        <mat-option value="projet_soutenance">Projet + Soutenance</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div class="form-row">
+      <mat-form-field appearance="outline">
+        <mat-label>Pondération CC (%)*</mat-label>
+        <input matInput formControlName="ponderationCC"
+               type="number" min="0" max="100"
+               (change)="syncPonderations('cc')">
+        <mat-hint>CC + Examen = 100%</mat-hint>
+        @if (!ponderationsOk) {
+          <mat-error>Total ≠ 100%</mat-error>
+        }
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Pondération Examen (%)*</mat-label>
+        <input matInput formControlName="ponderationExamen"
+               type="number" min="0" max="100"
+               (change)="syncPonderations('ex')">
+        @if (!ponderationsOk) {
+          <mat-error>Total ≠ 100%</mat-error>
+        }
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Note maximale</mat-label>
+        <input matInput formControlName="noteMax" type="number" min="1">
+      </mat-form-field>
+    </div>
+
+    <div class="pond-preview">
+      <div class="pond-bar-preview">
+        <div class="pond-cc-prev" [style.width.%]="form.get('ponderationCC')?.value">
+          CC {{ form.get('ponderationCC')?.value }}%
+        </div>
+        <div class="pond-ex-prev" [style.width.%]="form.get('ponderationExamen')?.value">
+          Ex. {{ form.get('ponderationExamen')?.value }}%
+        </div>
+      </div>
+      @if (!ponderationsOk) {
+        <span class="pond-warning">⚠ La somme doit être égale à 100%</span>
+      } @else {
+        <span class="pond-ok">✓ Pondérations valides</span>
+      }
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <p class="section-label">Options</p>
+    <div class="flags-row">
+      <mat-checkbox formControlName="eliminatoire" color="warn">
+        Matière éliminatoire
+      </mat-checkbox>
+      @if (form.get('eliminatoire')?.value) {
+        <mat-form-field appearance="outline" class="seuil-field">
+          <mat-label>Note minimale *</mat-label>
+          <input matInput formControlName="seuilEliminatoire"
+                 type="number" min="0" max="20" step="0.5">
+          <mat-hint>Note en dessous de laquelle l'apprenant est éliminé</mat-hint>
+        </mat-form-field>
+      }
+    </div>
+
+    <mat-divider></mat-divider>
+    <p class="section-label">Rattachement</p>
+    <div class="form-row">
+      <mat-form-field appearance="outline">
+        <mat-label>Établissement (ID) *</mat-label>
+        <input matInput formControlName="etablissementId">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Filière (ID)</mat-label>
+        <input matInput formControlName="filiereId"
+               placeholder="Via M02">
+      </mat-form-field>
+    </div>
+    <div class="form-row">
+      <mat-form-field appearance="outline">
+        <mat-label>Niveau (ID)</mat-label>
+        <input matInput formControlName="niveauId">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>UE de rattachement (ID)</mat-label>
+        <input matInput formControlName="ueId"
+               placeholder="Universitaire seulement">
+      </mat-form-field>
+    </div>
+
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Annuler</button>
+  <button mat-raised-button color="primary"
+          (click)="submit()" [disabled]="form.invalid || !ponderationsOk">
+    {{ data.matiere ? 'Enregistrer' : 'Créer la matière' }}
+  </button>
+</mat-dialog-actions>
+  

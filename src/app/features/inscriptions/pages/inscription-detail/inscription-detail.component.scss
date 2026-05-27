@@ -1,0 +1,67 @@
+.page-container { padding: 24px; max-width: 1400px; margin: 0 auto; }
+.back-btn { margin-bottom: 16px; color: #555; }
+.loading-container { display: flex; justify-content: center; padding: 60px; }
+
+.detail-header {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  margin-bottom: 20px; padding: 24px; background: white;
+  border-radius: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+.header-chips { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
+.detail-header h1 { margin: 6px 0 8px; font-size: 24px; font-weight: 600; }
+.header-meta { display: flex; flex-wrap: wrap; gap: 16px; }
+.header-meta span { display: flex; align-items: center; gap: 4px; font-size: 13px; color: #555; }
+.header-meta mat-icon { font-size: 16px; width: 16px; height: 16px; }
+.header-actions { display: flex; gap: 8px; align-items: flex-start; flex-wrap: wrap; }
+
+.workflow-card { margin-bottom: 20px; }
+.detail-grid { display: grid; grid-template-columns: 1fr 340px; gap: 16px; margin-bottom: 16px; }
+.right-column { display: flex; flex-direction: column; gap: 16px; }
+
+mat-card-title { display: flex; align-items: center; gap: 8px; font-size: 15px !important; }
+.info-label { color: #757575; font-size: 13px; min-width: 140px; }
+.motif-rejet { color: #c62828; font-style: italic; }
+.overdue { color: #c62828; font-weight: 600; }
+
+.apprenant-identity { display: flex; gap: 12px; align-items: flex-start; }
+.avatar-medium { width: 48px; height: 48px; border-radius: 50%; background: #e3f2fd; color: #1565c0; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 16px; flex-shrink: 0; }
+.apprenant-nom { font-weight: 600; font-size: 15px; margin-bottom: 2px; }
+.apprenant-sub { font-size: 12px; color: #757575; margin-bottom: 8px; }
+.btn-voir-dossier { font-size: 12px; }
+
+.docs-manquants-card { border: 1px solid #ffcdd2; background: #fff8f8; }
+
+.ue-card { margin-bottom: 16px; }
+.ue-grid { display: flex; flex-direction: column; gap: 8px; }
+.ue-item { display: flex; align-items: center; gap: 12px; padding: 8px 0; border-bottom: 1px solid #f0f0f0; }
+.ue-code { font-size: 11px; font-weight: 700; background: #e3f2fd; color: #1565c0; padding: 2px 6px; border-radius: 4px; }
+.ue-libelle { flex: 1; font-size: 13px; }
+.ue-credits { font-size: 12px; color: #555; min-width: 55px; }
+.chip-obligatoire { background: #fce4ec !important; color: #880e4f !important; font-size: 11px !important; }
+.chip-optionnel   { background: #e8f5e9 !important; color: #2e7d32 !important; font-size: 11px !important; }
+
+.historique-card { margin-bottom: 16px; }
+.no-historique { color: #9e9e9e; font-style: italic; }
+.historique-list { display: flex; flex-direction: column; gap: 12px; }
+.historique-item { display: flex; align-items: flex-start; gap: 12px; }
+.chip-sm { min-height: 24px !important; font-size: 11px !important; }
+.historique-detail { display: flex; flex-direction: column; gap: 2px; }
+.historique-date { font-size: 13px; font-weight: 500; }
+.historique-par { font-size: 12px; color: #757575; }
+.historique-comment { font-size: 12px; color: #555; font-style: italic; }
+
+.chip-type { font-size: 12px !important; }
+.chip-nouvelle      { background: #e3f2fd !important; color: #1565c0 !important; }
+.chip-reinscription { background: #f3e5f5 !important; color: #6a1b9a !important; }
+.chip-brouillon     { background: #f5f5f5 !important; color: #757575 !important; }
+.chip-incomplete    { background: #fff8e1 !important; color: #f57f17 !important; }
+.chip-complete      { background: #e8f5e9 !important; color: #2e7d32 !important; }
+.chip-en_validation { background: #e3f2fd !important; color: #1565c0 !important; }
+.chip-validee       { background: #e8f5e9 !important; color: #1b5e20 !important; }
+.chip-rejetee       { background: #fdecea !important; color: #c62828 !important; }
+.chip-annulee       { background: #f5f5f5 !important; color: #9e9e9e !important; }
+.chip-en_attente    { background: #fff3e0 !important; color: #e65100 !important; }
+.chip-payes   { background: #e8f5e9 !important; color: #2e7d32 !important; }
+.chip-impaye  { background: #fdecea !important; color: #c62828 !important; }
+.chip-payes mat-icon, .chip-impaye mat-icon { font-size: 14px; width: 14px; height: 14px; }
+  

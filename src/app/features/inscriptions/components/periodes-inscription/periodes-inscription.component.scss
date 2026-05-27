@@ -1,0 +1,21 @@
+.periodes-container { padding: 8px 0; }
+.section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.section-header h3 { margin: 0; font-size: 15px; font-weight: 600; }
+.form-card { margin-bottom: 20px; background: #f9f9f9; }
+.periode-form { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-start; }
+.periode-form mat-form-field { min-width: 200px; }
+.loading-periodes { display: flex; justify-content: center; padding: 24px; }
+.periodes-list { display: flex; flex-direction: column; gap: 12px; }
+.periode-card { border: 1px solid #e0e0e0; }
+.periode-ouverte { border-color: #2e7d32; background: #f9fff9; }
+.periode-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+.periode-nom { font-weight: 600; font-size: 14px; }
+.periode-type { font-size: 12px; color: #757575; }
+.periode-dates, .periode-capacite { display: flex; align-items: center; gap: 6px; font-size: 13px; color: #555; margin-top: 4px; }
+.periode-dates mat-icon, .periode-capacite mat-icon { font-size: 15px; width: 15px; height: 15px; }
+.chip-ouverte { background: #e8f5e9 !important; color: #2e7d32 !important; }
+.chip-fermee  { background: #f5f5f5 !important; color: #757575 !important; }
+.chip-ouverte mat-icon, .chip-fermee mat-icon { font-size: 14px; width: 14px; height: 14px; }
+.empty-periodes { text-align: center; padding: 32px; color: #9e9e9e; }
+.empty-periodes mat-icon { font-size: 40px; width: 40px; height: 40px; display: block; margin: 0 auto 8px; }
+  

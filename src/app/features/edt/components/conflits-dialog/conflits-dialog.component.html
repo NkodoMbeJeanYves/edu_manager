@@ -1,0 +1,37 @@
+<h2 mat-dialog-title>
+  <mat-icon color="warn">warning</mat-icon>
+  Conflits détectés ({{ data.conflits.length }})
+</h2>
+<mat-dialog-content>
+  <mat-list>
+    @for (conflit of data.conflits; track $index) {
+      <mat-list-item>
+        <mat-icon matListItemIcon color="warn">
+          {{ conflitIcon(conflit.type) }}
+        </mat-icon>
+        <div matListItemTitle>{{ conflitLabel(conflit.type) }}</div>
+        <div matListItemLine>{{ conflit.message }}</div>
+      </mat-list-item>
+
+      @if (conflit.sallesAlternatives?.length) {
+        <div class="alternatives">
+          <span class="alt-label">Salles disponibles :</span>
+          @for (salle of conflit.sallesAlternatives; track salle.id) {
+            <mat-chip class="chip-salle-alt">
+              {{ salle.code }} ({{ salle.capacite }} places)
+            </mat-chip>
+          }
+        </div>
+      }
+      <mat-divider></mat-divider>
+    }
+  </mat-list>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Fermer</button>
+  <button mat-raised-button color="warn"
+          (click)="dialogRef.close('forcer')">
+    <mat-icon>warning</mat-icon> Forcer la création
+  </button>
+</mat-dialog-actions>
+  

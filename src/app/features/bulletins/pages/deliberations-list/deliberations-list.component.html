@@ -1,0 +1,91 @@
+<div class="page-container">
+  <div class="page-header">
+    <div class="header-left">
+      <button mat-button routerLink="/bulletins" class="back-btn">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <h1 class="page-title">Délibérations</h1>
+    </div>
+    <button mat-raised-button color="primary" (click)="openCreateDialog()">
+      <mat-icon>add</mat-icon> Nouvelle délibération
+    </button>
+  </div>
+
+  @if (state.loadingDeliberation()) {
+    <div class="loading-container"><mat-spinner diameter="48"></mat-spinner></div>
+  }
+
+  @if (!state.loadingDeliberation()) {
+    <div class="table-container mat-elevation-z2">
+      <table mat-table [dataSource]="state.deliberations()">
+
+        <ng-container matColumnDef="classe">
+          <th mat-header-cell *matHeaderCellDef>Classe / Promotion</th>
+          <td mat-cell *matCellDef="let d">
+            <strong>{{ d.classeOuPromotionLibelle }}</strong>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="type">
+          <th mat-header-cell *matHeaderCellDef>Type</th>
+          <td mat-cell *matCellDef="let d">
+            <mat-chip [class]="'chip-delib-' + d.type">
+              {{ d.type === 'conseil_classe' ? 'Conseil de classe' : 'Jury universitaire' }}
+            </mat-chip>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="session">
+          <th mat-header-cell *matHeaderCellDef>Session</th>
+          <td mat-cell *matCellDef="let d">
+            {{ d.session ?? '—' }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="date">
+          <th mat-header-cell *matHeaderCellDef>Date</th>
+          <td mat-cell *matCellDef="let d">
+            {{ d.dateDeliberation ? (d.dateDeliberation | date:'dd/MM/yyyy') : '—' }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="president">
+          <th mat-header-cell *matHeaderCellDef>Président</th>
+          <td mat-cell *matCellDef="let d">
+            <span class="cell-secondary">{{ d.president ?? '—' }}</span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="statut">
+          <th mat-header-cell *matHeaderCellDef>Statut</th>
+          <td mat-cell *matCellDef="let d">
+            <mat-chip [class]="'chip-delib-statut-' + d.statut">
+              {{ statutLabel(d.statut) }}
+            </mat-chip>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let d">
+            <button mat-icon-button [routerLink]="[d.id]" matTooltip="Ouvrir">
+              <mat-icon>open_in_new</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="cols"></tr>
+        <tr mat-row *matRowDef="let row; columns: cols;"
+            class="table-row" [routerLink]="[row.id]"></tr>
+
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell no-data" [attr.colspan]="cols.length">
+            <mat-icon>gavel</mat-icon>
+            <p>Aucune délibération</p>
+          </td>
+        </tr>
+      </table>
+    </div>
+  }
+</div>
+  

@@ -1,0 +1,79 @@
+<h2 mat-dialog-title>
+  <mat-icon>{{ data.etablissement ? 'edit' : 'add_business' }}</mat-icon>
+  {{ data.etablissement ? "Modifier l'établissement" : "Nouvel établissement" }}
+</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="form" class="form-grid">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Nom de l'établissement *</mat-label>
+      <input matInput formControlName="nom" placeholder="Ex: Lycée Mohammed V">
+      @if (form.get('nom')?.hasError('required') && form.get('nom')?.touched) {
+        <mat-error>Le nom est obligatoire</mat-error>
+      }
+    </mat-form-field>
+
+    <div class="form-row">
+      <mat-form-field appearance="outline">
+        <mat-label>Code *</mat-label>
+        <input matInput formControlName="code" placeholder="Ex: LMV" style="text-transform:uppercase">
+        @if (form.get('code')?.hasError('required') && form.get('code')?.touched) {
+          <mat-error>Le code est obligatoire</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Type *</mat-label>
+        <mat-select formControlName="type">
+          <mat-option value="scolaire">Scolaire</mat-option>
+          <mat-option value="universitaire">Universitaire</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Adresse *</mat-label>
+      <input matInput formControlName="adresse" placeholder="Rue, numéro...">
+    </mat-form-field>
+
+    <div class="form-row">
+      <mat-form-field appearance="outline">
+        <mat-label>Ville *</mat-label>
+        <input matInput formControlName="ville">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Pays *</mat-label>
+        <input matInput formControlName="pays">
+      </mat-form-field>
+    </div>
+
+    <div class="form-row">
+      <mat-form-field appearance="outline">
+        <mat-label>Téléphone *</mat-label>
+        <input matInput formControlName="telephone" type="tel">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Email *</mat-label>
+        <input matInput formControlName="email" type="email">
+        @if (form.get('email')?.hasError('email') && form.get('email')?.touched) {
+          <mat-error>Email invalide</mat-error>
+        }
+      </mat-form-field>
+    </div>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Site web</mat-label>
+      <input matInput formControlName="siteWeb" placeholder="https://...">
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Annuler</button>
+  <button mat-raised-button color="primary" (click)="submit()" [disabled]="form.invalid">
+    {{ data.etablissement ? 'Enregistrer' : 'Créer' }}
+  </button>
+</mat-dialog-actions>
+  

@@ -1,0 +1,17 @@
+mat-dialog-content { min-width: 480px; }
+h2 mat-icon { vertical-align: middle; margin-right: 8px; }
+.loading { display: flex; justify-content: center; padding: 32px; }
+.seance-info { display: flex; flex-direction: column; gap: 8px; padding: 8px 0; }
+.info-row { display: flex; align-items: center; gap: 10px; font-size: 13px; }
+.info-row mat-icon { font-size: 18px; color: #757575; }
+.info-label { color: #757575; min-width: 90px; font-size: 12px; }
+.cahier-section { padding: 12px 0; }
+.cahier-section h4 { display: flex; align-items: center; gap: 6px; margin: 0 0 12px; font-size: 14px; }
+.full-width { width: 100%; }
+.seance-actions { display: flex; gap: 8px; padding: 8px 0; flex-wrap: wrap; }
+.chip-planifiee  { background: #e3f2fd !important; color: #1565c0 !important; }
+.chip-realisee   { background: #e8f5e9 !important; color: #2e7d32 !important; }
+.chip-annulee    { background: #fdecea !important; color: #c62828 !important; }
+.chip-reportee   { background: #fff3e0 !important; color: #e65100 !important; }
+.chip-en_cours   { background: #fff8e1 !important; color: #f57f17 !important; }
+  
