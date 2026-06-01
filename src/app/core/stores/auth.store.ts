@@ -1,21 +1,25 @@
-import { Injectable, computed, signal } from '@angular/core';
-import { AuthSession, User, UserRole } from '@core/models/user.model';
+import { Injectable, computed, signal } from "@angular/core";
+import { AuthSession, User, UserRole } from "@core/models/user.model";
 
-const STORAGE_KEY = 'edu.auth';
+const STORAGE_KEY = "edu.auth";
 
-@Injectable({ providedIn: 'root' })
+@Injectable({ providedIn: "root" })
 export class AuthStore {
   private readonly _session = signal<AuthSession | null>(this.restore());
 
   readonly session = this._session.asReadonly();
 
   readonly user = computed<User | null>(() => this._session()?.user ?? null);
-  readonly token = computed<string | null>(() => this._session()?.token ?? null);
+  readonly token = computed<string | null>(
+    () => this._session()?.accessToken ?? null,
+  );
   readonly isAuthenticated = computed(() => {
     const s = this._session();
-    return !!s && s.expiresAt > Date.now();
+    return !!s && s.accessTokenExpiry > new Date().toISOString();
   });
-  readonly roles = computed<UserRole[]>(() => this._session()?.user.roles ?? []);
+  readonly roles = computed<UserRole[]>(
+    () => this._session()?.user?.roles ?? [],
+  );
 
   setSession(session: AuthSession): void {
     this._session.set(session);

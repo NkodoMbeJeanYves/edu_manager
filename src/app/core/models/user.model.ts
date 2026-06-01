@@ -1,16 +1,16 @@
 export type UserRole =
-  | 'super_admin'
-  | 'directeur'
-  | 'resp_scolarite'
-  | 'resp_financier'
-  | 'resp_filiere'
-  | 'enseignant'
-  | 'surveillant_examen'
-  | 'agent_scolarite'
-  | 'agent_comptable'
-  | 'apprenant'
-  | 'parent'
-  | 'auditeur';
+  | "super_admin"
+  | "directeur"
+  | "resp_scolarite"
+  | "resp_financier"
+  | "resp_filiere"
+  | "enseignant"
+  | "surveillant_examen"
+  | "agent_scolarite"
+  | "agent_comptable"
+  | "apprenant"
+  | "parent"
+  | "auditeur";
 
 export interface User {
   id: string;
@@ -31,8 +31,8 @@ export interface AuthCredentials {
 }
 
 export interface AuthSession {
-  token: string;
+  accessToken: string;
   refreshToken: string;
-  user: User;
-  expiresAt: number;
+  user?: User;
+  accessTokenExpiry: string;
 }
