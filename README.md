@@ -79,6 +79,15 @@ En mode mock, les emails de test sont dans `core/mocks/seeds/auth.mock.ts` :
 
 N'importe quel mot de passe ≥ 6 caractères est accepté.
 
+## Documentation
+
+| Document | Contenu |
+|---|---|
+| [docs/frontend-architecture.md](docs/frontend-architecture.md) | Architecture **applicative** (couches, routing, RBAC, state, mocks) — état actuel |
+| [docs/architecture-cible.md](docs/architecture-cible.md) | Architecture **cible** recommandée + feuille de route (aide à la décision) |
+| [docs/api-architecture.md](docs/api-architecture.md) | Blueprint API haut niveau |
+| [docs/api-contract/](docs/api-contract/README.md) | Contrat REST détaillé — 191 endpoints |
+
 ## Démarrage
 
 ```bash
