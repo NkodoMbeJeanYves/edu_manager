@@ -41,13 +41,32 @@
           },
           "configurations": {
             "en": { "localize": ["en-US"] },
-            "fr": { "localize": ["fr"] }
+            "fr": { "localize": ["fr"] },
+            "development": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.development.ts"
+                }
+              ]
+            },
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.production.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all"
+            }
           }
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "buildTarget": "angular-edu-app:build"
+            "buildTarget": "angular-edu-app:build",
+            "proxyConfig": "proxy.conf.json"
           },
           "configurations": {
             "en": { "buildTarget": "angular-edu-app:build:en" },
