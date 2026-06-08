@@ -10,7 +10,20 @@ export type UserRole =
   | "agent_comptable"
   | "apprenant"
   | "parent"
-  | "auditeur";
+  | "auditeur"
+  | "SuperAdmin"
+  | "Directeur"
+  | "DirecteurPedagogique"
+  | "ResponsableAdministratif"
+  | "Enseignant"
+  | "Surveillant"
+  | "Secretaire"
+  | "Comptable"
+  | "Bibliothecaire"
+  | "Apprenant"
+  | "Parent"
+  | "Externe"
+  | "Auditeur";
 
 export interface User {
   id: string;
@@ -25,7 +38,7 @@ export interface User {
 }
 
 export interface AuthCredentials {
-  email: string;
+  username: string;
   password: string;
   tenantCode?: string;
 }

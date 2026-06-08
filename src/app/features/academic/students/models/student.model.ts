@@ -1,5 +1,5 @@
-export type StudentLevel = 'PRIMARY' | 'SECONDARY' | 'UNDERGRAD' | 'GRADUATE';
-export type StudentStatus = 'ACTIVE' | 'GRADUATED' | 'SUSPENDED' | 'WITHDRAWN';
+export type StudentLevel = "PRIMARY" | "SECONDARY" | "UNDERGRAD" | "GRADUATE";
+export type StudentStatus = "ACTIVE" | "GRADUATED" | "SUSPENDED" | "WITHDRAWN";
 
 export interface Student {
   id: string;
@@ -14,6 +14,7 @@ export interface Student {
   classId?: string;
   status: StudentStatus;
   enrolledAt: string;
+  gender?: "m" | "f" | "o";
 }
 
 export interface StudentFilter {
@@ -22,4 +23,4 @@ export interface StudentFilter {
   status?: StudentStatus;
 }
 
-export type StudentDraft = Omit<Student, 'id' | 'tenantId' | 'enrolledAt'>;
+export type StudentDraft = Omit<Student, "id" | "tenantId" | "enrolledAt">;

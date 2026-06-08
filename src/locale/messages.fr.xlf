@@ -218,6 +218,18 @@
         <source>Sign in</source>
         <target>Se connecter</target>
       </trans-unit>
+      <trans-unit id="login.email.placeholder" datatype="html">
+        <source>Enter your email</source>
+        <target>Entrez votre e-mail</target>
+      </trans-unit>
+      <trans-unit id="login.username.placeholder" datatype="html">
+        <source>Enter your username</source>
+        <target>Entrez votre nom d'utilisateur</target>
+      </trans-unit>
+      <trans-unit id="login.password.placeholder" datatype="html">
+        <source>Enter your password</source>
+        <target>Entrez votre mot de passe</target>
+      </trans-unit>
       <trans-unit id="invoices.title" datatype="html">
         <source>Invoices</source>
         <target>Factures</target>

@@ -9,6 +9,6 @@
  */
 export const environment = {
   production: false,
-  apiUrl: "http://localhost:5228/", // Relative à la racine du domaine ; proxy.conf.json capture /api/*
+  apiUrl: "http://localhost:5228/api/", // Relative à la racine du domaine ; proxy.conf.json capture /api/*
   useMocks: false,
 };

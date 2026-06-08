@@ -6,6 +6,6 @@
  */
 export const environment = {
   production: true,
-  apiUrl: "http://localhost:5228/", // À remplacer par l'URL réelle du backend prod
+  apiUrl: "http://localhost:5228/api/", // À remplacer par l'URL réelle du backend prod
   useMocks: false,
 };

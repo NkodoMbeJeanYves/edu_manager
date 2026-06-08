@@ -1,10 +1,18 @@
-import { AccessMatrix, Action, ModuleKey } from '@core/models/auth.models';
-import { UserRole } from '@core/models/user.model';
+import { AccessMatrix, Action, ModuleKey } from "@core/models/auth.models";
+import { UserRole } from "@core/models/user.model";
 
-const FULL: readonly Action[] = ['read', 'write', 'validate', 'publish', 'delete', 'export', 'sign'];
-const CRUD: readonly Action[] = ['read', 'write', 'delete'];
-const RW: readonly Action[] = ['read', 'write'];
-const R: readonly Action[] = ['read'];
+const FULL: readonly Action[] = [
+  "read",
+  "write",
+  "validate",
+  "publish",
+  "delete",
+  "export",
+  "sign",
+];
+const CRUD: readonly Action[] = ["read", "write", "delete"];
+const RW: readonly Action[] = ["read", "write"];
+const R: readonly Action[] = ["read"];
 
 /**
  * Matrice de droits V1.
@@ -26,28 +34,153 @@ const R: readonly Action[] = ['read'];
  * dans la doc mais non enforced en V1 (cloisonnement tenant seulement).
  */
 export const ACCESS_MATRIX: AccessMatrix = {
+  Externe: {
+    academic: R,
+    administration: R,
+    finance: R,
+    etablissements: R,
+    inscriptions: R,
+    notes: R,
+    bulletins: R,
+    structure: R,
+    referentiel: R,
+    edt: R,
+    absences: R,
+    enseignants: R,
+    examens: R,
+    communication: R,
+    reporting: R,
+  },
+
+  Secretaire: {
+    academic: R,
+    administration: R,
+    finance: R,
+    etablissements: R,
+    inscriptions: R,
+    notes: R,
+    bulletins: R,
+    structure: R,
+    referentiel: R,
+    edt: R,
+    absences: R,
+    enseignants: R,
+    examens: R,
+    communication: R,
+    reporting: R,
+  },
+
+  Surveillant: {
+    edt: R,
+    examens: R,
+  },
+
+  ResponsableAdministratif: {
+    academic: FULL,
+    administration: FULL,
+    finance: FULL,
+    etablissements: FULL,
+    inscriptions: R,
+    edt: R,
+    notes: R,
+    absences: R,
+  },
   super_admin: {
-    academic: FULL, administration: FULL, finance: FULL, etablissements: FULL,
-    inscriptions: FULL, notes: FULL, bulletins: FULL, structure: FULL,
-    referentiel: FULL, edt: FULL, absences: FULL, enseignants: FULL,
-    examens: FULL, communication: FULL, reporting: FULL,
+    academic: FULL,
+    administration: FULL,
+    finance: FULL,
+    etablissements: FULL,
+    inscriptions: FULL,
+    notes: FULL,
+    bulletins: FULL,
+    structure: FULL,
+    referentiel: FULL,
+    edt: FULL,
+    absences: FULL,
+    enseignants: FULL,
+    examens: FULL,
+    communication: FULL,
+    reporting: FULL,
+  },
+
+  SuperAdmin: {
+    academic: FULL,
+    administration: FULL,
+    finance: FULL,
+    etablissements: FULL,
+    inscriptions: FULL,
+    notes: FULL,
+    bulletins: FULL,
+    structure: FULL,
+    referentiel: FULL,
+    edt: FULL,
+    absences: FULL,
+    enseignants: FULL,
+    examens: FULL,
+    communication: FULL,
+    reporting: FULL,
   },
 
   directeur: {
-    academic: FULL, administration: FULL, finance: FULL, etablissements: FULL,
-    inscriptions: R, edt: R, notes: R, absences: R,
-    bulletins: ['read', 'validate', 'sign'],
-    structure: FULL, referentiel: FULL, enseignants: FULL,
-    examens: FULL, communication: FULL,
+    academic: FULL,
+    administration: FULL,
+    finance: FULL,
+    etablissements: FULL,
+    inscriptions: R,
+    edt: R,
+    notes: R,
+    absences: R,
+    bulletins: ["read", "validate", "sign"],
+    structure: FULL,
+    referentiel: FULL,
+    enseignants: FULL,
+    examens: FULL,
+    communication: FULL,
+    reporting: FULL,
+  },
+
+  DirecteurPedagogique: {
+    academic: FULL,
+    administration: FULL,
+    finance: FULL,
+    etablissements: FULL,
+    inscriptions: R,
+    edt: R,
+    notes: R,
+    absences: R,
+    bulletins: ["read", "validate", "sign"],
+    structure: FULL,
+    referentiel: FULL,
+    enseignants: FULL,
+    examens: FULL,
+    communication: FULL,
+    reporting: FULL,
+  },
+
+  Directeur: {
+    academic: FULL,
+    administration: FULL,
+    finance: FULL,
+    etablissements: FULL,
+    inscriptions: R,
+    edt: R,
+    notes: R,
+    absences: R,
+    bulletins: ["read", "validate", "sign"],
+    structure: FULL,
+    referentiel: FULL,
+    enseignants: FULL,
+    examens: FULL,
+    communication: FULL,
     reporting: FULL,
   },
 
   resp_scolarite: {
     inscriptions: CRUD,
     edt: CRUD,
-    notes: ['read', 'validate'],
+    notes: ["read", "validate"],
     absences: CRUD,
-    bulletins: ['read', 'write', 'publish'],
+    bulletins: ["read", "write", "publish"],
     finance: CRUD,
     reporting: R,
   },
@@ -61,14 +194,28 @@ export const ACCESS_MATRIX: AccessMatrix = {
   resp_filiere: {
     inscriptions: R,
     edt: R,
-    notes: ['read', 'validate'],
+    notes: ["read", "validate"],
     absences: R,
-    bulletins: ['read', 'publish'],
+    bulletins: ["read", "publish"],
     finance: R,
     reporting: R,
   },
 
+  Bibliothecaire: {
+    etablissements: R,
+    inscriptions: R,
+  },
+
   enseignant: {
+    inscriptions: R,
+    edt: R,
+    notes: RW,
+    absences: RW,
+    bulletins: RW,
+    reporting: R,
+  },
+
+  Enseignant: {
     inscriptions: R,
     edt: R,
     notes: RW,
@@ -94,7 +241,21 @@ export const ACCESS_MATRIX: AccessMatrix = {
     reporting: R,
   },
 
+  Comptable: {
+    finance: CRUD,
+    reporting: R,
+  },
+
   apprenant: {
+    inscriptions: R,
+    edt: R,
+    notes: R,
+    absences: R,
+    bulletins: R,
+    finance: R,
+  },
+
+  Apprenant: {
     inscriptions: R,
     edt: R,
     notes: R,
@@ -112,14 +273,55 @@ export const ACCESS_MATRIX: AccessMatrix = {
     finance: R,
   },
 
+  Parent: {
+    inscriptions: R,
+    edt: R,
+    notes: R,
+    absences: R,
+    bulletins: R,
+    finance: R,
+  },
+
   auditeur: {
-    academic: R, administration: R, finance: R, etablissements: R,
-    inscriptions: R, notes: R, bulletins: R, structure: R,
-    referentiel: R, edt: R, absences: R, enseignants: R,
-    examens: R, communication: R, reporting: R,
+    academic: R,
+    administration: R,
+    finance: R,
+    etablissements: R,
+    inscriptions: R,
+    notes: R,
+    bulletins: R,
+    structure: R,
+    referentiel: R,
+    edt: R,
+    absences: R,
+    enseignants: R,
+    examens: R,
+    communication: R,
+    reporting: R,
+  },
+
+  Auditeur: {
+    academic: R,
+    administration: R,
+    finance: R,
+    etablissements: R,
+    inscriptions: R,
+    notes: R,
+    bulletins: R,
+    structure: R,
+    referentiel: R,
+    edt: R,
+    absences: R,
+    enseignants: R,
+    examens: R,
+    communication: R,
+    reporting: R,
   },
 };
 
-export function actionsFor(role: UserRole, module: ModuleKey): readonly Action[] {
+export function actionsFor(
+  role: UserRole,
+  module: ModuleKey,
+): readonly Action[] {
   return ACCESS_MATRIX[role]?.[module] ?? [];
 }

@@ -25,7 +25,7 @@ export class AuthService {
    */
   login(credentials: AuthCredentials): Observable<AuthSession> {
     return this.http
-      .post<AuthSession>(`${environment.apiUrl}/api/tokens/login`, credentials)
+      .post<AuthSession>(`${environment.apiUrl}/tokens/login`, credentials)
       .pipe(tap((session) => this.authStore.setSession(session)));
   }
 
@@ -42,7 +42,7 @@ export class AuthService {
    */
   refresh(): Observable<AuthSession> {
     return this.http.post<AuthSession>(
-      `${environment.apiUrl}/api/tokens/refresh`,
+      `${environment.apiUrl}/tokens/refresh`,
       {},
     );
   }
