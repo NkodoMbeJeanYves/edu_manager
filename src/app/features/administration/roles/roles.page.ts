@@ -3,11 +3,12 @@ import { RolesStore } from './roles.store';
 import { Role, RoleDraft } from './models/role.model';
 import { RoleListComponent } from './components/role-list/role-list.component';
 import { RoleFormComponent } from './components/role-form/role-form.component';
+import { PaginatorComponent, PaginatorChange } from '@shared/pagination/paginator.component';
 
 @Component({
   selector: 'app-roles-page',
   standalone: true,
-  imports: [RoleListComponent, RoleFormComponent],
+  imports: [RoleListComponent, RoleFormComponent, PaginatorComponent],
   providers: [RolesStore],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './roles.page.html',
@@ -38,4 +39,6 @@ export class RolesPage implements OnInit {
   }
 
   search(value: string): void { this.store.setFilter({ search: value }); }
+
+  onPageChange(e: PaginatorChange): void { this.store.goToPage(e.pageIndex + 1); }
 }

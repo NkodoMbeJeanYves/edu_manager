@@ -3,11 +3,12 @@ import { DepartmentsStore } from './departments.store';
 import { Department, DepartmentDraft } from './models/department.model';
 import { DepartmentListComponent } from './components/department-list/department-list.component';
 import { DepartmentFormComponent } from './components/department-form/department-form.component';
+import { PaginatorComponent, PaginatorChange } from '@shared/pagination/paginator.component';
 
 @Component({
   selector: 'app-departments-page',
   standalone: true,
-  imports: [DepartmentListComponent, DepartmentFormComponent],
+  imports: [DepartmentListComponent, DepartmentFormComponent, PaginatorComponent],
   providers: [DepartmentsStore],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './departments.page.html',
@@ -37,4 +38,6 @@ export class DepartmentsPage implements OnInit {
   }
 
   search(value: string): void { this.store.setFilter({ search: value }); }
+
+  onPageChange(e: PaginatorChange): void { this.store.goToPage(e.pageIndex + 1); }
 }

@@ -3,7 +3,7 @@
     <div>
       <h1 i18n="@@roles.title">Roles &amp; Permissions</h1>
       <p class="roles__hint" i18n="@@roles.count">
-        {{ store.visibleCount() }} of {{ store.total() }} roles
+        {{ store.pagination.total() }} roles
       </p>
     </div>
 
@@ -25,9 +25,18 @@
     <div class="roles__state roles__state--error">{{ store.error() }}</div>
   } @else {
     <app-role-list
-      [roles]="store.filtered()"
+      [roles]="store.items()"
       (edit)="openEdit($event)"
       (remove)="remove($event)" />
+
+    @if (store.pagination.totalPages() > 1) {
+      <app-paginator
+        appearance="compact"
+        [length]="store.pagination.total()"
+        [pageSize]="store.pagination.size()"
+        [pageIndex]="store.pagination.page() - 1"
+        (pageChange)="onPageChange($event)" />
+    }
   }
 
   @if (drawerOpen()) {

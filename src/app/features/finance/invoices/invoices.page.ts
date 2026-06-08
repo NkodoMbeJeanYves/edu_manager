@@ -3,11 +3,12 @@ import { InvoicesStore } from './invoices.store';
 import { Invoice, InvoiceDraft } from './models/invoice.model';
 import { InvoiceListComponent } from './components/invoice-list/invoice-list.component';
 import { InvoiceFormComponent } from './components/invoice-form/invoice-form.component';
+import { PaginatorComponent, PaginatorChange } from '@shared/pagination/paginator.component';
 
 @Component({
   selector: 'app-invoices-page',
   standalone: true,
-  imports: [InvoiceListComponent, InvoiceFormComponent],
+  imports: [InvoiceListComponent, InvoiceFormComponent, PaginatorComponent],
   providers: [InvoicesStore],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './invoices.page.html',
@@ -37,4 +38,6 @@ export class InvoicesPage implements OnInit {
   }
 
   search(value: string): void { this.store.setFilter({ search: value }); }
+
+  onPageChange(e: PaginatorChange): void { this.store.goToPage(e.pageIndex + 1); }
 }

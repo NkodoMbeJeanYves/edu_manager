@@ -3,11 +3,12 @@ import { StudentsStore } from './students.store';
 import { Student, StudentDraft } from './models/student.model';
 import { StudentListComponent } from './components/student-list/student-list.component';
 import { StudentFormComponent } from './components/student-form/student-form.component';
+import { PaginatorComponent, PaginatorChange } from '@shared/pagination/paginator.component';
 
 @Component({
   selector: 'app-students-page',
   standalone: true,
-  imports: [StudentListComponent, StudentFormComponent],
+  imports: [StudentListComponent, StudentFormComponent, PaginatorComponent],
   providers: [StudentsStore],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './students.page.html',
@@ -56,5 +57,9 @@ export class StudentsPage implements OnInit {
 
   search(value: string): void {
     this.store.setFilter({ search: value });
+  }
+
+  onPageChange(e: PaginatorChange): void {
+    this.store.goToPage(e.pageIndex + 1);
   }
 }

@@ -3,11 +3,12 @@ import { GradesStore } from './grades.store';
 import { Grade, GradeDraft } from './models/grade.model';
 import { GradeListComponent } from './components/grade-list/grade-list.component';
 import { GradeFormComponent } from './components/grade-form/grade-form.component';
+import { PaginatorComponent, PaginatorChange } from '@shared/pagination/paginator.component';
 
 @Component({
   selector: 'app-grades-page',
   standalone: true,
-  imports: [GradeListComponent, GradeFormComponent],
+  imports: [GradeListComponent, GradeFormComponent, PaginatorComponent],
   providers: [GradesStore],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './grades.page.html',
@@ -56,5 +57,9 @@ export class GradesPage implements OnInit {
 
   search(value: string): void {
     this.store.setFilter({ search: value });
+  }
+
+  onPageChange(e: PaginatorChange): void {
+    this.store.goToPage(e.pageIndex + 1);
   }
 }

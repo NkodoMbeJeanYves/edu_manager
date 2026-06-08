@@ -15,7 +15,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { PaginatorComponent, PaginatorChange } from '@shared/pagination/paginator.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatTabsModule } from '@angular/material/tabs';
 import { BulletinStateService } from '../../services/bulletin-state.service';
@@ -34,7 +34,7 @@ import { Bulletin, StatutDocument } from '../../../../core/models/bulletin.model
     MatInputModule, MatFormFieldModule, MatSelectModule,
     MatMenuModule, MatTooltipModule, MatProgressSpinnerModule,
     MatProgressBarModule, MatDialogModule, MatSnackBarModule,
-    MatPaginatorModule, MatCardModule, MatTabsModule,
+    PaginatorComponent, MatCardModule, MatTabsModule,
   ],
   templateUrl: './bulletins-list.component.html',
   styleUrl: './bulletins-list.component.scss'
@@ -67,7 +67,7 @@ export class BulletinsListComponent implements OnInit {
     });
   }
 
-  onPageChange(e: PageEvent): void {
+  onPageChange(e: PaginatorChange): void {
     this.state.loadBulletins({ page: e.pageIndex + 1 });
   }
 

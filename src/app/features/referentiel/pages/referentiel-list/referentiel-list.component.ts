@@ -16,7 +16,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { PaginatorComponent, PaginatorChange } from '@shared/pagination/paginator.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatDividerModule } from '@angular/material/divider';
@@ -35,7 +35,7 @@ import { Matiere, UE, TypeMatiere } from '../../../../core/models/referentiel.mo
     MatChipsModule, MatInputModule, MatFormFieldModule, MatSelectModule,
     MatMenuModule, MatTooltipModule, MatProgressSpinnerModule,
     MatProgressBarModule, MatDialogModule, MatSnackBarModule,
-    MatPaginatorModule, MatCardModule, MatSlideToggleModule, MatDividerModule,
+    PaginatorComponent, MatCardModule, MatSlideToggleModule, MatDividerModule,
   ],
   templateUrl: './referentiel-list.component.html',
   styleUrl: './referentiel-list.component.scss'
@@ -76,7 +76,7 @@ export class ReferentielListComponent implements OnInit {
     });
   }
 
-  onPageMatieres(e: PageEvent): void {
+  onPageMatieres(e: PaginatorChange): void {
     this.state.loadMatieres({ page: e.pageIndex + 1 });
   }
 

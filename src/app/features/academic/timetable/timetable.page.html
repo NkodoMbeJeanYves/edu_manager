@@ -5,6 +5,8 @@
       <p class="timetable__hint" i18n="@@timetable.count">
         {{ store.visibleCount() }} of {{ store.total() }} slots
       </p>
+      <!-- visibleCount/total conservés ici : la grille n'est pas paginée -->
+
     </div>
 
     <div class="timetable__actions">
@@ -71,9 +73,18 @@
     }
   } @else {
     <app-timetable-list
-      [slots]="store.filtered()"
+      [slots]="store.pagedList()"
       (edit)="openEdit($event)"
       (remove)="remove($event)" />
+
+    @if (store.pagination.totalPages() > 1) {
+      <app-paginator
+        appearance="compact"
+        [length]="store.pagination.total()"
+        [pageSize]="store.pagination.size()"
+        [pageIndex]="store.pagination.page() - 1"
+        (pageChange)="onPageChange($event)" />
+    }
   }
 
   @if (viewing(); as slot) {

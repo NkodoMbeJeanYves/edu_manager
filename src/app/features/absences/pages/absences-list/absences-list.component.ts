@@ -14,7 +14,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { PaginatorComponent, PaginatorChange } from '@shared/pagination/paginator.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatBadgeModule } from '@angular/material/badge';
@@ -31,7 +31,7 @@ import { Absence, StatutAbsence } from '../../../../core/models/absence.models';
     MatTableModule, MatButtonModule, MatIconModule, MatChipsModule,
     MatInputModule, MatFormFieldModule, MatSelectModule,
     MatMenuModule, MatTooltipModule, MatProgressSpinnerModule,
-    MatDialogModule, MatSnackBarModule, MatPaginatorModule,
+    MatDialogModule, MatSnackBarModule, PaginatorComponent,
     MatCardModule, MatTabsModule, MatBadgeModule,
   ],
   templateUrl: './absences-list.component.html',
@@ -71,7 +71,7 @@ export class AbsencesListComponent implements OnInit {
     });
   }
 
-  onPageChange(e: PageEvent): void {
+  onPageChange(e: PaginatorChange): void {
     this.state.loadAbsences({ page: e.pageIndex + 1 });
   }
 

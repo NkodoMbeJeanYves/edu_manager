@@ -13,7 +13,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { PaginatorComponent, PaginatorChange } from '@shared/pagination/paginator.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDividerModule } from '@angular/material/divider';
@@ -30,7 +30,7 @@ import { Classe } from '../../../../core/models/structure.models';
     MatTableModule, MatButtonModule, MatIconModule, MatChipsModule,
     MatInputModule, MatFormFieldModule, MatSelectModule,
     MatProgressSpinnerModule, MatProgressBarModule,
-    MatDialogModule, MatSnackBarModule, MatPaginatorModule,
+    MatDialogModule, MatSnackBarModule, PaginatorComponent,
     MatTooltipModule, MatMenuModule, MatDividerModule,
   ],
   templateUrl: './classes-list.component.html',
@@ -59,7 +59,7 @@ export class ClassesListComponent implements OnInit {
     });
   }
 
-  onPageChange(e: PageEvent): void {
+  onPageChange(e: PaginatorChange): void {
     this.state.loadClasses({ page: e.pageIndex + 1 });
   }
 

@@ -21,6 +21,8 @@ export interface StudentFilter {
   search?: string;
   level?: StudentLevel;
   status?: StudentStatus;
+  page?: number; // 1-based
+  size?: number; // default 20
 }
 
 export type StudentDraft = Omit<Student, "id" | "tenantId" | "enrolledAt">;

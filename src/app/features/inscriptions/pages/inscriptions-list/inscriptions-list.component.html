@@ -250,13 +250,13 @@
         </tr>
       </table>
 
-      <mat-paginator
+      <app-paginator
+        appearance="material"
         [length]="state.total()"
         [pageSize]="state.limit()"
+        [pageIndex]="state.page() - 1"
         [pageSizeOptions]="[10, 20, 50]"
-        (page)="onPageChange($event)"
-        showFirstLastButtons>
-      </mat-paginator>
+        (pageChange)="onPageChange($event)" />
     </div>
   }
 </div>

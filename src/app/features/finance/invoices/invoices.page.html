@@ -3,7 +3,7 @@
     <div>
       <h1 i18n="@@invoices.title">Invoices</h1>
       <p class="invoices__hint" i18n="@@invoices.count">
-        {{ store.visibleCount() }} of {{ store.total() }} invoices
+        {{ store.pagination.total() }} invoices
       </p>
     </div>
 
@@ -25,9 +25,18 @@
     <div class="invoices__state invoices__state--error">{{ store.error() }}</div>
   } @else {
     <app-invoice-list
-      [invoices]="store.filtered()"
+      [invoices]="store.items()"
       (edit)="openEdit($event)"
       (remove)="remove($event)" />
+
+    @if (store.pagination.totalPages() > 1) {
+      <app-paginator
+        appearance="compact"
+        [length]="store.pagination.total()"
+        [pageSize]="store.pagination.size()"
+        [pageIndex]="store.pagination.page() - 1"
+        (pageChange)="onPageChange($event)" />
+    }
   }
 
   @if (drawerOpen()) {

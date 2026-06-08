@@ -3,7 +3,7 @@
     <div>
       <h1 i18n="@@payments.title">Payments</h1>
       <p class="payments__hint" i18n="@@payments.count">
-        {{ store.visibleCount() }} of {{ store.total() }} payments
+        {{ store.pagination.total() }} payments
       </p>
     </div>
 
@@ -25,9 +25,18 @@
     <div class="payments__state payments__state--error">{{ store.error() }}</div>
   } @else {
     <app-payment-list
-      [payments]="store.filtered()"
+      [payments]="store.items()"
       (edit)="openEdit($event)"
       (remove)="remove($event)" />
+
+    @if (store.pagination.totalPages() > 1) {
+      <app-paginator
+        appearance="compact"
+        [length]="store.pagination.total()"
+        [pageSize]="store.pagination.size()"
+        [pageIndex]="store.pagination.page() - 1"
+        (pageChange)="onPageChange($event)" />
+    }
   }
 
   @if (drawerOpen()) {

@@ -3,7 +3,7 @@
     <div>
       <h1 i18n="@@teachers.title">Teachers</h1>
       <p class="teachers__hint" i18n="@@teachers.count">
-        {{ store.visibleCount() }} of {{ store.total() }} teachers
+        {{ store.pagination.total() }} teachers
       </p>
     </div>
 
@@ -25,9 +25,18 @@
     <div class="teachers__state teachers__state--error">{{ store.error() }}</div>
   } @else {
     <app-teacher-list
-      [teachers]="store.filtered()"
+      [teachers]="store.items()"
       (edit)="openEdit($event)"
       (remove)="remove($event)" />
+
+    @if (store.pagination.totalPages() > 1) {
+      <app-paginator
+        appearance="compact"
+        [length]="store.pagination.total()"
+        [pageSize]="store.pagination.size()"
+        [pageIndex]="store.pagination.page() - 1"
+        (pageChange)="onPageChange($event)" />
+    }
   }
 
   @if (drawerOpen()) {

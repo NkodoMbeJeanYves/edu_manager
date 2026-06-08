@@ -3,11 +3,12 @@ import { TeachersStore } from './teachers.store';
 import { Teacher, TeacherDraft } from './models/teacher.model';
 import { TeacherListComponent } from './components/teacher-list/teacher-list.component';
 import { TeacherFormComponent } from './components/teacher-form/teacher-form.component';
+import { PaginatorComponent, PaginatorChange } from '@shared/pagination/paginator.component';
 
 @Component({
   selector: 'app-teachers-page',
   standalone: true,
-  imports: [TeacherListComponent, TeacherFormComponent],
+  imports: [TeacherListComponent, TeacherFormComponent, PaginatorComponent],
   providers: [TeachersStore],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './teachers.page.html',
@@ -56,5 +57,9 @@ export class TeachersPage implements OnInit {
 
   search(value: string): void {
     this.store.setFilter({ search: value });
+  }
+
+  onPageChange(e: PaginatorChange): void {
+    this.store.goToPage(e.pageIndex + 1);
   }
 }

@@ -3,11 +3,12 @@ import { SessionsStore } from './sessions.store';
 import { AcademicSession, AcademicSessionDraft } from './models/session.model';
 import { SessionListComponent } from './components/session-list/session-list.component';
 import { SessionFormComponent } from './components/session-form/session-form.component';
+import { PaginatorComponent, PaginatorChange } from '@shared/pagination/paginator.component';
 
 @Component({
   selector: 'app-sessions-page',
   standalone: true,
-  imports: [SessionListComponent, SessionFormComponent],
+  imports: [SessionListComponent, SessionFormComponent, PaginatorComponent],
   providers: [SessionsStore],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './sessions.page.html',
@@ -56,5 +57,9 @@ export class SessionsPage implements OnInit {
 
   search(value: string): void {
     this.store.setFilter({ search: value });
+  }
+
+  onPageChange(e: PaginatorChange): void {
+    this.store.goToPage(e.pageIndex + 1);
   }
 }

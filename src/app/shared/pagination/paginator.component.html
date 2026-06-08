@@ -1,0 +1,26 @@
+@if (appearance === 'material') {
+  <mat-paginator
+    [length]="length"
+    [pageSize]="pageSize"
+    [pageIndex]="pageIndex"
+    [pageSizeOptions]="pageSizeOptions"
+    (page)="onMatPage($event)"
+    showFirstLastButtons>
+  </mat-paginator>
+} @else {
+  <nav class="paginator paginator--compact">
+    <button
+      type="button"
+      class="btn btn--ghost"
+      [disabled]="!hasPrev"
+      (click)="prev()"
+      i18n="@@common.prev">Previous</button>
+    <span i18n="@@common.pageOf">Page {{ currentPage }} of {{ computedTotalPages }}</span>
+    <button
+      type="button"
+      class="btn btn--ghost"
+      [disabled]="!hasNext"
+      (click)="next()"
+      i18n="@@common.next">Next</button>
+  </nav>
+}

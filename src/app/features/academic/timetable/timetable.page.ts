@@ -5,6 +5,7 @@ import { TimetableListComponent } from './components/timetable-list/timetable-li
 import { TimetableFormComponent } from './components/timetable-form/timetable-form.component';
 import { TimetableGridComponent } from './components/timetable-grid/timetable-grid.component';
 import { TimetableDetailComponent } from './components/timetable-detail/timetable-detail.component';
+import { PaginatorComponent, PaginatorChange } from '@shared/pagination/paginator.component';
 
 type ViewMode = 'grid' | 'list';
 
@@ -16,6 +17,7 @@ type ViewMode = 'grid' | 'list';
     TimetableFormComponent,
     TimetableGridComponent,
     TimetableDetailComponent,
+    PaginatorComponent,
   ],
   providers: [TimetableStore],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -109,5 +111,9 @@ export class TimetablePage implements OnInit {
 
   search(value: string): void {
     this.store.setFilter({ search: value });
+  }
+
+  onPageChange(e: PaginatorChange): void {
+    this.store.goToPage(e.pageIndex + 1);
   }
 }

@@ -15,7 +15,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { PaginatorComponent, PaginatorChange } from '@shared/pagination/paginator.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { EnseignantStateService } from '../../services/enseignant-state.service';
@@ -33,7 +33,7 @@ import { Enseignant, StatutEnseignant, TypeContrat } from '../../../../core/mode
     MatInputModule, MatFormFieldModule, MatSelectModule,
     MatMenuModule, MatTooltipModule, MatProgressSpinnerModule,
     MatProgressBarModule, MatDialogModule, MatSnackBarModule,
-    MatPaginatorModule, MatCardModule, MatDividerModule,
+    PaginatorComponent, MatCardModule, MatDividerModule,
   ],
   templateUrl: './enseignants-list.component.html',
   styleUrl: './enseignants-list.component.scss',
@@ -62,7 +62,7 @@ export class EnseignantsListComponent implements OnInit {
     });
   }
 
-  onPageChange(e: PageEvent): void {
+  onPageChange(e: PaginatorChange): void {
     this.state.loadEnseignants({ page: e.pageIndex + 1 });
   }
 

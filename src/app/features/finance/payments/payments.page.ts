@@ -3,11 +3,12 @@ import { PaymentsStore } from './payments.store';
 import { Payment, PaymentDraft } from './models/payment.model';
 import { PaymentListComponent } from './components/payment-list/payment-list.component';
 import { PaymentFormComponent } from './components/payment-form/payment-form.component';
+import { PaginatorComponent, PaginatorChange } from '@shared/pagination/paginator.component';
 
 @Component({
   selector: 'app-payments-page',
   standalone: true,
-  imports: [PaymentListComponent, PaymentFormComponent],
+  imports: [PaymentListComponent, PaymentFormComponent, PaginatorComponent],
   providers: [PaymentsStore],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './payments.page.html',
@@ -37,4 +38,6 @@ export class PaymentsPage implements OnInit {
   }
 
   search(value: string): void { this.store.setFilter({ search: value }); }
+
+  onPageChange(e: PaginatorChange): void { this.store.goToPage(e.pageIndex + 1); }
 }

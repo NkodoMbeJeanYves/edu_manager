@@ -1,6 +1,8 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { Student, StudentDraft, StudentFilter } from './models/student.model';
 import { StudentsService } from './students.service';
+import { createPagination } from '@shared/pagination/create-pagination';
+import { fromItemsMeta } from '@shared/pagination/pagination.types';
 
 @Injectable()
 export class StudentsStore {
@@ -12,29 +14,14 @@ export class StudentsStore {
   private readonly _error = signal<string | null>(null);
   private readonly _selectedId = signal<string | null>(null);
 
+  readonly pagination = createPagination();
+
   readonly items = this._items.asReadonly();
   readonly filter = this._filter.asReadonly();
   readonly loading = this._loading.asReadonly();
   readonly error = this._error.asReadonly();
   readonly selectedId = this._selectedId.asReadonly();
 
-  readonly filtered = computed<Student[]>(() => {
-    const filter = this._filter();
-    const search = filter.search?.toLowerCase().trim();
-
-    return this._items().filter((s) => {
-      if (filter.level && s.level !== filter.level) return false;
-      if (filter.status && s.status !== filter.status) return false;
-      if (search) {
-        const haystack = `${s.firstName} ${s.lastName} ${s.email} ${s.registrationNumber}`.toLowerCase();
-        if (!haystack.includes(search)) return false;
-      }
-      return true;
-    });
-  });
-
-  readonly total = computed(() => this._items().length);
-  readonly visibleCount = computed(() => this.filtered().length);
   readonly selected = computed<Student | null>(() => {
     const id = this._selectedId();
     return id ? this._items().find((s) => s.id === id) ?? null : null;
@@ -44,24 +31,37 @@ export class StudentsStore {
     this._loading.set(true);
     this._error.set(null);
 
-    this.service.list().subscribe({
-      next: (list) => {
-        this._items.set(list);
-        this._loading.set(false);
-      },
-      error: (err) => {
-        this._error.set(err?.message ?? 'Failed to load students');
-        this._loading.set(false);
-      },
-    });
+    const req = this.pagination.request();
+    this.service
+      .list({ ...this._filter(), page: req.page, size: req.size })
+      .subscribe({
+        next: (res) => {
+          this._items.set(res.data);
+          this.pagination.setMeta(fromItemsMeta(res.meta));
+          this._loading.set(false);
+        },
+        error: (err) => {
+          this._error.set(err?.message ?? 'Failed to load students');
+          this._loading.set(false);
+        },
+      });
   }
 
   setFilter(patch: Partial<StudentFilter>): void {
     this._filter.update((curr) => ({ ...curr, ...patch }));
+    this.pagination.reset();
+    this.load();
+  }
+
+  goToPage(page: number): void {
+    this.pagination.goTo(page);
+    this.load();
   }
 
   resetFilter(): void {
     this._filter.set({});
+    this.pagination.reset();
+    this.load();
   }
 
   select(id: string | null): void {
@@ -70,22 +70,21 @@ export class StudentsStore {
 
   create(draft: StudentDraft): void {
     this.service.create(draft).subscribe({
-      next: (created) => this._items.update((list) => [created, ...list]),
+      next: () => this.load(),
       error: (err) => this._error.set(err?.message ?? 'Create failed'),
     });
   }
 
   update(id: string, draft: StudentDraft): void {
     this.service.update(id, draft).subscribe({
-      next: (updated) =>
-        this._items.update((list) => list.map((s) => (s.id === id ? updated : s))),
+      next: () => this.load(),
       error: (err) => this._error.set(err?.message ?? 'Update failed'),
     });
   }
 
   remove(id: string): void {
     this.service.remove(id).subscribe({
-      next: () => this._items.update((list) => list.filter((s) => s.id !== id)),
+      next: () => this.load(),
       error: (err) => this._error.set(err?.message ?? 'Delete failed'),
     });
   }

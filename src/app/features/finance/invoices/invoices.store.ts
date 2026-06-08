@@ -1,25 +1,30 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { Invoice, InvoiceDraft, InvoiceFilter } from './models/invoice.model';
 import { InvoicesService } from './invoices.service';
+import { createPagination } from '@shared/pagination/create-pagination';
+import { paginateClient } from '@shared/pagination/pagination.types';
 
 @Injectable()
 export class InvoicesStore {
   private readonly service = inject(InvoicesService);
 
+  private readonly _all = signal<Invoice[]>([]);
   private readonly _items = signal<Invoice[]>([]);
   private readonly _filter = signal<InvoiceFilter>({});
   private readonly _loading = signal(false);
   private readonly _error = signal<string | null>(null);
+
+  readonly pagination = createPagination();
 
   readonly items = this._items.asReadonly();
   readonly filter = this._filter.asReadonly();
   readonly loading = this._loading.asReadonly();
   readonly error = this._error.asReadonly();
 
-  readonly filtered = computed<Invoice[]>(() => {
+  private readonly _filteredAll = computed<Invoice[]>(() => {
     const filter = this._filter();
     const search = filter.search?.toLowerCase().trim();
-    return this._items().filter((i) => {
+    return this._all().filter((i) => {
       if (filter.status && i.status !== filter.status) return false;
       if (search) {
         const haystack = `${i.invoiceNumber} ${i.studentName} ${i.registrationNumber} ${i.description}`.toLowerCase();
@@ -29,38 +34,48 @@ export class InvoicesStore {
     });
   });
 
-  readonly total = computed(() => this._items().length);
-  readonly visibleCount = computed(() => this.filtered().length);
-
   load(): void {
     this._loading.set(true); this._error.set(null);
     this.service.list().subscribe({
-      next: (list) => { this._items.set(list); this._loading.set(false); },
+      next: (list) => { this._all.set(list); this.refresh(); this._loading.set(false); },
       error: (err) => { this._error.set(err?.message ?? 'Failed to load invoices'); this._loading.set(false); },
     });
   }
 
   setFilter(patch: Partial<InvoiceFilter>): void {
     this._filter.update((curr) => ({ ...curr, ...patch }));
+    this.pagination.reset();
+    this.refresh();
+  }
+
+  goToPage(page: number): void {
+    this.pagination.goTo(page);
+    this.refresh();
+  }
+
+  private refresh(): void {
+    const { data, meta } = paginateClient(this._filteredAll(), this.pagination.request());
+    this._items.set(data);
+    this.pagination.setMeta(meta);
   }
 
   create(draft: InvoiceDraft): void {
     this.service.create(draft).subscribe({
-      next: (created) => this._items.update((list) => [created, ...list]),
+      next: (created) => { this._all.update((list) => [created, ...list]); this.refresh(); },
       error: (err) => this._error.set(err?.message ?? 'Create failed'),
     });
   }
 
   update(id: string, draft: InvoiceDraft): void {
     this.service.update(id, draft).subscribe({
-      next: (updated) => this._items.update((list) => list.map((i) => (i.id === id ? updated : i))),
+      next: (updated) => { this._all.update((list) => list.map((i) => (i.id === id ? updated : i))); this.refresh(); },
       error: (err) => this._error.set(err?.message ?? 'Update failed'),
     });
   }
 
   remove(id: string): void {
     this.service.remove(id).subscribe({
-      next: () => this._items.update((list) => list.filter((i) => i.id !== id)),
+      next: () => { this._all.update((list) => list.filter((i) => i.id !== id)); this.refresh(); },
       error: (err) => this._error.set(err?.message ?? 'Delete failed'),
     });
   }

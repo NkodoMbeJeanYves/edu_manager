@@ -198,13 +198,13 @@
               </tr>
             </table>
 
-            <mat-paginator
+            <app-paginator
+              appearance="material"
               [length]="state.totalMatieres()"
               [pageSize]="state.limit()"
+              [pageIndex]="state.page() - 1"
               [pageSizeOptions]="[10, 20, 50]"
-              (page)="onPageMatieres($event)"
-              showFirstLastButtons>
-            </mat-paginator>
+              (pageChange)="onPageMatieres($event)" />
           </div>
         }
       </div>

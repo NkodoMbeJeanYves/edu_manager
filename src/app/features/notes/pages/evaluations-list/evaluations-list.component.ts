@@ -14,7 +14,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { PaginatorComponent, PaginatorChange } from '@shared/pagination/paginator.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatDividerModule } from '@angular/material/divider';
@@ -31,7 +31,7 @@ import { Evaluation, TypeEvaluation, StatutEvaluation } from '../../../../core/m
     MatTableModule, MatButtonModule, MatIconModule, MatChipsModule,
     MatInputModule, MatFormFieldModule, MatSelectModule,
     MatMenuModule, MatTooltipModule, MatProgressSpinnerModule,
-    MatDialogModule, MatSnackBarModule, MatPaginatorModule,
+    MatDialogModule, MatSnackBarModule, PaginatorComponent,
     MatCardModule, MatProgressBarModule, MatDividerModule,
   ],
   templateUrl: './evaluations-list.component.html',
@@ -59,7 +59,7 @@ export class EvaluationsListComponent implements OnInit {
     });
   }
 
-  onPageChange(e: PageEvent): void {
+  onPageChange(e: PaginatorChange): void {
     this.state.loadEvaluations({ ...this.state.currentFilters(), page: e.pageIndex + 1 });
   }
 

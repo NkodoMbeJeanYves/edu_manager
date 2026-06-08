@@ -3,11 +3,12 @@ import { UsersStore } from './users.store';
 import { User, UserDraft } from './models/user.model';
 import { UserListComponent } from './components/user-list/user-list.component';
 import { UserFormComponent } from './components/user-form/user-form.component';
+import { PaginatorComponent, PaginatorChange } from '@shared/pagination/paginator.component';
 
 @Component({
   selector: 'app-users-page',
   standalone: true,
-  imports: [UserListComponent, UserFormComponent],
+  imports: [UserListComponent, UserFormComponent, PaginatorComponent],
   providers: [UsersStore],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './users.page.html',
@@ -37,4 +38,6 @@ export class UsersPage implements OnInit {
   }
 
   search(value: string): void { this.store.setFilter({ search: value }); }
+
+  onPageChange(e: PaginatorChange): void { this.store.goToPage(e.pageIndex + 1); }
 }

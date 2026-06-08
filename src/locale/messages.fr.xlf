@@ -127,12 +127,24 @@
         <target>Étudiants</target>
       </trans-unit>
       <trans-unit id="students.count" datatype="html">
-        <source> <x id="INTERPOLATION" equiv-text="{{ store.visibleCount() }}"/> of <x id="INTERPOLATION_1" equiv-text="{{ store.total() }}"/> students </source>
-        <target> <x id="INTERPOLATION" equiv-text="{{ store.visibleCount() }}"/> sur <x id="INTERPOLATION_1" equiv-text="{{ store.total() }}"/> étudiants </target>
+        <source> <x id="INTERPOLATION" equiv-text="{{ store.total() }}"/> students </source>
+        <target> <x id="INTERPOLATION" equiv-text="{{ store.total() }}"/> étudiants </target>
       </trans-unit>
       <trans-unit id="students.searchPlaceholder" datatype="html">
         <source>Search by name, email, registration…</source>
         <target>Rechercher par nom, e-mail, inscription…</target>
+      </trans-unit>
+      <trans-unit id="common.pageOf" datatype="html">
+        <source>Page <x id="INTERPOLATION" equiv-text="{{ currentPage }}"/> of <x id="INTERPOLATION_1" equiv-text="{{ computedTotalPages }}"/></source>
+        <target>Page <x id="INTERPOLATION" equiv-text="{{ currentPage }}"/> sur <x id="INTERPOLATION_1" equiv-text="{{ computedTotalPages }}"/></target>
+      </trans-unit>
+      <trans-unit id="common.prev" datatype="html">
+        <source>Previous</source>
+        <target>Précédent</target>
+      </trans-unit>
+      <trans-unit id="common.next" datatype="html">
+        <source>Next</source>
+        <target>Suivant</target>
       </trans-unit>
       <trans-unit id="students.new" datatype="html">
         <source>New student</source>
