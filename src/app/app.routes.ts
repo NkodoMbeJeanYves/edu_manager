@@ -16,6 +16,12 @@ export const APP_ROUTES: Routes = [
       import('@features/tenant-select/tenant-select.page').then((m) => m.TenantSelectPage),
   },
   {
+    // Route de dev (non liée au menu) — démo du composant ProfilePhoto.
+    path: '_demo/profile-photo',
+    loadComponent: () =>
+      import('@shared/profile-photo/profile-photo.demo').then((m) => m.ProfilePhotoDemoComponent),
+  },
+  {
     path: '',
     canActivate: [authGuard, tenantGuard],
     loadComponent: () =>

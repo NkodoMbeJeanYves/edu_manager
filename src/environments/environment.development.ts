@@ -10,5 +10,5 @@
 export const environment = {
   production: false,
   apiUrl: "http://localhost:5228/api/", // Relative à la racine du domaine ; proxy.conf.json capture /api/*
-  useMocks: false,
+  useMocks: true, // mockBackendInterceptor intercepte les appels (ex. login via AUTH_ROUTES)
 };

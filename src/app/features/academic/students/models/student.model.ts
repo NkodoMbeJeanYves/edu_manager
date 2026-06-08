@@ -15,6 +15,8 @@ export interface Student {
   status: StudentStatus;
   enrolledAt: string;
   gender?: "m" | "f" | "o";
+  /** Photo de profil en dataURL base64 (ou URL). */
+  photoUrl?: string;
 }
 
 export interface StudentFilter {

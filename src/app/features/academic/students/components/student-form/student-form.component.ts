@@ -10,11 +10,12 @@ import {
 } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Student, StudentDraft } from '../../models/student.model';
+import { ProfilePhotoComponent } from '@shared/profile-photo/profile-photo.component';
 
 @Component({
   selector: 'app-student-form',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, ProfilePhotoComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './student-form.component.html',
   styleUrl: './student-form.component.scss',
@@ -27,6 +28,8 @@ export class StudentFormComponent implements OnChanges {
 
   private readonly fb = inject(FormBuilder);
 
+  protected photoError = '';
+
   protected readonly form = this.fb.nonNullable.group({
     registrationNumber: ['', Validators.required],
     firstName: ['', Validators.required],
@@ -35,6 +38,7 @@ export class StudentFormComponent implements OnChanges {
     birthDate: ['', Validators.required],
     level: this.fb.nonNullable.control<Student['level']>('SECONDARY', Validators.required),
     status: this.fb.nonNullable.control<Student['status']>('ACTIVE', Validators.required),
+    photoUrl: this.fb.nonNullable.control<string>(''),
   });
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -50,9 +54,22 @@ export class StudentFormComponent implements OnChanges {
           birthDate: '',
           level: 'SECONDARY',
           status: 'ACTIVE',
+          photoUrl: '',
         });
       }
+      this.photoError = '';
     }
+  }
+
+  protected onPhotoChange(dataUrl: string | null): void {
+    this.form.controls.photoUrl.setValue(dataUrl ?? '');
+    this.form.controls.photoUrl.markAsDirty();
+    this.photoError = '';
+  }
+
+  protected get fullName(): string {
+    const { firstName, lastName } = this.form.getRawValue();
+    return `${firstName} ${lastName}`.trim();
   }
 
   submit(): void {

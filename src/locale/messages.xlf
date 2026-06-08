@@ -149,6 +149,12 @@
           <context context-type="linenumber">53,55</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="studentList.photo" datatype="html">
+        <source>Photo</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/academic/students/components/student-list/student-list.component.html</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="studentList.regNum" datatype="html">
         <source>Reg. #</source>
         <context-group purpose="location">
@@ -242,6 +248,42 @@
         <source>Next</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/academic/students/students.page.html</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="profilePhoto.change" datatype="html">
+        <source>Change</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/profile-photo/profile-photo.component.html</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="profilePhoto.changeAria" datatype="html">
+        <source>Change profile photo</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/profile-photo/profile-photo.component.ts</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="profilePhoto.remove" datatype="html">
+        <source>Remove</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/profile-photo/profile-photo.component.html</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="profilePhoto.errorType" datatype="html">
+        <source>Unsupported file type. Use JPEG, PNG or WebP.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/profile-photo/profile-photo.component.ts</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="profilePhoto.errorSize" datatype="html">
+        <source>Image is too large (max <x id="PH" equiv-text="maxMb"/> MB).</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/profile-photo/profile-photo.component.ts</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="profilePhoto.errorRead" datatype="html">
+        <source>Could not read the file.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/profile-photo/profile-photo.component.ts</context>
         </context-group>
       </trans-unit>
       <trans-unit id="students.searchPlaceholder" datatype="html">

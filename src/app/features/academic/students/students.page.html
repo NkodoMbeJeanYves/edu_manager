@@ -14,48 +14,61 @@
         placeholder="Search by name, email, registration…"
         [value]="store.filter().search ?? ''"
         (input)="search($any($event.target).value)"
-        class="students__search" />
-      <button class="btn btn--primary" (click)="openCreate()" i18n="@@students.new">New student</button>
+        class="students__search"
+      />
+      <button
+        class="btn btn--primary"
+        (click)="openCreate()"
+        i18n="@@students.new"
+      >
+        New student
+      </button>
     </div>
   </header>
 
   @if (store.loading()) {
-    <div class="students__state" i18n="@@common.loading">Loading…</div>
+  <div class="students__state" i18n="@@common.loading">Loading…</div>
   } @else if (store.error()) {
-    <div class="students__state students__state--error">{{ store.error() }}</div>
+  <div class="students__state students__state--error">{{ store.error() }}</div>
   } @else {
-    <app-student-list
-      [students]="store.items()"
-      (edit)="openEdit($event)"
-      (remove)="remove($event)" />
+  <app-student-list
+    [students]="store.items()"
+    (edit)="openEdit($event)"
+    (remove)="remove($event)"
+  />
 
-    @if (store.pagination.totalPages() > 1) {
-      <app-paginator
-        appearance="compact"
-        [length]="store.pagination.total()"
-        [pageSize]="store.pagination.size()"
-        [pageIndex]="store.pagination.page() - 1"
-        (pageChange)="onPageChange($event)" />
-    }
-  }
-
-  @if (drawerOpen()) {
-    <div class="drawer">
-      <div class="drawer__overlay" (click)="closeDrawer()"></div>
-      <div class="drawer__panel">
-        <div class="drawer__head">
-          @if (editing()) {
-            <h2 i18n="@@students.editTitle">Edit student</h2>
-          } @else {
-            <h2 i18n="@@students.newTitle">New student</h2>
-          }
-          <button class="btn btn--ghost" (click)="closeDrawer()" i18n="@@common.close">Close</button>
-        </div>
-        <app-student-form
-          [student]="editing()"
-          (save)="save($event)"
-          (cancel)="closeDrawer()" />
+  @if (store.pagination.totalPages() > 1) {
+  <app-paginator
+    appearance="material"
+    [length]="store.pagination.total()"
+    [pageSize]="store.pagination.size()"
+    [pageIndex]="store.pagination.page() - 1"
+    (pageChange)="onPageChange($event)"
+  />
+  } } @if (drawerOpen()) {
+  <div class="drawer">
+    <div class="drawer__overlay" (click)="closeDrawer()"></div>
+    <div class="drawer__panel">
+      <div class="drawer__head">
+        @if (editing()) {
+        <h2 i18n="@@students.editTitle">Edit student</h2>
+        } @else {
+        <h2 i18n="@@students.newTitle">New student</h2>
+        }
+        <button
+          class="btn btn--ghost"
+          (click)="closeDrawer()"
+          i18n="@@common.close"
+        >
+          Close
+        </button>
       </div>
+      <app-student-form
+        [student]="editing()"
+        (save)="save($event)"
+        (cancel)="closeDrawer()"
+      />
     </div>
+  </div>
   }
 </section>

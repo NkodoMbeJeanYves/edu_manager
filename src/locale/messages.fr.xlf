@@ -86,6 +86,10 @@
         <source>Save</source>
         <target>Enregistrer</target>
       </trans-unit>
+      <trans-unit id="studentList.photo" datatype="html">
+        <source>Photo</source>
+        <target>Photo</target>
+      </trans-unit>
       <trans-unit id="studentList.regNum" datatype="html">
         <source>Reg. #</source>
         <target>N° insc.</target>
@@ -145,6 +149,30 @@
       <trans-unit id="common.next" datatype="html">
         <source>Next</source>
         <target>Suivant</target>
+      </trans-unit>
+      <trans-unit id="profilePhoto.change" datatype="html">
+        <source>Change</source>
+        <target>Modifier</target>
+      </trans-unit>
+      <trans-unit id="profilePhoto.changeAria" datatype="html">
+        <source>Change profile photo</source>
+        <target>Modifier la photo de profil</target>
+      </trans-unit>
+      <trans-unit id="profilePhoto.remove" datatype="html">
+        <source>Remove</source>
+        <target>Retirer</target>
+      </trans-unit>
+      <trans-unit id="profilePhoto.errorType" datatype="html">
+        <source>Unsupported file type. Use JPEG, PNG or WebP.</source>
+        <target>Type de fichier non supporté. Utilisez JPEG, PNG ou WebP.</target>
+      </trans-unit>
+      <trans-unit id="profilePhoto.errorSize" datatype="html">
+        <source>Image is too large (max <x id="PH" equiv-text="maxMb"/> MB).</source>
+        <target>Image trop volumineuse (max <x id="PH" equiv-text="maxMb"/> Mo).</target>
+      </trans-unit>
+      <trans-unit id="profilePhoto.errorRead" datatype="html">
+        <source>Could not read the file.</source>
+        <target>Impossible de lire le fichier.</target>
       </trans-unit>
       <trans-unit id="students.new" datatype="html">
         <source>New student</source>

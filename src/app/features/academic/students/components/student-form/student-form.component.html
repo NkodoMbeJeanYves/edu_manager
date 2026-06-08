@@ -1,4 +1,16 @@
 <form class="student-form" [formGroup]="form" (ngSubmit)="submit()">
+  <div class="student-form__photo">
+    <app-profile-photo
+      size="lg"
+      [photo]="form.controls.photoUrl.value || null"
+      [name]="fullName"
+      (photoChange)="onPhotoChange($event)"
+      (error)="photoError = $event" />
+    @if (photoError) {
+      <p class="student-form__photo-error">{{ photoError }}</p>
+    }
+  </div>
+
   <div class="form-field">
     <label for="registrationNumber" i18n="@@studentForm.regNum">Registration #</label>
     <input id="registrationNumber" formControlName="registrationNumber" />

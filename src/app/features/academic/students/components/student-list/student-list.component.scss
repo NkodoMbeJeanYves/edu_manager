@@ -30,6 +30,13 @@
     background: var(--color-bg);
   }
 
+  .photo {
+    width: 56px;
+    text-align: center;
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+
   .mono {
     font-family: 'SFMono-Regular', Consolas, monospace;
     font-size: 13px;

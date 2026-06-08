@@ -1,11 +1,12 @@
 import { HttpClient } from "@angular/common/http";
-import { Injectable, inject } from "@angular/core";
+import { inject, Injectable } from "@angular/core";
 import { Router } from "@angular/router";
+import { mockSession } from "@core/mocks/seeds/auth.mock";
 import { AuthCredentials, AuthSession } from "@core/models/user.model";
 import { AuthStore } from "@core/stores/auth.store";
 import { TenantStore } from "@core/stores/tenant.store";
 import { environment } from "@env/environment";
-import { Observable, tap } from "rxjs";
+import { delay, Observable, of, tap } from "rxjs";
 
 @Injectable({ providedIn: "root" })
 export class AuthService {
@@ -24,9 +25,13 @@ export class AuthService {
    * With real API: the request reaches the backend server.
    */
   login(credentials: AuthCredentials): Observable<AuthSession> {
-    return this.http
-      .post<AuthSession>(`${environment.apiUrl}/tokens/login`, credentials)
-      .pipe(tap((session) => this.authStore.setSession(session)));
+    return of(mockSession(credentials.username, "directeur")).pipe(
+      delay(500),
+      tap((session) => this.authStore.setSession(session)),
+    ); // Simule une requête HTTP avec délai
+    // return this.http
+    //   .post<AuthSession>(`${environment.apiUrl}/tokens/login`, credentials)
+    //   .pipe(tap((session) => this.authStore.setSession(session)));
   }
 
   logout(): void {
@@ -47,3 +52,5 @@ export class AuthService {
     );
   }
 }
+
+

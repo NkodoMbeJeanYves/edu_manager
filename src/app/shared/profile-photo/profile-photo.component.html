@@ -1,0 +1,39 @@
+<div class="profile-photo profile-photo--{{ size }}">
+  <div
+    class="profile-photo__avatar"
+    [class.profile-photo__avatar--editable]="editable"
+    [attr.role]="editable ? 'button' : null"
+    [attr.tabindex]="editable ? 0 : null"
+    [attr.aria-label]="editable ? changeLabel : null"
+    (click)="triggerPicker()"
+    (keydown)="onKeydown($event)">
+    @if (photo) {
+      <img class="profile-photo__img" [src]="photo" alt="" />
+    } @else if (initials) {
+      <span class="profile-photo__initials">{{ initials }}</span>
+    } @else {
+      <span class="profile-photo__placeholder" aria-hidden="true">&#128100;</span>
+    }
+
+    @if (editable) {
+      <span class="profile-photo__overlay" i18n="@@profilePhoto.change">Change</span>
+    }
+  </div>
+
+  @if (editable) {
+    <input
+      #fileInput
+      type="file"
+      hidden
+      [accept]="acceptedTypes.join(',')"
+      (change)="onFileSelected($event)" />
+
+    @if (photo) {
+      <button
+        type="button"
+        class="profile-photo__remove"
+        (click)="remove()"
+        i18n="@@profilePhoto.remove">Remove</button>
+    }
+  }
+</div>

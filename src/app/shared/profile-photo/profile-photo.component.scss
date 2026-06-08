@@ -1,0 +1,93 @@
+.profile-photo {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+
+  &__avatar {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 50%;
+    border: 1px solid var(--color-border);
+    background: var(--color-bg);
+    color: var(--color-text-muted);
+    user-select: none;
+
+    &--editable {
+      cursor: pointer;
+    }
+
+    &--editable:focus-visible {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 2px;
+    }
+  }
+
+  &__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  &__initials {
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: var(--color-text);
+  }
+
+  &__placeholder {
+    line-height: 1;
+  }
+
+  &__overlay {
+    position: absolute;
+    inset: auto 0 0 0;
+    padding: 2px 0;
+    font-size: 11px;
+    text-align: center;
+    color: #fff;
+    background: rgba(15, 23, 42, 0.55);
+    opacity: 0;
+    transition: opacity 0.15s ease;
+  }
+
+  &__avatar--editable:hover &__overlay,
+  &__avatar--editable:focus-visible &__overlay {
+    opacity: 1;
+  }
+
+  &__remove {
+    border: none;
+    background: none;
+    padding: 0;
+    font-size: 12px;
+    color: var(--color-danger);
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  // Tailles
+  &--sm &__avatar {
+    width: 40px;
+    height: 40px;
+    font-size: 14px;
+  }
+
+  &--md &__avatar {
+    width: 80px;
+    height: 80px;
+    font-size: 26px;
+  }
+
+  &--lg &__avatar {
+    width: 120px;
+    height: 120px;
+    font-size: 40px;
+  }
+}
